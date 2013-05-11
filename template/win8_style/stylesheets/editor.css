@@ -1,0 +1,95 @@
+.addtext_symbolbar
+{
+	width:884px;
+	background:#EFEFEF;
+	border:1px solid #CCC;
+	margin-bottom:-1px;
+}
+.addtext_symbolbar ul
+{
+	line-height:24px;
+	border-left:1px solid #CCC;
+	margin:1px;
+	padding-left:10px;
+	padding-right:10px;
+	list-style-type:none;
+	overflow:hidden;
+	float:left;
+	
+}
+ul.selections
+{
+	border-left:0px;
+	padding-left:0px;
+}
+ul.textdecoration
+{
+	
+}
+ul.textalign
+{
+	
+}
+.addtext_symbolbar li
+{
+	margin:1px;
+	float:left;
+}
+li.selections
+{
+	border:1px solid #EFEFEF;
+}
+.addtext_symbolbar a
+{
+	text-decoration:none;
+	display:block;
+	width:24px;
+	text-align:center;
+	border:1px solid #EFEFEF;
+}
+.addtext_symbolbar a:hover
+{
+	border:1px solid #a3bde3;
+	background-color:#d5e1f2;
+}
+a.bold
+{
+	font-weight:bold;
+}
+a.italic
+{
+	font-style:italic;
+	font-weight:bold;
+}
+a.underline
+{
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+select.fontsize
+{
+	width:110px;
+}
+select.fontstyle
+{
+	width:75px;
+}
+select.fontcolor
+{
+	width:90px;
+}
+select.categorie
+{
+	min-width:300px;
+}
+#addtext input[type="text"], #addtext textarea, #addtext select
+{	
+	vertical-align:middle;
+	height:25px;
+	background:#FFF; 
+	border:1px solid #bbb;
+	margin-bottom:2px;
+	font-size:14px;
+	color:#676767;
+}

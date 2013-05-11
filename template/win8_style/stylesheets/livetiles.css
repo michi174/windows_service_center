@@ -1,0 +1,140 @@
+.box_infopanel_login
+{
+	width: 230px;
+	border: 1px solid #71aff0;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-family: Verdana;
+	text-align: left;
+	margin: auto;
+	margin-top: 8px;
+	margin-right: 8px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+	background-color: #05ade8;
+}		
+.box_infopanel_login a {color:#FFF; text-decoration:none; font-size:11px; display:block; background-color:#9C3; width:98%; line-height:23px; margin-bottom:1px; text-align:center}
+.box_infopanel_login a:hover {opacity:0.85}
+.box_infopanel_login legend {color:#FFF; font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; letter-spacing:1px; border:1px solid #BFED64; background-color:#9C3; line-height:20px; width:70%;}
+.box_infopanel_login label {font-size:11px; vertical-align:text-top; cursor:pointer;}
+.box_infopanel_login fieldset{ padding:6px; border:1px solid #BFED64; margin-left:-3px;}
+
+.box_infopanel_controlcentre
+{
+	width:235px;
+	border:1px solid #71aff0;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-family:Verdana;
+	text-align:left; 
+	margin:auto;
+	margin-top:5px;
+	margin-right:8px;
+	padding-bottom:5px;
+	padding-top:5px;
+	background-color:#05ade8;
+}
+.livetile_1x1_userpic 	
+{
+	width:45px;
+	height:60px;
+	margin:auto;
+	font-size: 11px;
+	text-align:left;
+	font-weight:bold;
+	font-family:Verdana; color:#FFF;
+	background-color:#353535;
+	margin-left:5px;
+	float:left;
+}				
+.livetile_2x1_username 	
+{
+	width:170px;
+	height:50px;
+	margin:auto;
+	font-size: 18px;
+	text-align:left;
+	font-family:Verdana; color:#FFF;
+	background-color:#me;
+	margin-bottom:15px;
+	margin-left:5px;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:3px;
+	float:left;
+}
+.livetile_2x1_username:hover
+{
+	background-color:#52c8f2;
+}
+.livetile_2x1_username a	{color:#FFF; text-decoration:none;}
+
+
+.infopanel_controlcentre_tiles
+{
+	width:233px;
+	border:#000 solid 0px;
+}
+.infopanel_controlcentre_tiles a
+{
+	width:52px;
+	height:52px;
+	font-size: 10px;
+	text-align:left;
+	text-decoration:none;
+	font-family:Verdana; color:#FFF;
+	background-color:#99cc33;
+	background-repeat:no-repeat;
+	background-position:center;
+	margin-left:5px;
+	display:block;
+	float:left;
+}
+.infopanel_controlcentre_tiles a:hover
+{
+	opacity:0.85;
+}
+a.infopanel_controlcentre_controls
+{
+	background-image:url(../../../template/win8_style/grafics/usercontrolcentre/settings.png);
+}
+
+a.infopanel_controlcentre_messages
+{
+	background-image:url(../../../template/win8_style/grafics/usercontrolcentre/messages.png);
+}
+
+a.infopanel_controlcentre_notes
+{
+	background-image:url(../../../template/win8_style/grafics/usercontrolcentre/note.png);
+}
+
+a.infopanel_controlcentre_logout
+{
+	background-color:#DC572E;
+	background-image:url(../../../template/win8_style/grafics/usercontrolcentre/logout.png);
+}
+	
+.livetile_2x1_calendar 	
+{
+	width:230px;
+	border:1px solid #bfed64;
+	padding-top:5px;
+	padding-left:5px;
+	padding-bottom:5px;
+	margin:auto;
+	margin-top:15px;
+	margin-right:8px;
+	font-size: 11px;
+	text-align:left;
+	text-decoration:none;
+	font-family:Verdana; color:#FFF;
+	background-color:#9C3;
+}
+				
+.livetile_2x1_calendar a:link { font-family:Verdana; color:#FFF; text-decoration:none; }
+.livetile_2x1_calendar a:active { font-family:Verdana; color:#FFF; text-decoration:none; }
+.livetile_2x1_calendar a:visited { font-family:Verdana; color:#FFF; text-decoration:none; }
+.livetile_2x1_calendar a:hover { font-family:Verdana; color:#FFF; text-decoration:none; }
+			

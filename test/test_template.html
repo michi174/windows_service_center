@@ -1,0 +1,69 @@
+<!-- VIEW der Klasse Template  -->
+
+<h2>Diese Daten werden mit einem Templatesystem ausgegeben.</h2>
+
+<b>Statische Variablen:</b><br />
+Name: {vorname} {nachname} <br />
+Alter: {alter} Geschlecht: {geschlecht}<br /><br />
+
+<b>Informationen zur Zeit:</b><br />
+Heute ist {datum} und es ist {zeit}.<br />
+Zeitzone: {zeitzone} {zeitunterschied}
+<br /><br />
+
+Kalenderwoche {kw} Tag {kt}
+<br /><br />
+
+<b>Browserinformationen:</b><br />
+{browser}
+<br /><br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<b>Array Test:</b><br />
+{testarray:vn} {testarray:nn}
+<br /><br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<b>Foreach Test:</b><br />
+{foreach testname key=firstname value=lastname}
+{firstname} {lastname}<br>
+{/foreach}<br>
+{foreach testnamen_sub key=erster value=letzter}
+{erster} {letzter}<br>
+{/foreach}
+<br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<b>Kombination Array und Foreach:</b><br />
+{foreach userary key=datakey value=userdata}
+{userdata:firstname} {userdata:lastname}<br />
+{/foreach}
+<br /><br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<b>SQL Test:</b><br />
+{datarow sql_test}
+	{sql_test.ID}<br />
+{/datarow}
+<br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<b>Subrow Test:</b><br />
+{datarow users}
+	<div style="border: 1px dotted #000; margin:5px; width:500px;">
+		{users.nachname} {users.vorname} ({users.geschlecht}), registriert am {users.reg_datum}<br />
+		<blockquote><b>{users.vorname}'s letzte Besuche:</b><br>
+		{subrow login}
+			{login.zeit}<br>
+		{/subrow}
+		</blockquote>
+		<blockquote>
+		<b>{users.vorname}'s Themen im Forum:</b> <br>
+		{subrow topics}
+			{topics.titel}<br>
+		{/subrow}
+		</blockquote>
+	</div>
+{/datarow}
+<br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
+<b>Datarow Test:</b><br />
+{datarow logins}
+Login am {logins.zeit} von IP-Adresse {logins.ip} Benutzer: {logins.benutzer}<br />
+{/datarow}
+<br />

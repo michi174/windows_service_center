@@ -1,13 +1,12 @@
-<div class="headline">Tipps & Tricks</div>
+<div class="headline">{BOARD_NAME}</div>
+{datarow TOPIC}
 <div class="categories">
-	<div class="categorie_pics"><img src="files/uploaded_files/" alt="picture" /></div>
+	<div class="categorie_pics"><img src="files/uploaded_files/{TOPIC.AVATAR_FILENAME}{TOPIC.AVATAR_FILEEXTENSION}" alt="TOPIC AVATAR" /></div>
 	<div class="categorie_text">
-		<strong>{TOPIC_SUBTITLE}</strong><br />
-		<span style="font-size:16px"><a href="?site=tips&action=detailview&id=TOPIC_ID">{TOPIC_TITLE}</a></span><br /><br />
+		<strong>{TOPIC.SUBTITLE}</strong><br />
+		<span style="font-size:16px"><a href="?site=tips&action=detailview&id={TOPIC.ID}">{TOPIC.TITLE}</a></span><br /><br />
 	</div>
 	<div class="clearing"></div>
-	<div class="categorie_status">
-		{TOPIC_AUTHOR_FIRST_NAME} {TOPIC_AUTHOR_LAST_NAME} am 
-		{TOPIC_DATE} | {TOPIC_KLICKS} Klicks | 0 Kommentare
-	</div>
+	<div class="categorie_status">{TOPIC.FIRSTNAME} {TOPIC.LASTNAME} am {TOPIC.DATE} | {TOPIC.KLICKS} Klicks | 0 Kommentare</div>
 </div>
+{/datarow}

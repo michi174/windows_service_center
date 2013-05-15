@@ -71,11 +71,11 @@ if(!empty($_REQUEST['parent']) && !empty($_REQUEST['action']))
 								userdata.firstname, userdata.lastname
 							FROM 
 								cms_topics
-							JOIN  
+							JOIN LEFT
 								uploaded_files
 							ON
 								uploaded_files.id = cms_topics.picture
-							JOIN
+							JOIN LEFT
 								userdata
 							ON
 								userdata.id = cms_topics.author				

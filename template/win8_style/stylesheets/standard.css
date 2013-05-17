@@ -240,15 +240,15 @@ a.pagescroll_link_active
 	display:block;
 	line-height:30px;
 	height:30px;
-	min-width:80px;
+	min-width:70px;
 	float:left;
 	font-size:14px;
 	list-style:none;
-	padding-left:5px;
+	padding-left:30px;
 	padding-right:5px;
 	margin-left:2px;
 	margin-right:2px;
-	text-align:center;
+	text-align:left;
 }
 .post_bar li:hover
 {
@@ -257,15 +257,27 @@ a.pagescroll_link_active
 }
 li.facebook
 {
-	border-right:1px solid #CCC;
+	background:url(../grafics/social_media/facebook.png) no-repeat left;
 }
 li.twitter
 {
-	border-right:1px solid #CCC;
+	background:url(../grafics/social_media/twitter.png) no-repeat left;
+}
+li.google
+{
+	background:url(../grafics/social_media/googleplus.png) no-repeat left;
+}
+li.line
+{
+	min-width:0px;
+	padding:0px;
+	border:1px ;
+	border-left:1px solid #CCC;
+	border-left:1px solid #CCC;
 }
 li.kommentare
 {
-	border-left:1px solid #CCC;
+	padding-left:5px;
 	float:right;
 }li.kommentare:hover
 {

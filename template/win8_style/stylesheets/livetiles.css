@@ -89,6 +89,8 @@
 	background-position:center;
 	margin-left:5px;
 	display:block;
+	transition-property:all;
+	transition-duration:0.2s;
 	float:left;
 }
 .infopanel_controlcentre_tiles a:hover

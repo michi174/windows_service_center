@@ -129,6 +129,13 @@ class Template
 	protected $notify		= NULL;
 	
 	
+	/**
+	 * @var (object) $bboce		bbCode Objekt
+	 * @since 1.0
+	 */
+	protected $bbcode		= NULL;
+	
+	
 	
 	public function __construct($db = NULL)
 	{
@@ -137,6 +144,7 @@ class Template
 			$this->db = $db;
 		}
 		$this->notify	= new SystemNotification("warning");
+		$this->bbcode	= new BBCode();
 	}
 	
 	

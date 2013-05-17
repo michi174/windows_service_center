@@ -2,10 +2,11 @@
 $notify	= new SystemNotification();
 $db		= new Database();
 $output	= new Template($db);
+$bbcode	= new BBCode();
 
-if(!empty($_REQUEST['parent']) && !empty($_REQUEST['action']))
+if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 {
-	$parent_id	= $_REQUEST['parent'];
+	$parent_id	= $_REQUEST['id'];
 	$output->setTemplateDir(__DIR__ . "/templates");
 	
 	switch ($_REQUEST['action'])
@@ -55,7 +56,7 @@ if(!empty($_REQUEST['parent']) && !empty($_REQUEST['action']))
 			$output->addTemplate("topics.html");
 			
 			$sql_head	= "	SELECT
-								* 
+								cms_boards.title
 							FROM 
 								cms_boards 
 							WHERE 
@@ -68,25 +69,34 @@ if(!empty($_REQUEST['parent']) && !empty($_REQUEST['action']))
 			$sql_topics	= "	SELECT
 								cms_topics.*, cms_topics.id as tid,
 								uploaded_files.id as filename, uploaded_files.extension as fileextension,
-								userdata.firstname, userdata.lastname
+								userdata.firstname, userdata.lastname, userdata.username,
+								cms_posts.text
 							FROM 
 								cms_topics
-							JOIN LEFT
+							JOIN
 								uploaded_files
 							ON
 								uploaded_files.id = cms_topics.picture
-							JOIN LEFT
+							JOIN
 								userdata
 							ON
-								userdata.id = cms_topics.author				
+								userdata.id = cms_topics.author	
+							JOIN
+								cms_posts
+							ON 
+								cms_posts.parent = cms_topics.id			
 							WHERE
-								cms_topics.parent = " . $parent_id;
+								cms_topics.parent = " . $parent_id . "
+							GROUP BY
+								cms_posts.parent";
 			
 			$topic_vars	= array(	"ID" 					=> "tid",
 									"TITLE"					=> "title",
 									"SUBTITLE"				=> "subtitle",
+									"TEXT"					=> "text",
 									"FIRSTNAME"				=> "firstname",
 									"LASTNAME"				=> "lastname",
+									"USERNAME"				=> "username",
 									"DATE"					=> "date",
 									"KLICKS"				=> "clicks",
 									"AVATAR_FILENAME" 		=> "filename",
@@ -95,11 +105,40 @@ if(!empty($_REQUEST['parent']) && !empty($_REQUEST['action']))
 								);
 			$output->assignDatarow("TOPIC", $sql_topics, $topic_vars);
 			$output->assignFunction("TOPIC.DATE", 'strftime("%d. %B %Y um %H:%M", {var})');
+			$output->assignFunction("TOPIC.TEXT", '$this->bbcode->parseText(substr("{var}", 0, 500), false, true, false)');
 			
 			
 		break;
 			
 		case "detailview":
+			$output->addTemplate("detailview.html");
+			
+			$sql_detail	= "	SELECT 
+								cms_posts.*,
+								cms_topics.subtitle, cms_topics.title , cms_topics.source,
+								userdata.firstname, userdata.lastname, userdata.username
+							FROM 
+								cms_posts
+							JOIN
+								cms_topics
+							ON
+								cms_posts.parent	= cms_topics.id
+							JOIN
+								userdata
+							ON 
+								cms_topics.author	= userdata.id
+							WHERE 
+								cms_posts.id = " . $parent_id;
+			
+			$res_detail	= $db->query($sql_detail) or die($db->error);
+			$row_detail	= $res_detail->fetch_object();
+
+			$output->assign("TITLE", $row_detail->title);
+			$output->assign("SUBTITLE", $row_detail->subtitle);
+			$output->assign("DATE", strftime("%d. %B %Y um %H:%M", $row_detail->date));
+			$output->assign("TEXT", $bbcode->parseText($row_detail->text, true, true));
+			$output->assign("SOURCE", $bbcode->parseText($row_detail->source, true, true));
+			$output->assign("AUTHOR", $row_detail->username);
 		break;
 	}
 	$output->display();

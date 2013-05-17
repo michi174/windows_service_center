@@ -29,12 +29,22 @@ if(isset($_REQUEST['logout']))
 
 if(isset($_POST['login_x']) || (isset($_COOKIE['login']) && isset($_SESSION['loggedIn']) !== true))
 {
+	if(isset($_POST['login_x']))
+	{
+		$username	= $_POST['username'];
+		$password	= $_POST['password'];
+	}
+	else 
+	{
+		$username	= NULL;
+		$password	= NULL;
+	}
 	if(isset($_POST['save_login']))
 	{
 		$cookie	= (!is_null($_POST['save_login'])) ? true : false;
 	}
 	
-	$login		= new Login($db, $_POST['username'], $_POST['password'], $cookie);
+	$login		= new Login($db, $username, $password, $cookie);
 	
 	try
 	{

@@ -188,7 +188,7 @@ class PluginManager
 						$action	= NULL;
 					}
 					
-					echo "<li class=\"". $row['style_name'] ."\"><a href=\"?". DEFAULT_LINK ."=". $row['plugin_name'] . $action . "&parent=" . $row['id'] . "\">". $row['display_name'] ."</a></li>";
+					echo "<li class=\"". $row['style_name'] ."\"><a href=\"?". DEFAULT_LINK ."=". $row['plugin_name'] . $action . "&id=" . $row['id'] . "\">". $row['display_name'] ."</a></li>";
 				}
 				else
 				{

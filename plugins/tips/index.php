@@ -105,7 +105,7 @@ if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 								);
 			$output->assignDatarow("TOPIC", $sql_topics, $topic_vars);
 			$output->assignFunction("TOPIC.DATE", 'strftime("%d. %B %Y um %H:%M", {var})');
-			$output->assignFunction("TOPIC.TEXT", '$this->bbcode->parseText(substr("{var}", 0, 500), false, true, false)');
+			$output->assignFunction("TOPIC.TEXT", 'limitStringbyWords($this->bbcode->parseText("{var}", false, true, false), 45)');
 			
 			
 		break;

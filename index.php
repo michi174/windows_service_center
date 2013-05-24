@@ -3,6 +3,7 @@
 session_start();
 
 require_once 'lib/autoload.function.php';
+require_once 'lib/functions.function.php';
 require_once 'admin/config.php';
 
 $db		= new Database;

@@ -182,6 +182,8 @@ class Template
 	{
 		$this->replaceFunctions();
 		$this->replaceVariables();
+		
+		$this->output	= $this->parseIf($this->output);
 	}
 	
 	
@@ -203,7 +205,6 @@ class Template
 	}
 	
 	
-	
 	/**
 	 * Funktionen werden kompiliert.
 	 *
@@ -211,17 +212,76 @@ class Template
 	 */
 	protected function replaceFunctions()
 	{
+		
 		$this->replaceForeach();
 		$this->multiDatarow();
-		
 		$this->output	= $this->parseArrayKeys($this->output);
+		
 	}
 	
 	
+	/**
+	 * If else Tags werden ersetzt.
+	 *
+	 * @param (string)	$section		Teil der auf If-Else Blocks abgesucht werden muss.
+	 * @return (string)	$section		Fertig kompilierter Abschnitt.
+	 *
+	 * @since 1.0
+	 */
 	protected function parseIf($section)
 	{
+		$matches	= array();
+		$pattern	= '#\{if\=\"{1}(.+)\"\}(.*)(\{else\}(.*))?\{\/if\}#ismU'; #Muster: {if a > b}a ist mehr als b{else}b ist mehr als a{/if} - Else Block ist optional
 		
+		while(preg_match($pattern, $section, $matches) == true)
+		{
+			$condition		= $matches[1];
+			$if_block		= $matches[2];
+			
+			//Wenn ein else Block vorhanden ist, wird er der Variable zugewiesen sonst null.
+			$else_block		= (isset($matches[3]) && substr($matches[3],0,6) == $this->delimeter_left."else".$this->delimeter_right) ? $matches[4] : null;
+			$output_block	= null;
+			
+			
+			//Überprüfen, ob noch nicht ersetzte Variablen vorhanden sind.
+			$condition_pattern	= '#(\{.+\})#ismU';
+			$condition_matches	= array();
+			
+			if(preg_match($condition_pattern, $condition, $condition_matches) == true)
+			{
+				$this->notify->addMessage("<strong>Syntaxfehler:</strong> Die Templatevariable &rsquo;".$condition_matches[1]."&rsquo; wurde nicht deklariert!<br /><br />Der IF-ELSE Block kann nicht richtig ausgef&uuml;hrt werden.", "error");
+				$output_block	= "IF_ELSE_ERROR";
+			}
+			else
+			{
+				$compiled_if	= '
+								if('.$condition.')
+								{
+									$output_block	= "'.$if_block.'";
+								}
+								else
+								{
+									$output_block	= "'.$else_block.'";
+								}';
+				
+				eval($compiled_if);
+			}
+			
+			//If-Else Tags im Template durch den Output Block ersetzen.
+			if(!is_null($else_block))
+			{
+				$search_if 	= ''.$this->delimeter_left.'if="'.$condition.'"'.$this->delimeter_right.$if_block.$this->delimeter_left.'else'.$this->delimeter_right.$else_block.$this->delimeter_left.'/if'.$this->delimeter_right;
+			}
+			else 
+			{
+				$search_if	= ''.$this->delimeter_left.'if="'.$condition.'"'.$this->delimeter_right.$if_block.$this->delimeter_left.'/if'.$this->delimeter_right;
+			}
+			
+			$section	= str_replace($search_if, $output_block, $section);
+		}
+		return $section;
 	}
+	
 	
 	/**
 	 * Template Arraykeys werden ersetzt.
@@ -240,12 +300,15 @@ class Template
 		{
 			$array_keys_array	= $array_keys[1];
 			$array_keys_key		= $array_keys[2];
-				
+			
+			
+			//Wenn der Template Array ein PHP Array ist
 			if(array_key_exists($array_keys_array, $this->tpl_vars))
 			{
+				//Wenn der Template ArrayKey ein PHP ArrayKey ist
 				if(array_key_exists($array_keys_key, $this->tpl_vars[$array_keys_array]))
 				{
-					$array_keys_search	= "{" . $array_keys_array . ":" . $array_keys_key . "}";
+					$array_keys_search	= $this->delimeter_left . $array_keys_array . ":" . $array_keys_key . $this->delimeter_right;
 					$array_keys_replace	= $this->tpl_vars["$array_keys_array"]["$array_keys_key"];
 						
 					$section	= str_replace($array_keys_search, $array_keys_replace, $section);
@@ -258,7 +321,7 @@ class Template
 			}
 			else
 			{
-				$this->notify->addMessage("<strong>Fehler:</strong> " . $array_keys_array . " ist kein Array.", "error");
+				$this->notify->addMessage("<strong>Fehler:</strong> &rsquo;" . $array_keys_array . "&rsquo; ist kein Array.", "error");
 				break;
 			}
 		}
@@ -266,13 +329,11 @@ class Template
 	}
 	
 	
-	
 	/**
 	 * Foreach Schleifen behandeln.
 	 *
 	 * @since 1.0
 	 */
-	
 	protected function replaceForeach()
 	{
 		$pattern	= '#\{foreach[\s]{1}(.+)[\s]{1}key=(.+)[\s]{1}value=(.*)\}(.*)\{\/foreach\}#ismU';
@@ -337,7 +398,6 @@ class Template
 				break;
 			}
 		}
-		//var_dump($this->tpl_vars['lastname']);
 	}
 	
 	
@@ -476,7 +536,7 @@ class Template
 		if(array_key_exists($var, $this->assigned_functions))
 		{
 			$function		= preg_replace('#\{var\}#ismU', $value, $this->assigned_functions[$var]);
-			$compiled_code	= "FUNCTION COMPILING FAILED on ".__FILE__.":".__LINE__;
+			$compiled_code	= "FUNCTION_COMPILING_FAILED";
 			
 			eval("\$compiled_code = $function;");
 		}
@@ -627,6 +687,7 @@ class Template
 		$this->openTemplate();
 		$this->compileTemplate();
 		$this->notify->printMessage();
+		
 		echo $this->output;
 	}
 }

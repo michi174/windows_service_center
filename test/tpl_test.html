@@ -18,6 +18,20 @@ Kalenderwoche {kw} Tag {kt}
 {browser}
 <br /><br />
 <!-- ------------------------------------------------------------------------------------------------------- -->
+<b>If Test:</b><br />
+Der Besucher ist 
+{if="isset($_SESSION['loggedIn'])"}
+    eingeloggt
+{else}
+    nicht eingeloggt
+{/if}.
+
+<br />
+{if=" '1' == '1' "}
+	1 ist 1
+{/if}
+<br /><br />
+<!-- ------------------------------------------------------------------------------------------------------- -->
 <b>Array Test:</b><br />
 {testarray:vn} {testarray:nn}
 <br /><br />
@@ -31,9 +45,9 @@ Kalenderwoche {kw} Tag {kt}
 {/foreach}
 <br />
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>Kombination Array und Foreach:</b><br />
+<b>Kombination Array, Foreach und If:</b><br />
 {foreach userary key=datakey value=userdata}
-{userdata:firstname} {userdata:lastname}<br />
+{userdata:firstname} {userdata:lastname}{if="'{userdata:firstname}' == 'Michael'"} <- der muss sterben *gg*{/if}<br />
 {/foreach}
 <br /><br />
 <!-- ------------------------------------------------------------------------------------------------------- -->

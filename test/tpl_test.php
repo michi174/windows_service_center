@@ -27,7 +27,7 @@ while($row_us_dta = $res_us_dta->fetch_assoc())
 $temp = new Template($db);
 
 $temp->setTemplateDir("test/");
-$temp->addTemplate("test_template.html");
+$temp->addTemplate("tpl_test.html");
 
 //Statische Variablen ersetzen
 $temp->assign("datum", strftime("%A, %d. %B %Y", $zeit));

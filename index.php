@@ -3,7 +3,6 @@
 session_start();
 
 require_once 'lib/autoload.function.php';
-require_once 'lib/functions.function.php';
 require_once 'admin/config.php';
 
 $db		= new Database;
@@ -96,9 +95,9 @@ if(isset($_SESSION['loggedIn']) === true)
     <a href="?site=addcat">Kategorie hinzuf&uuml;gen</a>&nbsp;&middot;&nbsp;
     <a href="?site=addtext">Tipp erstellen</a>&nbsp;&middot;&nbsp;
     <a href="?site=tpl_test">Template Test</a>&nbsp;&middot;&nbsp;
+    <a href="#">Men&uuml;erweiterung 4</a>&nbsp;&middot;&nbsp;
     <a href="?check_plugins">Plug-In's einlesen</a>&nbsp;&middot;&nbsp;
-    <a href="#">Men&uuml;erweiterung 5</a>&nbsp;&middot;&nbsp;
-    <a href="#">Men&uuml;erweiterung 6</a>
+    <a href="#">Men&uuml;erweiterung 6</a>&nbsp;&middot;&nbsp;
 </div>
 <div class="box_content">
     <div id="box_content_text">

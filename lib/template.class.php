@@ -257,13 +257,12 @@ class Template
 				$compiled_if	= '
 								if('.$condition.')
 								{
-									$output_block	= "'.$if_block.'";
+									$output_block	= "'.addslashes($if_block).'";
 								}
 								else
 								{
-									$output_block	= "'.$else_block.'";
+									$output_block	= "'.addslashes($else_block).'";
 								}';
-				
 				eval($compiled_if);
 			}
 			
@@ -419,12 +418,13 @@ class Template
 		preg_match_all($datarow_pattern, $this->output, $datarow_matches);
 		$datarow_names		= $datarow_matches[1];
 		$datarow_inhalte	= $datarow_matches[2];
+		
 		foreach($datarow_names as $datarow_key => $datarow_name)
-		{
+		{			
 			if(array_key_exists($datarow_name, $this->datarow_vars))
 			{
 				$datarow_db_ressource	= $this->db->query($this->datarow_ressource[$datarow_name]) or die($this->db->error);
-				$datarow_db_num_rows		= $datarow_db_ressource->num_rows;
+				$datarow_db_num_rows	= $datarow_db_ressource->num_rows;
 				
 				if($datarow_db_num_rows > 0)
 				{
@@ -512,7 +512,7 @@ class Template
 				else
 				{
 					$datarow_pattern_all		= '#\{datarow[\s]{1}'.$datarow_name.'\}.*\{\/datarow\}#ismU';
-					$this->output				= preg_replace($datarow_pattern_all, "Es wurden keine Datens&auml;tze gefunden.", $this->output);
+					$this->output				= preg_replace($datarow_pattern_all, "keine Eintr&auml;ge gefunden.", $this->output);
 				}
 			}
 			else

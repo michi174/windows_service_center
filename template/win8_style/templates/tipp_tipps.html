@@ -1,0 +1,20 @@
+<div class="headline">{BOARD_NAME}</div>
+{datarow TOPIC}
+<div class="tips_topic">
+    <div class="tips_topic_title"><a href="?site=tips&action=detailview&id={TOPIC.ID}">{TOPIC.TITLE}</a></div>
+    <div class="tips_topic_info">Von <span style="font-weight:bold">{TOPIC.USERNAME}</span> am {TOPIC.DATE} <!--{TOPIC.KLICKS} Klicks | 0 Kommentare --></div>
+    <div class="tips_topic_body">
+        <div class="tips_topic_img"><img src="files/uploaded_files/{TOPIC.AVATAR_FILENAME}{TOPIC.AVATAR_FILEEXTENSION}" alt="TOPIC AVATAR" /></div>
+        <div class="tips_topic_text">{TOPIC.TEXT}</div>
+        <div class="tips_topic_social">
+            <img src="template/win8_style/grafics/social_media/facebook.png" /><br />
+            <img src="template/win8_style/grafics/social_media/twitter.png" /><br />
+            <img src="template/win8_style/grafics/social_media/googleplus.png" /><br />
+        </div>
+        <div class="clearing"></div>
+    </div>
+</div>
+<div class="tips_topic_readmore"><a href="?site=tips&action=detailview&id={TOPIC.ID}">Weiterlesen</a></div>
+<div class="clearing"></div>
+<br />
+{/datarow}

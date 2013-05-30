@@ -5,6 +5,8 @@ session_start();
 require_once 'lib/autoload.function.php';
 require_once 'admin/config.php';
 
+$template_dir	= "win8_style";
+
 $db		= new Database;
 $plug	= new PluginManager();
 

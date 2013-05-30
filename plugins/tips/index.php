@@ -7,13 +7,13 @@ $bbcode	= new BBCode();
 if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 {
 	$parent_id	= $_REQUEST['id'];
-	$output->setTemplateDir(__DIR__ . "/templates");
+	$output->setTemplateDir("template/" . $template_dir . "/templates");
 	
 	switch ($_REQUEST['action'])
 	{
 		case "boards":
 			
-			$output->addTemplate("boards.html");
+			$output->addTemplate("tipp_categories.html");
 			
 			$sql_categories	= "	SELECT
 									*
@@ -53,7 +53,7 @@ if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 			$output->assignSubrow("BOARDS", "CATEGORY", $sql_boards, $boards_vars);
 			break;
 		case "topics";
-			$output->addTemplate("topics.html");
+			$output->addTemplate("tipp_tipps.html");
 			
 			$sql_head	= "	SELECT
 								cms_boards.title
@@ -111,7 +111,7 @@ if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 		break;
 			
 		case "detailview":
-			$output->addTemplate("detailview.html");
+			$output->addTemplate("tipp_detailview.html");
 			
 			$sql_detail	= "	SELECT 
 								cms_posts.*,

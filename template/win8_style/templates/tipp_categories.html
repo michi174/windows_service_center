@@ -9,10 +9,9 @@
         <div class="new_article_pics"><img src="" height="120" width="213" /></div>
         <div class="clearing"></div>
     </div>
-</div>
+</div><br />
 {datarow CATEGORY}
-
-<div class="tips_topic_box">
+<div class="tips_topic">
     <div class="td_headline" onclick="toogleView('tips_topic_container_{CATEGORY.ID}')" style="cursor:pointer;">{CATEGORY.NAME}</div>
     <div class="tips_topic_container" id="tips_topic_container_{CATEGORY.ID}" style="display:{CATEGORY.DISPLAY};">
         {subrow BOARDS}
@@ -27,5 +26,5 @@
         {/subrow}
         <br />
     </div>
-</div>
+</div><br />
 {/datarow}

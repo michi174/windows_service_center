@@ -560,7 +560,7 @@ li.search
 	font-family:Verdana, Geneva, sans-serif;
 	border:1px solid #F0F0F0;
 	box-shadow:#CCC 0px 2px 6px 1px;
-	background-image:url(template/win8_style/grafics/navigation/next_small.png);
+	background-image:url(../grafics/navigation/next_small.png);
 	background-repeat:no-repeat;
 	background-position:right;
 	opacity:0.8;
@@ -571,7 +571,7 @@ li.search
 .tips_topic_readmore a:hover
 {
 	text-decoration:none;
-	background-image:url(template/win8_style/grafics/navigation/next_small_hover.png);
+	background-image:url(../grafics/navigation/next_small_hover.png);
 	opacity:1;
 	
 }

@@ -1,9 +1,9 @@
 <?php
 
-$notify	= new SystemNotification();
+$notify	= new wsc\systemnotification\SystemNotification();
 $notify->setNotificationType("success");
 
-if(isset($_SESSION['loggedIn']) === true && $permission['admin'] == 1)
+if(isset($_SESSION['loggedIn']) === true)
 {
 	$show_form	= true;
 	if(isset($_POST['save_x']))
@@ -49,7 +49,7 @@ if(isset($_SESSION['loggedIn']) === true && $permission['admin'] == 1)
 		if(!empty($_FILES['picture']['tmp_name']) && empty($_REQUEST['url']) && $_REQUEST['cattype'] != 'forum' && $_REQUEST['cattype'] != 'gallerie')
 		{
 			
-			$upload			= new Upload($_FILES['picture'], "pic", false);
+			$upload			= new wsc\upload\Upload($_FILES['picture'], "pic", false);
 			$upload->uploadFile();
 			$upload_done	= $upload->getUploadStatus();
 			

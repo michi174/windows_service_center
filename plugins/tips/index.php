@@ -1,13 +1,17 @@
 <?php
-$notify	= new SystemNotification();
-$db		= new Database();
-$output	= new Template($db);
-$bbcode	= new BBCode();
+require_once DOCUMENT_ROOT . 'config/bootstrap.php';
+
+$notify	= new wsc\systemnotification\SystemNotification();
+$db		= new wsc\database\Database();
+$output	= new wsc\template\Template($db);
+$bbcode	= new wsc\bbcode\BBCode();
+
+
 
 if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 {
 	$parent_id	= $_REQUEST['id'];
-	$output->setTemplateDir("template/" . $template_dir . "/templates");
+	$output->setTemplateDir("template/" . $config->template_dir . "/templates");
 	
 	switch ($_REQUEST['action'])
 	{
@@ -105,7 +109,7 @@ if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 								);
 			$output->assignDatarow("TOPIC", $sql_topics, $topic_vars);
 			$output->assignFunction("TOPIC.DATE", 'strftime("%d. %B %Y um %H:%M", {var})');
-			$output->assignFunction("TOPIC.TEXT", 'StringFunctions::limitWords($this->bbcode->parseText("{var}", false, true, false), 45)');
+			$output->assignFunction("TOPIC.TEXT", '\wsc\functions\stringfunctions\StringFunctions::limitWords($this->bbcode->parseText("{var}", false, true, false), 45)');
 			
 			
 		break;

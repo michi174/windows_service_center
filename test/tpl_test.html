@@ -47,7 +47,7 @@ Der Besucher ist
 <!-- ------------------------------------------------------------------------------------------------------- -->
 <b>Kombination Array, Foreach und If:</b><br />
 {foreach userary key=datakey value=userdata}
-{userdata:firstname} {userdata:lastname}{if="'{userdata:firstname}' == 'Michael'"} <- der muss sterben *gg*{/if}<br />
+{userdata:firstname} {userdata:lastname}{if="'{userdata:firstname}' == 'Dominik'"} <- der muss sterben *gg*{/if}<br />
 {/foreach}
 <br /><br />
 <!-- ------------------------------------------------------------------------------------------------------- -->
@@ -79,7 +79,5 @@ Der Besucher ist
 <b>Datarow Test:</b><br />
 {datarow logins}
 Login am {logins.zeit} von IP-Adresse {logins.ip} Benutzer: {logins.benutzer}<br />
-{datarowelse}
-Kein sachen.
 {/datarow}
 <br />

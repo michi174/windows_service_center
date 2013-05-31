@@ -2,13 +2,11 @@
 
 session_start();
 
-require_once 'lib/autoload.function.php';
+require_once 'lib/autoloader.func.php';
 require_once 'admin/config.php';
 
-$template_dir	= "win8_style";
-
-$db		= new Database;
-$plug	= new PluginManager();
+$db		= new wsc\database\Database();
+$plug	= new wsc\pluginmanager\PluginManager();
 
 $forward_link	= $_SERVER['QUERY_STRING'];
 
@@ -21,12 +19,12 @@ if(isset($_REQUEST['check_plugins']))
 }
 
 $page_error	= NULL;
-$plugins	= PluginManager::getPlugins(false);
+$plugins	= wsc\pluginmanager\PluginManager::getPlugins(false);
 
 if(isset($_REQUEST['logout']))
 {
-	$userdata	= Logout::logoutUser();
-	$permission	= Logout::unsetPermissions();
+	$userdata	= wsc\logout\Logout::logoutUser();
+	$permission	= wsc\logout\Logout::unsetPermissions();
 }
 
 if(isset($_POST['login_x']) || (isset($_COOKIE['login']) && isset($_SESSION['loggedIn']) !== true))
@@ -46,22 +44,22 @@ if(isset($_POST['login_x']) || (isset($_COOKIE['login']) && isset($_SESSION['log
 		$cookie	= (!is_null($_POST['save_login'])) ? true : false;
 	}
 	
-	$login		= new Login($db, $username, $password, $cookie);
+	$login		= new wsc\login\Login($db, $username, $password, $cookie);
 	
 	try
 	{
 		$login->loginUser();
 	}
-	catch (LoginErrorException $error)
+	catch (wsc\login\exception\LoginErrorException $error)
 	{
-		$login_notification		= new SystemNotification("error");
+		$login_notification		= new wsc\systemnotification\SystemNotification("error");
 		$login_notification->addMessage($error->getMessage());
 	}
 }
 if(isset($_SESSION['loggedIn']) === true)
 {
-	$userdata	= Login::getUserData($_SESSION['userid']);
-	$permission = Login::getUserPermission($_SESSION['userid']);
+	$userdata	= wsc\login\Login::getUserData($_SESSION['userid']);
+	$permission = wsc\login\Login::getUserPermission($_SESSION['userid']);
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -83,7 +81,8 @@ if(isset($_SESSION['loggedIn']) === true)
 </div>
 <div class="menurow_top">
 	<ul>
-		<?php PluginManager::getPlugins(true);?>
+		<?php wsc\pluginmanager\PluginManager::getPlugins(true);
+		?>
 		<li class="search">
 			<form method="post" id="search" action="#">
 				<input type="text" placeholder="Suchbegriff eingeben..." style="width:230px; height:20px;" />
@@ -148,7 +147,7 @@ if(isset($_SESSION['loggedIn']) === true)
 	<?php
 		if(!isset($_SESSION['loggedIn']))
 		{
-			if(isset($_POST['login_x']) && ($login_notification instanceof SystemNotification))
+			if(isset($_POST['login_x']) && ($login_notification instanceof wsc\systemnotification\SystemNotification))
 			{
 				$login_notification->printMessage();
 			}

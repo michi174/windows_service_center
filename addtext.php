@@ -10,7 +10,7 @@ $comments	= NULL;
 
 $show_form	= true;
 
-$notify		= new SystemNotification("error");
+$notify		= new wsc\systemnotification\SystemNotification("error");
 
 if(isset($_POST['save_x']))
 {
@@ -93,7 +93,7 @@ if(isset($_POST['save_x']))
 ?>
 
 <?php 
-if(isset($_SESSION['loggedIn']) === true && $permission['admin'] == 1)
+if(isset($_SESSION['loggedIn']) === true)
 {
 	if ($show_form !== false)
 	{

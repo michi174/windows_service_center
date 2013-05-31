@@ -26,6 +26,7 @@ define("DEFAULT_TIME_ZONE", date_default_timezone_set("Europe/Vienna")); //Zeitz
 define("MAX_TIPS_PER_PAGE", 10); //Maximale Anzahl von Tips pro Seite
 define("DEFAULT_LINK", "site" ); //z.B.: index.php?DEFAULT_LINK=news&action=new
 define("PLUGIN_DIR", "plugins/"); //Verzeichnis für Plug-ins
+define("DOCUMENT_ROOT", $_SERVER["DOCUMENT_ROOT"] . "/windows_service_center/");
 
 
 $dbconn	= mysql_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD);

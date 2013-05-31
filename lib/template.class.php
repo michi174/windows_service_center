@@ -69,7 +69,7 @@ class Template
 
 
 	/**
-	 * Variablen, die durch Funktionen ersetzt werden müssen
+	 * Variablen, die durch Funktionen ersetzt werden mï¿½ssen
 	 *
 	 * @var (array) $assigned_functions
 	 * @since 1.0
@@ -79,7 +79,7 @@ class Template
 	
 	
 	/**
-	 * SQL-Befehl für Datarows
+	 * SQL-Befehl fÃ¼r Datarows
 	 * 
 	 * @var (array) $datarow_ressource
 	 * @since 1.0
@@ -98,7 +98,7 @@ class Template
 	
 	
 	/**
-	 * Subrows für Datarows
+	 * Subrows fï¿½r Datarows
 	 * 
 	 * @var (array) $subrows
 	 * @since 1.0
@@ -139,10 +139,14 @@ class Template
 	
 	public function __construct($db = NULL)
 	{
-		if(is_object($db))
+		if($db instanceof Database)
 		{
 			$this->db = $db;
 		}
+        else
+        {
+            $this->notify->addMessage("Das Datenbankobjekt konnte nicht initialisiert werden!", "Information")
+        }
 		$this->notify	= new SystemNotification("warning");
 		$this->bbcode	= new BBCode();
 	}
@@ -221,7 +225,11 @@ class Template
 	
 	
 	/**
-	 * If else Tags werden ersetzt.
+	 * Ersetzt IF-ELSE Tags im Template
+     * 
+     * Diese Methode erwartet, dass bereits alle Templatevariablen ( '{var}' )in der Condition
+     * ersetzt wurden. Dies wird benÃ¶tigt, da nicht alle Variablen im selben Array gespeichert
+     * sind und damit das IF-ELSE Parsing auch in den Data- bzw. Subrow Abschnitten funktioniert.
 	 *
 	 * @param (string)	$section		Teil der auf If-Else Blocks abgesucht werden muss.
 	 * @return (string)	$section		Fertig kompilierter Abschnitt.
@@ -243,7 +251,7 @@ class Template
 			$output_block	= null;
 			
 			
-			//Überprüfen, ob noch nicht ersetzte Variablen vorhanden sind.
+			//ï¿½berprï¿½fen, ob noch nicht ersetzte Variablen vorhanden sind.
 			$condition_pattern	= '#(\{.+\})#ismU';
 			$condition_matches	= array();
 			
@@ -456,13 +464,13 @@ class Template
 							//Wenn die Subrow im Hauptprogramm deklariert wurde
 							if(array_key_exists($subrow_name, $this->subrows[$datarow_name]))
 							{	
-								//SQL-Befehl für Subrow kompilieren.
+								//SQL-Befehl fï¿½r Subrow kompilieren.
 								foreach($this->datarow_vars[$datarow_name] as $datarow_var => $datarow_var_inhalt)
 								{		
 									$subrow_pre_sql			= $this->subrows[$datarow_name][$subrow_name]['sql'];
 									$subrow_compiled_sql	= str_replace("{".$datarow_name.".".$datarow_var."}", $datarow_dataset[$datarow_var_inhalt], $subrow_pre_sql);
 								}
-								//Datensätze der Subrow auslesen
+								//Datensï¿½tze der Subrow auslesen
 								$subrow_db_ressource	= $this->db->query($subrow_compiled_sql) or die($this->db->error);
 								$subrow_db_num_rows		= $subrow_db_ressource->num_rows;
 								
@@ -470,7 +478,7 @@ class Template
 								{
 									while(($subrow_dataset	= $subrow_db_ressource->fetch_assoc()) == true)
 									{
-										//Jetzt müssen die Subrow Template Variablen durch die Werte ersetzt werden...
+										//Jetzt mï¿½ssen die Subrow Template Variablen durch die Werte ersetzt werden...
 										$search_subrow_var	= array();
 										$replace_subrow_var	= array();
 		
@@ -612,7 +620,7 @@ class Template
 	
 	
 	/**
-	 * Verändert den Inhalt der Datarow Variablen mithilfe der übergeben Funktion.
+	 * Verï¿½ndert den Inhalt der Datarow Variablen mithilfe der ï¿½bergeben Funktion.
 	 *
 	 * @param (string) $var			Zu bearbeitende Variable
 	 * @param (string) $function	Funktion mit der die Variable bearbeitet wird
@@ -656,7 +664,7 @@ class Template
 	
 	
 	/**
-	 * Fügt ein Template hinzu.
+	 * Fï¿½gt ein Template hinzu.
 	 *
 	 * @param (string) $template	Name der Template-Datei
 	 * @return boolean

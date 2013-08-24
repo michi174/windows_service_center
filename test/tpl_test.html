@@ -1,83 +1,93 @@
 <!-- VIEW der Klasse Template  -->
+<h1>Templatesystem</h1>
+<div class="step_line"></div>
+<p class="introduction">Diese Daten werden mit einem dynamischen und eigens programmierten Templatesystem ausgegeben. In den folgenden Absätzen werden verschiedene Funktionalitäten des Systems getestet.</p>
 
-<h2>Diese Daten werden mit einem Templatesystem ausgegeben.</h2>
+<h4>Statische Variablen:</h4>
+<p class="section">
+    Name: {vorname} {nachname} <br />
+    Alter: {alter} Geschlecht: {geschlecht}
+</p>
 
-<b>Statische Variablen:</b><br />
-Name: {vorname} {nachname} <br />
-Alter: {alter} Geschlecht: {geschlecht}<br /><br />
+<h4>Informationen zur Zeit:</h4>
+<p class="section">
+    Heute ist {datum} und es ist {zeit}.<br />
+    Zeitzone: {zeitzone} {zeitunterschied}<br />
+    Kalenderwoche {kw} Tag {kt}
+</p>
 
-<b>Informationen zur Zeit:</b><br />
-Heute ist {datum} und es ist {zeit}.<br />
-Zeitzone: {zeitzone} {zeitunterschied}
-<br /><br />
-
-Kalenderwoche {kw} Tag {kt}
-<br /><br />
-
-<b>Browserinformationen:</b><br />
-{browser}
-<br /><br />
+<h4>Browserinformationen:</h4>
+<p class="section">
+    {browser}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>If Test:</b><br />
-Der Besucher ist 
-{if="isset($_SESSION['loggedIn'])"}
-    eingeloggt
-{else}
-    nicht eingeloggt
-{/if}.
-
-<br />
-{if=" '1' == '1' "}
-	1 ist 1
-{/if}
-<br /><br />
+<h4>If Test:</h4>
+<p class="section">
+        Der Besucher ist 
+        {if="isset($_SESSION['loggedIn'])"}
+            eingeloggt
+        {else}
+            nicht eingeloggt
+        {/if}.
+        
+        <br />
+        {if=" '1' == '1' "}
+            1 ist 1
+        {/if}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>Array Test:</b><br />
-{testarray:vn} {testarray:nn}
-<br /><br />
+<h4>Array Test:</h4>
+<p class="section">
+    {testarray:vn} {testarray:nn}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>Foreach Test:</b><br />
-{foreach testname key=firstname value=lastname}
-{firstname} {lastname}<br>
-{/foreach}<br>
-{foreach testnamen_sub key=erster value=letzter}
-{erster} {letzter}<br>
-{/foreach}
-<br />
+<h4>Foreach Test:</h4>
+<p class="section">
+    {foreach testname key=firstname value=lastname}
+    {firstname} {lastname}<br>
+    {/foreach}<br>
+    {foreach testnamen_sub key=erster value=letzter}
+    {erster} {letzter}<br>
+    {/foreach}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>Kombination Array, Foreach und If:</b><br />
-{foreach userary key=datakey value=userdata}
-{userdata:firstname} {userdata:lastname}{if="'{userdata:firstname}' == 'Dominik'"} <- der muss sterben *gg*{/if}<br />
-{/foreach}
-<br /><br />
+<h4>Kombination Array, Foreach und If:</h4>
+<p class="section">
+    {foreach userary key=datakey value=userdata}
+    {userdata:firstname} {userdata:lastname}{if="'{userdata:firstname}' == 'Dominik'"} - der muss sterben *gg*{/if}<br />
+    {/foreach}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>SQL Test:</b><br />
-{datarow sql_test}
-	{sql_test.ID}<br />
-{/datarow}
-<br />
+<h4>SQL Test:</h4>
+<p class="section">
+    {datarow sql_test}
+        {sql_test.ID}<br />
+    {/datarow}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>Subrow Test:</b><br />
-{datarow users}
-	<div style="border: 1px dotted #000; margin:5px; width:500px;">
-		{users.nachname} {users.vorname} ({users.geschlecht}), registriert am {users.reg_datum}<br />
-		<blockquote><b>{users.vorname}'s letzte Besuche:</b><br>
-		{subrow login}
-			{login.zeit}<br>
-		{/subrow}
-		</blockquote>
-		<blockquote>
-		<b>{users.vorname}'s Themen im Forum:</b> <br>
-		{subrow topics}
-			{topics.titel}<br>
-		{/subrow}
-		</blockquote>
-	</div>
-{/datarow}
-<br />
+<h4>Subrow Test:</h4>
+<p class="section">
+    {datarow users}
+        <div style="border: 1px solid #CCC; border-radius:2px; background-color:#FFF; margin:5px; width:500px; padding:5px;">
+            {users.nachname} {users.vorname} ({if="'{users.geschlecht}' == 'm'"}m{else}w{/if}), registriert am {users.reg_datum}<br />
+            <blockquote>{users.vorname}'s letzte Besuche:<br>
+            {subrow login}
+                {login.zeit}<br>
+            {/subrow}
+            </blockquote>
+            <blockquote>
+            {users.vorname}'s Themen im Forum: <br>
+            {subrow topics}
+                {topics.titel}<br>
+            {/subrow}
+            </blockquote>
+        </div>
+    {/datarow}
+</p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
-<b>Datarow Test:</b><br />
-{datarow logins}
-Login am {logins.zeit} von IP-Adresse {logins.ip} Benutzer: {logins.benutzer}<br />
-{/datarow}
-<br />
+<h4>Datarow Test:</h4>
+ <p class="section">
+    {datarow logins}
+    Login am {logins.zeit} von IP-Adresse {logins.ip} Benutzer: {logins.benutzer}<br />
+    {/datarow}
+</p>

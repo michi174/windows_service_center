@@ -1,0 +1,28 @@
+<h1>ACL Systemtest</h1>
+<div class="step_line"></div>
+<h4>Ressourcen</h4>
+<table style="width:70%">
+	<tr>
+		{foreach rsc_title key=spalte value=_NULL}
+		<td style="border:solid 1px #000">{spalte}</td>
+		{/foreach}
+	</tr>
+	{foreach ressources key=arykey value=ressource}
+	<tr>
+		<td width="15%" style="border-right:solid 1px #000; border-left:solid 1px #000;"">{ressource:ressourceId}</td>
+		<td style="border-right:solid 1px #000; border-left:solid 1px #000;">{ressource:ressourceName}</td>
+        <td style="border-right:solid 1px #000; border-left:solid 1px #000;">
+        	{if="'{ressource:ressourceDescription}' == ''"}
+        		_null
+            {else}
+            	{ressource:ressourceDescription}
+            {/if}
+       	</td>
+	</tr>
+	{/foreach}
+		<tr>
+			<td style="border-bottom: solid 1px #000;"></td>
+			<td style="border-bottom: solid 1px #000;"></td>
+            <td style="border-bottom: solid 1px #000;"></td>
+		</tr>
+</table>

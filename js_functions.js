@@ -29,3 +29,17 @@ function toogleView(id)
 		document.getElementById(id).style.display = "none";
 	}
 }
+
+function showControlCentre(id)
+{
+	if(document.getElementById(id).style.opacity == 0)
+	{
+		document.getElementById(id).style.opacity = "1";
+		document.getElementById(id).style.top = "190px";
+	}
+	else
+	{
+		document.getElementById(id).style.opacity = "0";
+		document.getElementById(id).style.top = "-100px";
+	}
+}

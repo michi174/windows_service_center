@@ -121,6 +121,7 @@ a.infopanel_controlcentre_logout
 .livetile_2x1_calendar 	
 {
 	width:230px;
+	min-height:100px;
 	border:1px solid #bfed64;
 	padding-top:5px;
 	padding-left:5px;

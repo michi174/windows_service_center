@@ -1,52 +1,13 @@
 @charset "utf-8";
 /* CSS Document */
-/* Allgemei Einstellung über Schriftart, Farbe und Hyperlinks */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
+/* Allgemeine Einstellung über Schriftart, Farbe und Hyperlinks */
 
 
-body						{ background-color:#EEEEEE;}
+
+body						{ background-color:#FFF;}
 font,th,td,p 				{ font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;}
-hr 							{ border-bottom:1px #121212; box-shadow:0px 1px #2A2A2A;}
-
-h1, h2, h3, h4, h5, h6		{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444;}
-h1							{font-size:36px; text-shadow:#BBB 0px 1px}
-h2							{font-size:24px;}
-h3							{font-size:18px;}
-h4							{font-size:16px; font-weight:600}
-
-p.section					{margin-top:3px; margin-bottom:15px; }
-p.introduction				{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444; font-size:18px; margin-bottom:25px;}
+hr 							{ height:0px; border-top:#000 1px solid; opacity:0.1; width:99%;
+}
 
 
 a:link,a:active,a:visited 	{ color : #555; text-decoration:none;}
@@ -59,7 +20,6 @@ a:hover						{ text-decoration: underline; color : #555; }
 .post_headline				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:28px; color:#454545; text-align:left; margin-bottom:15px; letter-spacing:1px;}
 .post_header				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:11px; font-weight:bold;}
 .body_line					{height: 0px; border: solid #F8F8F8 0px; border-top-width: 2px; margin-top:4px;}
-.step_line					{border-bottom:1px solid #DDDDDD; box-shadow:0px 1px #FFFFFF; margin:15px 0;}
 
 .td_headline				{
 	line-height:30px;
@@ -100,6 +60,11 @@ input[type="password"],[type="text"],[type="file"]	{height:17px;}
 	background:#ddd;
 }
 
+.website
+{
+	width:1600px;;
+	margin:auto;
+}
 			
 #msgbox
 {
@@ -116,7 +81,7 @@ input[type="password"],[type="text"],[type="file"]	{height:17px;}
 	padding:10px;
 	padding-left:5px;
 	padding-right:5px;
-	z-index:200;
+	z-index:2;
 }
 #msgbox_save_confirm
 {
@@ -133,30 +98,32 @@ input[type="password"],[type="text"],[type="file"]	{height:17px;}
 	padding:10px;
 	padding-left:5px;
 	padding-right:5px;
-	z-index:200;
+	z-index:2;
 }
 #darkbackground
 {
-	position:fixed;
-	top:0px;
-	left:0px;
+	position:absolute;
 	height:100%;
 	width:100%;
 	display:none;
-	background-color:#000;
-	opacity:0.35;
-	z-index:100;
+	background-color:#121212;
+	opacity:0.65;
+	margin-left:-8px;
+	z-index:1;
 }
 
 .formular
 {
-	width:98%;
-	border: 1px solid #F0F0F0;
+	width:900px;
+	border: 1px solid #DDD;
 	border-left: 5px solid #9C3;
-	background-color:#F9F9F9;
+	margin:auto;
+	background-color:#FFF;
 	padding-left:15px;
+	margin-top:15px;
 	font-size:16px;
-	border-radius:0px;
+	box-shadow: 0 5px 50px 0px gray;
+	border-radius:3px;
 	color:#666;
 }
 
@@ -248,17 +215,17 @@ a.pagescroll_link_active
 }
 .post_body
 {
+	width:95%;
 	margin:auto;
 	margin-top:20px;
 	font-size:15px;
 	color:#454545;
-	border:#F0F0F0 1px solid;
-	background-color:#F9F9F9;
 	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	letter-spacing:0.5px;
 }
 .post_bar
 {
+	width:95%;
 	margin:auto;
 	margin-top:30px;
 }
@@ -326,6 +293,7 @@ li.kommentare
 }
 .post_extension
 {
+	width:95%;
 	margin:auto;
 	margin-top:30px;
 	font-size:15px;
@@ -333,6 +301,7 @@ li.kommentare
 }
 .post_infos
 {
+	width:95%;
 	margin:auto;
 	margin-top:15px;
 	font-size:11px;
@@ -341,6 +310,7 @@ li.kommentare
 }
 .post_dateline
 {
+	width:95%;
 	margin:auto;
 	margin-top:15px;
 	font-size:11px;
@@ -353,20 +323,17 @@ li.kommentare
 /*Titel Container*/
 .box_header 
 { 	
-	position:fixed;
-	top:0;
 	height:120px;
-	width:100%;
+	width:1200px;
 	color: #FFFFFF;
 	font-size: 25px;
 	font-weight:bold; 
 	font-family:Verdana;
+	text-align:left; 
 	margin:auto;
 	background-image:url(../header.png);
 	background-repeat:no-repeat;
-	background-position:center;
-	background-color:#1A1A1A;
-	z-index:10;
+	background-color:#333;	
 }
 /*Informationsleiste*/
 #box_infopanel_search
@@ -389,12 +356,8 @@ li.kommentare
 /*Menuleiste oben*/
 .menurow_top
 { 
-	width:100%;
+	width:1200px;
 	margin:auto;
-	position:fixed;
-	background:#1A1A1A;
-	top:120px;
-	z-index:10;
 }
 .menurow_top a	
 {
@@ -407,6 +370,7 @@ li.kommentare
 	
 	margin-top:0px;
 	margin-bottom:0px;
+	background:#333;
 	display:block;
 	overflow:hidden;
 	padding-start:0px;
@@ -422,19 +386,12 @@ li.kommentare
 	min-width:110px;
 	margin-right:2px;
 	list-style:none;	
-	font-size:13px;
+	font-size:14px;
 	text-align:center;
 	letter-spacing:1.5px;
 	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	font-weight:600;
-	letter-spacing:1px;
-	text-transform:uppercase;
 	float:left;
-}
-.menurow_top_items
-{
-	width:1200px;
-	margin:auto;
 }
 li.news
 {
@@ -467,81 +424,65 @@ li.search
 	float:right;
 }
 
-.menu_extension 
+.box_menu_extension 
 {
-	position:fixed;
-	top:147px;
 	height:25px;
 	line-height:25px;
-	width:100%;
+	width:1162px;
+	padding-left:38px;
 	margin:auto;
 	color: #000;
 	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	letter-spacing:1px;
 	font-size:11px;
-	background-color:#555;
-	opacity:0.93;
+	background-color:#666;
 	clear:both;
-	z-index:10;
-	font-weight:500;
-	box-shadow:0px 2px 5px 0px #666;
 }
-.menu_extension a 		{color:#DDD; text-decoration:none;} /*ff9147 darkorange*/
-.menu_extension a:hover {color:#FFF; text-decoration:none;}
-.menu_extension_items
-{
-	width:1200px;
-	margin:auto;	
-}
-
+.box_menu_extension a:link {color:#EEE; text-decoration:none;} /*ff9147 darkorange*/
+.box_menu_extension a:hover {color:#EEE; text-decoration:none;}
+.box_menu_extension a:visited {color:#EEE; text-decoration:none;}
 /*Seiteninhalt*/
 .box_content 	
 { 	
 	width:1200px;
-	margin:auto;
-	margin-top:180px;
+	margin: auto;
 	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	color: #000;
 	text-decoration: none;
+	background-color:#999;
 }
 /*Text/Inhalt - links*/
 #box_content_text 	
 { 	
-	width:100%;
+	width:930px;
 	min-height:730px;
 	padding:5px;
-	padding-left:0px;
+	padding-left:10px;
 	font-size: 15px;
 	letter-spacing:0.5px;
 	color: #000;
+	background-color:#FFF;
+	border:solid 1px #CCC;
 	float:left;
-	
-}
-#box_content_text ul 
-{
-	padding-left:40px;
 }
 
 /*Tile Container rechts*/
 #box_content_tiles 	
 { 	
-	position:absolute;
-	top:0px;
-	left:85%;
-	width:0px;
+	width:250px;
 	font-size: 12px; 
 	font-family:Verdana;
 	color: #000;
-	opacity:0;
-	transition:top 1s, opacity 1s;
+	float:right;
 	
 }
 .tips_topic
 {
 	width:99%;
 	border:1px solid #F0F0F0;
+	border-radius:5px;
 	background-color:#F9F9F9;
-
+	box-shadow:#CCC 0px 0px 10px 1px;
 }
 .tips_topic_body
 {
@@ -639,7 +580,6 @@ li.search
 .categories	
 {
 	margin-top:20px;
-	padding-left:5px;
 }
 .categorie_pics	
 {
@@ -687,9 +627,12 @@ li.search
 
 .new_articles_box	
 {
-	border:0px solid #CCC;
-	background-color:#FFF;
-	box-shadow:#FFF 0px 0px 4px 0px;
+	width:99%;
+	margin-top:15px;
+	border:1px solid #F0F0F0;
+	border-radius:5px;
+	background-color:#F9F9F9;
+	box-shadow:#CCC 0px 0px 10px 1px;
 }
 .new_articles	
 {
@@ -713,19 +656,13 @@ li.search
 .box_footer 
 { 	
 	min-height:31px;
-	width:100%;
+	width:1190px;
 	margin:auto;
+	padding-top:19px;
+	padding-left:10px;
 	color: #666;
 	font-size: 11px;
 	text-align:left; 
 	font-family:Verdana;
 	background-color:#333333;
-	box-shadow:0px -2px 3px 0px #333;
-}
-.footer_content
-{
-	width:1190px;
-	margin:auto;
-	padding:10px;
-	padding-top:40px;
 }

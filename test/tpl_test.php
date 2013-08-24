@@ -1,6 +1,9 @@
 <?php
+use wsc\database\Database;
+
 //MODEL der Template Klasse
 $notify		= new wsc\systemnotification\SystemNotification();
+$db			= Database::getInstance();
 
 $sql_users	= "SELECT * FROM userdata";
 $sql_logins	= "SELECT DISTINCT userdata.username, login_protocol.ip, login_protocol.time, userdata.username FROM login_protocol JOIN userdata ON login_protocol.userid = userdata.id  ORDER BY time DESC LIMIT 5";
@@ -19,7 +22,7 @@ $zeit = time();
 $sql_us_dta	= "SELECT * FROM userdata";
 $res_us_dta	= $db->query($sql_us_dta);
 
-while($row_us_dta = $res_us_dta->fetch_assoc())
+while(($row_us_dta = $res_us_dta->fetch_assoc()) == true )
 {
 	$data[]	= $row_us_dta;
 }

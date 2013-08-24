@@ -123,12 +123,12 @@ if(isset($_SESSION['loggedIn']) === true)
 		</tr>
 		<tr>
 			<td width="30%">Name der Kategorie</td>
-			<td width="70%"><input name="catname" type="text" style="width:400px;" value="<?php echo @$catname; ?>" required="required" /></td>
+			<td width="70%"><input name="catname" type="text" style="width:90%;" value="<?php echo @$catname; ?>" required="required" /></td>
 		</tr>
 		<tr>
 			<td>F&uuml;r welchen Bereich wird <br />die Kat. angelegt?</td>
 			<td>
-				<select name="cattype" size="5" style="width:300px;" required="required" onchange="
+				<select name="cattype" size="5" style="width:80%;" required="required" onchange="
 					if(this.form.cattype.options[this.form.cattype.selectedIndex].value=='gallerie')
 					{
 						this.form.picture.disabled='disabled';
@@ -164,16 +164,16 @@ if(isset($_SESSION['loggedIn']) === true)
 		</tr>
 		<tr>
 			<td valign="middle">Beschreibung (Infotext)</td>
-			<td><textarea name="description" style="width:400px;" rows="10" id="description"><?php echo @$description; ?></textarea>
+			<td><textarea name="description" style="width:90%;" rows="10" id="description"><?php echo @$description; ?></textarea>
 			</td>
 		</tr>
 		<tr>
 			<td valign="middle">Kategoriebild auswählen <br />bzw. hochladen</td>
-			<td><input name="picture" style="width:250px;" type="file" /></td>
+			<td><input name="picture" style="width:90%;" type="file" /></td>
 		</tr>
 		<tr>
 			<td valign="middle">(URL zum Bild)</td>
-			<td><input name="url" style="width:400px;" type="text" value="<?php echo @$url; ?>" /></td>
+			<td><input name="url" style="width:90%;" type="text" value="<?php echo @$url; ?>" /></td>
 		</tr>
 		<tr>
 			<td valign="middle" id="perm_headline"></td>
@@ -183,7 +183,7 @@ if(isset($_SESSION['loggedIn']) === true)
 			<td valign="top" colspan="2" id="infoline"></td>
 		</tr>
 		<tr>
-			<td colspan="2" align="right" style="padding-right:75px;">
+			<td colspan="2" align="right" style="padding-right:55px;">
 				<hr class="body_line" width="800" align="left" />
 				<a href="#" onclick="showBox('msgbox'); showBox('darkbackground')"><img src="template/win8_style/grafics/form/delete.png" border="0" alt="verwerfen" title="Verwerfen" /></a>
 				<input name="save_x" type="hidden" />

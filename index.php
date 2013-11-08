@@ -1,16 +1,14 @@
 <?php
-
 session_start();
 
 require_once 'lib/autoloader.func.php';
 require_once 'admin/config.php';
 
-$db		= new wsc\database\Database();
-$plug	= new wsc\pluginmanager\PluginManager();
+$db		= new wsc\database\Database;
+$plug	= new wsc\pluginmanager\PluginManager;
+$user	= new wsc\login\Login($db);
 
 $forward_link	= $_SERVER['QUERY_STRING'];
-
-$cookie 		= NULL;
 $referer_site	= (isset($_REQUEST[DEFAULT_LINK])) ? $_REQUEST[DEFAULT_LINK] : NULL;
 
 if(isset($_REQUEST['check_plugins']))
@@ -23,32 +21,20 @@ $plugins	= wsc\pluginmanager\PluginManager::getPlugins(false);
 
 if(isset($_REQUEST['logout']))
 {
-	$userdata	= wsc\logout\Logout::logoutUser();
+	$user->logoutUser();
 	$permission	= wsc\logout\Logout::unsetPermissions();
 }
 
-if(isset($_POST['login_x']) || (isset($_COOKIE['login']) && isset($_SESSION['loggedIn']) !== true))
+if(isset($_POST['login_x']))
 {
-	if(isset($_POST['login_x']))
-	{
-		$username	= $_POST['username'];
-		$password	= $_POST['password'];
-	}
-	else 
-	{
-		$username	= NULL;
-		$password	= NULL;
-	}
-	if(isset($_POST['save_login']))
-	{
-		$cookie	= (!is_null($_POST['save_login'])) ? true : false;
-	}
-	
-	$login		= new wsc\login\Login($db, $username, $password, $cookie);
+	$username	= $_POST['username'];
+	$password	= $_POST['password'];
+	$cookie		= (isset($_POST['save_login'])) ? true : false;
+
 	
 	try
 	{
-		$login->loginUser();
+		$user->loginUser($username, $password, $cookie);
 	}
 	catch (wsc\login\exception\LoginErrorException $error)
 	{
@@ -62,21 +48,41 @@ if(isset($_SESSION['loggedIn']) === true)
 	$permission = wsc\login\Login::getUserPermission($_SESSION['userid']);
 }
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="template/win8_style/stylesheets/standard.css" type="text/css" />
     <link rel="stylesheet" href="template/win8_style/stylesheets/notifications.css" type="text/css" />
     <link rel="stylesheet" href="template/win8_style/stylesheets/editor.css" type="text/css" />
     <link rel="stylesheet" href="template/win8_style/stylesheets/livetiles.css" type="text/css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="js_functions.js"></script>
+    
     <title>Windows Service Center - The Ultimate Servicecenter</title>
 </head>
 <body>
 <div id="darkbackground"></div>
 <header class="box_header">
-<!-- CSS Background Picture -->
+    <div class="header_wrapper" style="width:1200px; margin:auto; font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;">
+        <div class="header_pic" style="float:left; padding-top:10px;"><img src="template/win8_style/grafics/other/win8_logo_small.png" /></div>
+        
+        <div style="float:right; width:91%; border-bottom:1px solid #111; box-shadow: 0px 1px #333">
+        	<div class="header_text" style="float:left; font-size:36px; color:#3CF; letter-spacing:3px;">Windows Service Center</div>
+            <div id="header_notification_bar" style="float:right; line-height:24px;">
+            	<a href="#"><img src="template/win8_style/grafics/usercontrolcentre/header_notification.png" /></a>
+                <a href="#"><img src="template/win8_style/grafics/usercontrolcentre/header_message.png" /></a>
+            </div>
+        	<div id="header_user_info"><?php echo "Benutzer: " . $user->userdata['firstname'] . "<br />";?></div>
+        	<div class="clearing"></div>
+        </div>
+        <div class="clearing"></div>
+        
+        <div class="header_subtitle" style="margin-left:117px; margin-top:-50px; letter-spacing:2px;">The Ultimate Servicecenter</div>
+	</div>
 </header>
 <nav>
     <div class="menurow_top">
@@ -93,22 +99,40 @@ if(isset($_SESSION['loggedIn']) === true)
         </div>
     </div>
 </nav>
-
 <div class="menu_extension" id="infoDIV">
     <div class="menu_extension_items">
         <a href="?site=addcat">Kategorie hinzuf&uuml;gen</a>&nbsp;&middot;&nbsp;
         <a href="?site=addtext">Tipp erstellen</a>&nbsp;&middot;&nbsp;
         <a href="?site=tpl_test">Template Test</a>&nbsp;&middot;&nbsp;
         <a href="?site=acl_test">ACL Test</a>&nbsp;&middot;&nbsp;
-        <a href="javascript:void()" onclick="showControlCentre('box_content_tiles')">Control Centre</a>&nbsp;&middot;&nbsp;
+        <a href="javascript:void()" id="ControlCenter">Control Centre</a>&nbsp;&middot;&nbsp;
         <a href="?check_plugins">Plug-In's einlesen</a>
     </div>
 </div>
+<div id="testbox"></div>
 <div class="box_content">
+<input type="hidden" id="cc_fixed" value=""/>
+<?php
+if(isset($_POST['login_x']) && isset($login_notification))
+{
+ //HTML Ausgabe...
+?>
+<div class="imp_error" id="imp_error">
+	<div style="padding:5px; background-color:#AAA">
+        <div style="float:left;">Systemmitteilung</div>
+        <div style="float:right; text-decoration:none;"><a href="javascript:void()" onclick="showSystemNotification('imp_error')">×</a></div>
+        <div class="clearing"></div> 
+    </div>
+    
+	<?php $login_notification->printMessage(); ?>
+</div>
+  
+<?php 	
+}
+?>
 <div id="box_content_text">
 
-<?php
-                
+<?php           
         if(isset($_REQUEST[DEFAULT_LINK]) && !empty($_REQUEST[DEFAULT_LINK]))
         {
             if(in_array($_REQUEST[DEFAULT_LINK], $plugins))
@@ -152,15 +176,10 @@ if(isset($_SESSION['loggedIn']) === true)
         ?>
     </div>
     <div id="box_content_tiles" >
-    <?php
-        if(!isset($_SESSION['loggedIn']))
-        {
-            if(isset($_POST['login_x']) && ($login_notification instanceof wsc\systemnotification\SystemNotification))
-            {
-                $login_notification->printMessage();
-            }
-        //HTML Ausgabe...
-    ?>
+    	<?php
+        	if(!isset($_SESSION['loggedIn']))
+        	{
+        ?>   	
         <div class="box_infopanel_login">
             <form action="<?php echo "?" . $forward_link; ?>" method="post" name="login" id="search">
             <fieldset>
@@ -184,7 +203,7 @@ if(isset($_SESSION['loggedIn']) === true)
                         <td>&nbsp;</td>
                         <td align="left" style="padding-left:9px;">	
                             <input id="permanent_login" type="checkbox" name="save_login" tabindex="3" />
-                            <label for="permanent_login" style="">Angemeldet bleiben</label>
+                            <label for="permanent_login">Angemeldet bleiben</label>
                         </td>
                     </tr>
                 </table>
@@ -225,8 +244,9 @@ if(isset($_SESSION['loggedIn']) === true)
         ?>
         <div class="livetile_2x1_calendar">
             <?php 
-                echo "<span style=\"font-size:15px; font-weight:bold;\">".strftime("%A, %d. %B %Y", time())."</span><br /><br />Keine Eintr&auml;ge f&uuml;r die n&auml;chsten 7 Tage.<br /><br /><br /><br />
-                <a href=\"#\"><span style=\"font-size:15px; font-weight:bold;\">Kalender</span></a> (Woche ".date("W").")";
+                echo "	<span style=\"font-size:15px; font-weight:bold;\">".strftime("%A, %d. %B %Y", time()).", <span id=\"zeit\">Zeit wird ermittelt...</span></span>
+						<br /><br />Keine Eintr&auml;ge f&uuml;r die n&auml;chsten 7 Tage.<br /><br /><br /><br />
+                		<a href=\"#\"><span style=\"font-size:15px; font-weight:bold;\">Kalender</span></a> (Woche ".date("W").")";
             ?>
         </div>
     </div>

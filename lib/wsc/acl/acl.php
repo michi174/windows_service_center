@@ -40,7 +40,7 @@ class Acl
 	
 	public function isAllowed($role, $ressource, $privilege)
 	{
-		
+		$sql	= "SELECT * FROM user_group_members WHERE userdataUserId = ";
 	}
 	public function getAllResources()
 	{
@@ -53,6 +53,11 @@ class Acl
 		}
 		
 		return $ressources;
+	}
+
+	private function getUserRole()
+	{
+		
 	}
 }
 ?>

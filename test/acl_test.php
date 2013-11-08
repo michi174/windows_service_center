@@ -13,6 +13,9 @@ foreach ($ressources as $row)
 	break;
 }
 
+$auth	= new wsc\login\Login($db);
+$auth->getUserRoles(1);
+
 $tpl->setTemplateDir("test/");
 $tpl->addTemplate("acl_test.html");
 

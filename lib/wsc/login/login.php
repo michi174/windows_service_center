@@ -2,6 +2,7 @@
 namespace wsc\login;
 use wsc\login\exception as Exception;
 use wsc\logout as Logout;
+use wsc\login\exception\LoginErrorException;
 
 /**
  * Login (2013 - 02 - 09)
@@ -18,10 +19,10 @@ use wsc\logout as Logout;
 final class Login 
 {
 	/**
-	 * @var string Benutzerpasswort
+	 * @var string Benutzerpasswort oder Session ID
 	 * @since 1.0
 	 */
-	private $password		= NULL;
+	private $auth			= NULL;
 	
 	
 	/**
@@ -34,14 +35,10 @@ final class Login
 	 * @var (bool) Cookie
 	 * @since 1.1
 	 */
-	private $cookie		= NULL;
+	private $cookie			= NULL;
 	
 	
-	/**
-	 * @var array Benutzerdatenspeicher
-	 * @since 1.0
-	 */
-	private $userdata		= array();
+
 	
 	/**
 	 * Datenbankobjekt
@@ -50,6 +47,15 @@ final class Login
 	 * @since 1.0
 	 */
 	private $db		= NULL;
+	
+	
+	/**
+	 * @var array Benutzerdatenspeicher
+	 * @since 1.0
+	 */
+	public $userdata		= array();
+	public $usergroups;
+	public $userroles;
 	
 	
 	/**
@@ -62,12 +68,94 @@ final class Login
 	 * @param (bool) Cookie
 	 * @since 1.0
 	 */
-	public function __construct($database, $account, $password, $cookie = false)
+	public function __construct($database, $account=null, $auth=null, $cookie = false)
 	{
-		$this->db		= $database;
+		if(!is_null($database))
+		{
+			$this->db		= $database;
+		}
+		else
+		{
+			throw new Exception\LoginErrorException("Es wurde kein gültiges Datenbankobjekt uebergeben.");
+		}
+		
+		$this->recognizeUser();
+	}
+	
+	public function recognizeUser()
+	{
+		if(!isset($_SESSION['loggedIn']) && !isset($_SESSION['recognizedUser']))
+		{
+			if($this->checkCookie() == false)
+			{
+				$this->guest();
+			}
+			$_SESSION['recognizedUser'] = true;
+		}
+		elseif(!isset($_SESSION['loggedIn']))
+		{
+			$this->guest();
+		}
+		else
+		{
+			$this->userdata	= self::getUserData($_SESSION['userid']);
+		}
+	}
+	/**
+	 * Loggt den Benutzer bei ein, wenn alle Sicherheitschecks bestanden wurden und schreibt einen Eintrag ins Login-Protokoll
+	 *
+	 * @return (bool) true oder (bool) false
+	 * @since 1.0
+	 */
+	public function loginUser($account, $auth, $cookie = false)
+	{
+	
+	
 		$this->account	= $account;
-		$this->password	= $password;
-		$this->cookie	= (!is_null($cookie)) ? true : false;
+		$this->auth		= $auth;
+		$this->cookie	= $cookie;
+	
+		$this->checkUserData();
+		$this->checkAccountBans();
+		$this->checkAccountActivated();
+	
+		$_SESSION['loggedIn']	= true;
+		$_SESSION['userid']		= $this->userdata['id'];
+	
+		if($this->cookie === true)
+		{
+			$this->setLoginCookie();
+		}
+	
+		$this->writeLoginProtocol();
+	}
+	
+	private function guest()
+	{
+		$sql	= "SELECT * FROM userdata WHERE username = 'guest'";
+		$res	= $this->db->query($sql) or die($this->db->error);
+		$row	= $res->fetch_assoc();
+		$num	= $res->num_rows;
+	
+		if($num == 1)
+		{
+			$this->userdata	= $row;
+		}
+		else
+		{
+			$this->userdata['username']		= "guest";
+			$this->userdata['firstname']	= "Gast";
+			$this->userdata['id']			= "0";
+		}
+	}
+	public function logoutUser()
+	{
+		session_unset();
+		session_destroy();
+		setcookie("login", "", time()-1);
+		unset($_COOKIE['login']);
+		
+		$this->recognizeUser();
 	}
 	
 	/**
@@ -76,8 +164,9 @@ final class Login
 	 * @return (bool) true oder (bool) false
 	 * @since 1.1
 	 */
-	protected function checkCookie()
+	private function checkCookie()
 	{
+		
 		if(isset($_COOKIE['login']))
 		{
 			$sql	= "SELECT * FROM userdata WHERE session_id = '" . $_COOKIE['login'] . "'";
@@ -87,20 +176,20 @@ final class Login
 			if($num == 1)
 			{
 				$row	= $res->fetch_assoc();
-				$this->userdata = $row;
+				$this->loginUser($row['username'], $row['session_id']);
+				
 				return true;
 			}
 			elseif($num == 0)
 			{
-				logout\Logout::logoutUser();
+				$this->logoutUser();
 				throw new Exception\LoginErrorException("Login fehlgeschlagen. Cookie fehlerhaft.");
 			}
 			elseif($num > 1)
 			{
-				logout\Logout::logoutUser();
+				$this->logoutUser();
 				throw new Exception\LoginErrorException("Login fehlgeschlagen - Sicherheitsrisiko endeckt! Bitte manuell einloggen.");
-			}
-			
+			}			
 		}
 		else
 		{
@@ -117,31 +206,37 @@ final class Login
 	 */
 	private function checkUserData()
 	{
-
-		$sql	= "	SELECT
-					*
-				FROM
-					userdata
-				WHERE
-					(username = '".$this->account."' OR email = '".$this->account."') && password = '".md5($this->password)."'
-				LIMIT
-					1";
-		
-		$res	= mysql_query($sql) or die(mysql_error());
-		$row	= mysql_fetch_assoc($res);
-		$num	= mysql_num_rows($res);
-		
-		if($num === 1)
+		if(!empty($this->account) && !empty($this->auth))
 		{
-			$this->userdata	= $row;
-			return true;
-		}
-		else
-		{						
-			throw new Exception\LoginErrorException("Anmeldeinformationen fehlerhaft! Bitte die Eingaben &uuml;berpr&uuml;fen.");
-		}
-		
+			$sql	= "	
+					SELECT
+						*
+					FROM
+						userdata
+					WHERE
+						(username = '".$this->account."' OR email = '".$this->account."') AND (password = '". md5($this->auth)."' OR session_id = '" . $this->auth . "')
+					LIMIT
+						1";
+			
+			$res	= $this->db->query($sql) or die($this->db->error);
+			$row	= $res->fetch_assoc();
+			$num	= $res->num_rows;
 
+			if($num == 1)
+			{
+				$this->userdata	= $row;
+				return true;
+			}
+			else
+			{		
+				throw new Exception\LoginErrorException("Anmeldeinformationen fehlerhaft! Bitte die Eingaben &uuml;berpr&uuml;fen.");
+				
+			}
+		}
+		else 
+		{
+			throw new Exception\LoginErrorException("Anmeldung fehlgeschlagen. Keine Accountinformationen &uuml;bermittelt.");
+		}
 	}
 
 	
@@ -195,6 +290,7 @@ final class Login
 		
 		$res	= mysql_query($sql) or die(mysql_error());;
 		$row	= mysql_fetch_assoc($res);
+		
 		if($row['active'] == 1)
 		{
 			return true;
@@ -238,61 +334,52 @@ final class Login
 	{
 		$cookie	= setcookie("login", session_id(), time()+(60*60*24*30));
 		$sql	= "UPDATE userdata SET session_id = '". session_id() ."' WHERE id = ". $this->userdata['id'];
-		$res	= mysql_query($sql) or die("SQL-Fehler in Datei: " . __FILE__ . ":" . __LINE__ . "<br /><br />" . mysql_error());
-	}
-	
-	
-	/**
-	 * Loggt den Benutzer bei ein, wenn alle Sicherheitschecks bestanden wurden und schreibt einen Eintrag ins Login-Protokoll
-	 *
-	 * @return (bool) true oder (bool) false
-	 * @since 1.0
-	 */	
-	public function loginUser()
-	{
-		if($this->checkCookie() === false)
-		{
-			$this->checkUserData();
-		}
-		$this->checkAccountBans();
-		$this->checkAccountActivated();
-		
-		if(empty($this->errors))
-		{
-			$_SESSION['loggedIn']	= true;
-			$_SESSION['userid']		= $this->userdata['id'];
-			
-			if($this->cookie === true)
-			{
-				$this->setLoginCookie();
-			}
-			
-			$this->writeLoginProtocol();
-			
-			return true;
-		}
-		else 
-		{
-			throw new Exception\LoginErrorException("Unbekannter Fehler bei Benutzeranmeldung");
-		}
-	}
-	
+		$res	= $this->db->query($sql) or die("SQL-Fehler in Datei: " . __FILE__ . ":" . __LINE__ . "<br /><br />" . $this->db->error);
 
-	/**
-	 * Liefert Fehler an das Hauptprogramm.
-	 *
-	 * @return (array) Fehler oder (bool) false
-	 * @since 1.0
-	 */
-	public function getLoginErrors()
+	}
+	
+	public function getUserGroups($userId)
 	{
-		if(array_key_exists(0, $this->errors))
+		$groups	= array();
+		
+		$sql	= "SELECT * FROM user_group_members WHERE userdataUserId = " . $userId;
+		$res	= $this->db->query($sql) or die($this->db->error);
+		
+		while($row = $res->fetch_assoc())
 		{
-			return $this->errors;
+			$groups[]	= $row['userGroupsId'];
 		}
-		else
+		
+		return $groups;
+	}
+	
+	public function getUserRoles($userId)
+	{
+		$roles		= array();
+		$usrgrps	= $this->getUserGroups($userId);
+		
+		
+		//Rollen, die durch Gruppe auf den User angewandt werden können.
+		foreach($usrgrps as $grp_id)
 		{
-			return false;
+			$sql_grp_rls	= "SELECT * FROM acl_role_members WHERE referenceId = " . $grp_id . " AND reference = 'grp'";
+			$res_grp_rls	= $this->db->query($sql_grp_rls) or die($this->db->error);				
+			
+			while($row_grp_rls = $res_grp_rls->fetch_array())
+			{
+				array_push($roles, $row_grp_rls['aclRolesRoleId']);
+			}
+		}
+		//Rollen, die direkt auf den User referenzieren.
+		$sql_usr_rls	= "SELECT * FROM acl_role_members WHERE referenceId = " . $userId . " AND reference = 'usr'";
+		$res_usr_rls	= $this->db->query($sql_usr_rls) or die($this->db->error);
+		
+		while($row_usr_rls = $res_usr_rls->fetch_array())
+		{
+			if(!in_array($row_usr_rls['aclRolesRoleId'], $roles))
+			{
+				array_push($roles, $row_usr_rls['aclRolesRoleId']);
+			}
 		}
 	}
 	
@@ -356,6 +443,6 @@ final class Login
 	public function sendMail()
 	{
 		
-	}	
+	}
 }
 ?>

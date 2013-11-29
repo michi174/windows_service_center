@@ -61,5 +61,5 @@ h = (d.getHours () < 10 ? '0' + d.getHours () : d.getHours ());
 m = (d.getMinutes () < 10 ? '0' + d.getMinutes () : d.getMinutes ());
 s = (d.getSeconds () < 10 ? '0' + d.getSeconds () : d.getSeconds ());
 
-document.getElementById("zeit").innerHTML = h + ':' + m + ':' + s + ' Uhr';
+document.getElementById("zeit").innerHTML = h + ':' + m + ':' + s;
 }

@@ -104,8 +104,8 @@ if(isset($_SESSION['loggedIn']) === true)
         <a href="?site=addcat">Kategorie hinzuf&uuml;gen</a>&nbsp;&middot;&nbsp;
         <a href="?site=addtext">Tipp erstellen</a>&nbsp;&middot;&nbsp;
         <a href="?site=tpl_test">Template Test</a>&nbsp;&middot;&nbsp;
-        <a href="?site=acl_test">ACL Test</a>&nbsp;&middot;&nbsp;
-        <a href="javascript:void()" id="ControlCenter">Control Centre</a>&nbsp;&middot;&nbsp;
+        <a href="?site=acl_test&action=view">ACL Admin</a>&nbsp;&middot;&nbsp;
+        <a href="javascript:void()" id="">JavaScript</a>&nbsp;&middot;&nbsp;
         <a href="?check_plugins">Plug-In's einlesen</a>
     </div>
 </div>
@@ -120,7 +120,7 @@ if(isset($_POST['login_x']) && isset($login_notification))
 <div class="imp_error" id="imp_error">
 	<div style="padding:5px; background-color:#AAA">
         <div style="float:left;">Systemmitteilung</div>
-        <div style="float:right; text-decoration:none;"><a href="javascript:void()" onclick="showSystemNotification('imp_error')">×</a></div>
+        <div style="float:right; text-decoration:none;"><a href="javascript:void()" onclick="showSystemNotification('imp_error')">x</a></div>
         <div class="clearing"></div> 
     </div>
     

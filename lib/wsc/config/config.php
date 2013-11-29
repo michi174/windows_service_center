@@ -20,7 +20,7 @@ final class config
 	public $environment			= "development";
 	public $template_dir		= "win8_style";
 	public $default_timezone	= "Europe/Vienna";
-	public $DATABASE_NAME		= "winsercen";
+	public $DATABASE_NAME		= "wsc";
 	public $DATABASE_HOST		= "localhost";
 	public $DATABASE_USER		= "root";
 	public $DATABASE_PASSWORD	= "";

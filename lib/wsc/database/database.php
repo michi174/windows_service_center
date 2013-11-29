@@ -12,7 +12,7 @@ class Database extends \mysqli
 	
 	public static function getInstance()
 	{
-		if(self::$object instanceof Config)
+		if(self::$object instanceof \wsc\config\Config)
 		{
 			return self::$object;
 		}
@@ -27,8 +27,17 @@ class Database extends \mysqli
 	
 	public function getDataByID($table, $id)
 	{
-		$query	= "SELECT * FROM " . $table . " WHERE id = " . $id;
-		$result	= $this->query($query);
+		$query	= "SELECT * FROM " . $table . " WHERE id = '". $id ."'";
+		$result	= $this->query($query) or die("Query: `". $query . "` meldet einen Fehler!<br /><br />" . $this->error);
+		$data	= $result->fetch_assoc();
+		
+		return $data;
+	}
+	
+	public function getDataByField($table, $field, $value)
+	{
+		$query	= "SELECT * FROM " . $table . " WHERE " . $field . " = '" . $value . "'";
+		$result	= $this->query($query) or die("Query: `". $query . "` meldet einen Fehler!<br /><br />" . $this->error);
 		$data	= $result->fetch_assoc();
 		
 		return $data;

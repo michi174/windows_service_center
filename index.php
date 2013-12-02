@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 require_once 'lib/autoloader.func.php';
@@ -6,12 +7,31 @@ require_once 'admin/config.php';
 
 $db		= new wsc\database\Database;
 $plug	= new wsc\pluginmanager\PluginManager;
-$user	= new wsc\login\Login($db);
+
+
+$auth	= new wsc\auth\Auth($db);
+
+if(isset($_GET['logout']))
+{
+	$auth->logout();
+}
+if(isset($_POST['login_x']))
+{
+	$username	= $_POST['username'];
+	$password	= $_POST['password'];
+	$cookie		= (isset($_POST['save_login'])) ? true : false;
+
+	$auth->login($username, $password, $cookie);
+
+}
+
+$user	= $auth->getUser();
+
 
 $forward_link	= $_SERVER['QUERY_STRING'];
 $referer_site	= (isset($_REQUEST[DEFAULT_LINK])) ? $_REQUEST[DEFAULT_LINK] : NULL;
 
-if(isset($_REQUEST['check_plugins']))
+if(isset($_GET['check_plugins']))
 {
 	$plug->checkPlugins();
 }
@@ -19,33 +39,11 @@ if(isset($_REQUEST['check_plugins']))
 $page_error	= NULL;
 $plugins	= wsc\pluginmanager\PluginManager::getPlugins(false);
 
-if(isset($_REQUEST['logout']))
-{
-	$user->logoutUser();
-	$permission	= wsc\logout\Logout::unsetPermissions();
-}
 
-if(isset($_POST['login_x']))
-{
-	$username	= $_POST['username'];
-	$password	= $_POST['password'];
-	$cookie		= (isset($_POST['save_login'])) ? true : false;
-
-	
-	try
-	{
-		$user->loginUser($username, $password, $cookie);
-	}
-	catch (wsc\login\exception\LoginErrorException $error)
-	{
-		$login_notification		= new wsc\systemnotification\SystemNotification("error");
-		$login_notification->addMessage($error->getMessage());
-	}
-}
 if(isset($_SESSION['loggedIn']) === true)
 {
-	$userdata	= wsc\login\Login::getUserData($_SESSION['userid']);
-	$permission = wsc\login\Login::getUserPermission($_SESSION['userid']);
+	//$userdata	= wsc\login\Login::getUserData($_SESSION['userid']);
+	//$permission = wsc\login\Login::getUserPermission($_SESSION['userid']);
 }
 ?>
 
@@ -76,7 +74,7 @@ if(isset($_SESSION['loggedIn']) === true)
             	<a href="#"><img src="template/win8_style/grafics/usercontrolcentre/header_notification.png" /></a>
                 <a href="#"><img src="template/win8_style/grafics/usercontrolcentre/header_message.png" /></a>
             </div>
-        	<div id="header_user_info"><?php echo "Benutzer: " . $user->userdata['firstname'] . "<br />";?></div>
+        	<div id="header_user_info"><?php echo "Benutzer: " . $user->data['firstname'] . "<br />";?></div>
         	<div class="clearing"></div>
         </div>
         <div class="clearing"></div>
@@ -124,7 +122,7 @@ if(isset($_POST['login_x']) && isset($login_notification))
         <div class="clearing"></div> 
     </div>
     
-	<?php $login_notification->printMessage(); ?>
+	<?php //$login_notification->printMessage(); ?>
 </div>
   
 <?php 	
@@ -225,7 +223,7 @@ if(isset($_POST['login_x']) && isset($login_notification))
             <a href="#">
                 <div class="livetile_2x1_username">
                     <?php
-                        echo strtoupper("".$userdata['firstname']."<br />".$userdata['lastname']."");
+                        echo strtoupper("".$user->data['firstname']."<br />".$user->data['lastname']."");
                     ?>		
                 </div>
             </a>

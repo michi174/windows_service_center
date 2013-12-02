@@ -53,13 +53,13 @@ if(isset($_GET[DEFAULT_ACTION]) && $_GET[DEFAULT_ACTION] == "view")
 {
 ?>
 <div style="float:left; width:70%;">
-<h1>ACL Test</h1>
+<h1>ACL Systemtest</h1>
 <div class="step_line"></div>
-<p class="introduction">Diese Seite dient dazu, die ACL Klasse zu testen. es werden kleinere Formulare eingebaut um nicht immer direkt in der Datenbank arbeiten zu m&uuml;ssen.</p>
+<p class="introduction">Diese Seite dient dazu, die ACL (= Access Control List) Klasse zu testen. es werden kleinere Formulare eingebaut um nicht immer direkt in der Datenbank arbeiten zu m&uuml;ssen.</p>
 
 <h4>Benutzerrechte:</h4>
 <?php 
-foreach($user->userpermissions as $userpermission)
+foreach($user->permissions as $userpermission)
 {
 	$plinkid	= $db->getDataByID("acl_link_privileges", $userpermission['aclLinkPrivilegesId']);
 	$aresource	= $db->getDataByID("acl_resources", $plinkid['aclResourcesId']);
@@ -72,7 +72,7 @@ foreach($user->userpermissions as $userpermission)
 <br /><br />
 <h4>Rollen:</h4>
 <?php 
-foreach($user->userroles as $userrole)
+foreach($user->roles as $userrole)
 {
 	$urole	= $db->getDataByID("acl_roles", $userrole);
 	echo "R-ID: ".$urole['id']." - " . $urole['name'] . "<br />";
@@ -81,7 +81,7 @@ foreach($user->userroles as $userrole)
 <br /><br />
 <h4>Gruppen:</h4>
 <?php 
-foreach($user->usergroups as $usergroup)
+foreach($user->groups as $usergroup)
 {
 	$ugroup	= $db->getDataByID("user_groups", $usergroup);
 	echo "G-ID: ".$ugroup['id']." - " . $ugroup['name'] . "<br />";

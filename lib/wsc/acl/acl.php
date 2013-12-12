@@ -2,6 +2,7 @@
 
 namespace wsc\acl;
 use wsc\database\Database as Database;
+use wsc\user\User;
 
 
 /**
@@ -41,15 +42,73 @@ class Acl
 	
 	public function guard()
 	{
+		//Überrpüfen, ob Ressourcenlink vorhanden ist.
 		if($this->checkResourcelink() === true)
 		{
-			//
+			//Berechtigung des Benutzers prüfen
+			
+			//wenn berechtigung vorhanden
+			//return true
+			//sonst
+			//return false
 		}
+		
+		//sonst
+		//return true
 	}
 	
-	public function isAllowed($reference, $role, $ressource, $privilege)
+	/**
+	 * Überprüft ob der Benutzer, Rolle oder die Gruppe eine Berechtigung auf eine Ressource hat.
+	 * 
+	 * Wird ein Benutzerobjekt übergeben, wird direkt auf die Berechtigung des Benutzers zurückgegriffen.
+	 * Andernfalls werden die Berechtigungen aus der Datenbank geholt.
+	 * 
+	 * @param mixed		$reference
+	 * @param string 	$ressource
+	 * @param string 	$privilege
+	 * @param string	$reference_type
+	 */
+	
+	
+	public function hasPermission($reference, $resource, $privilege, $reference_type = NULL)
 	{
+		if(is_string($resource))
+		{
+			$resource	= $this->resourceString2resourceID($resource);
+		}
+			
+		if(is_string($privilege))
+		{
+			
+			$privilege	= $this->privilegeString2privilegID($privilege);
+		}
+
+		$resourcelink	= $this->getResourceLink($resource, $privilege);
 		
+		if($reference instanceof User)
+		{
+			return $this->searchPermission($resourcelink, $reference->permissions);
+		}
+		else
+		{
+			if(is_string($reference_type) && ($this->referenceType($reference_type) !== false))
+			{
+				if(is_numeric($reference))
+				{
+					$permissions	= $this->getPermissionByReference($reference_type, $reference);
+					return $this->searchPermission($resourcelink, $permissions);					
+				}
+				else 
+				{
+					die(__CLASS__ ."::".__METHOD__.": Falscher Datentyp bei \$reference");
+				}
+				
+			}
+			else
+			{
+				die(__CLASS__ ."::".__METHOD__." kann den Referenztyp nicht feststellen!");
+			}
+		}
 	}
 	
 	/**
@@ -58,9 +117,9 @@ class Acl
 	 * @return (bool) true oder (bool) false
 	 * @since 1.0
 	 */
-	public function checkResourcelink($resource = NULL, $privileg = NULL)
+	public function checkResourcelink($resource = NULL, $privilege = NULL)
 	{		
-		if(is_null($privileg) && is_null($resource))
+		if(is_null($privilege) && is_null($resource))
 		{
 			if(isset($_GET[DEFAULT_LINK]))
 			{
@@ -68,38 +127,70 @@ class Acl
 				
 				if(isset($_GET[DEFAULT_ACTION]))
 				{
-					$privileg	= $_GET[DEFAULT_ACTION];
+					$privilege	= $_GET[DEFAULT_ACTION];
 				}
 			}
 		}
 		
-		if(!is_null($privileg) && !is_null($resource))
+		if(!is_null($privilege) && !is_null($resource))
 		{
-			$privileg	= $this->db->getDataByField("acl_privileges", "name", $privileg);
-			$resource	= $this->db->getDataByField("acl_resources", "name", $resource);
+			$privilege	= $this->privilegeString2privilegID($privilege);
+			$resource	= $this->resourceString2resourceID($resource);
 			
-			$sql	= "
-						SELECT
-							*
-						FROM
-							acl_link_privileges
-						WHERE
-							aclResourcesId = '".$resource['id']."'
-							AND
-							aclPrivilegesId ='".$privileg['id']."'
-						";
-			$res	= $this->db->query($sql)or die("SQL-Fehler: ".$this->db->error." on ".__FILE__.":".__LINE__);
-			$row	= $res->fetch_assoc();
-			$num	= $res->num_rows;
 			
-			if($num == 1)
+			$right		= $this->getResourceLink($resource, $privilege);
+			
+			if($right !== false)
 			{
-				$this->last_resourcelink = $row['id'];
+				$this->last_resourcelink = $right['id'];
 				
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	private function resourceString2resourceID($resource)
+	{
+		if(is_string($resource))
+		{
+			$resource	= $this->db->getDataByField("acl_resources", "name", $resource);
+			
+			return $resource['id'];
+		}
+	}
+	private function privilegeString2privilegID($privilege)
+	{
+		if(is_string($privilege))
+		{
+			$privilege	= $this->db->getDataByField("acl_privileges", "name", $privilege);
+				
+			return $privilege['id'];
+		}
+	}
+	
+	public function getResourceLink($resource, $privilege)
+	{
+		$sql	= "
+						SELECT
+							*
+						FROM
+							acl_link_privileges
+						WHERE
+							aclResourcesId = '".$resource."'
+							AND
+							aclPrivilegesId ='".$privilege."'
+						";
+		$res	= $this->db->query($sql)or die("SQL-Fehler: ".$this->db->error." on ".__FILE__.":".__LINE__);
+		$num	= $res->num_rows;
+		
+		if($num > 0)
+		{
+			$row	= $res->fetch_assoc();
+			return $row; 
+		}
+		else 
+			return false;
 	}
 	
 	public function getPermissionByReference($type, $reference, &$permissions = null)
@@ -134,9 +225,13 @@ class Acl
 			{
 				while(($row_perm = $res_perm->fetch_assoc()) != false)
 				{
-					if($this->searchPermission($row_perm, $permissions) == false)
+					$sql_link	= "SELECT * FROM acl_link_privileges WHERE id = ".$row_perm['aclLinkPrivilegesId'];
+					$res_link	= $this->db->query($sql_link) or die("SQL-Fehler in Datei: ". __FILE__ . ":" . __LINE__ . "<br />" . $this->db->error);
+					$row_link	= $res_link->fetch_array();
+					
+					if($this->searchPermission($row_link, $permissions) == false)
 					{
-						$permissions[]	= $row_perm;
+						$permissions[]	= $row_link;
 					}
 				}
 			}
@@ -188,6 +283,8 @@ class Acl
 		{
 			return $row_ref_typ['id'];
 		}
+		else
+			return false;
 	}
 	
 	public function searchPermission($needle, $permissions)
@@ -196,16 +293,13 @@ class Acl
 		{
 			foreach($permissions as $permission)
 			{
-				if($permission['aclLinkPrivilegesId'] == $needle['aclLinkPrivilegesId'])
+				if($permission['id'] == $needle['id'])
 				{
 					return true;
 				}
-				else
-				{
-					return false;
-				}
 			}
 		}
+		return false;
 	}
 }
 ?>

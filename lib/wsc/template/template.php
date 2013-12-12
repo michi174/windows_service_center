@@ -224,11 +224,63 @@ class Template
 	 */
 	protected function replaceFunctions()
 	{
-		
+		$this->output	= $this->replaceIncludes($this->output);
 		$this->replaceForeach();
 		$this->multiDatarow();
 		$this->output	= $this->parseArrayKeys($this->output);
+	}
+	
+	/**
+	 * Ersetzt INCLUDE Tags im Template
+	 *
+	 * Die Methode ließt die angeforderten Templates ein. Die Funktion muss als erstes angewandt
+	 * werden, da noch unkompilierte IF bzw. FOREACH Blöcke im includierten Template sein könnten,
+	 * die sonst nicht mehr kompiliert werden.
+	 * 
+	 * Die im Template enthaltenen variablen müssen selbstverständlich im Aufrufendem Programm deklariert
+	 * worden sein, da ansonsten eine Fehlermeldung ausgegeben wird.
+	 *
+	 * @param (string)	$section		Teil der auf Include Blocks abgesucht werden muss.
+	 * @return (string)	$section		Fertig kompilierter Abschnitt.
+	 *
+	 * @since 1.0
+	 */
+	
+	protected function replaceIncludes(&$section)
+	{
+		$matches	= array();
+		$pattern	= '#\{include\=\"{1}(.+)\"\}#';
 		
+		while(preg_match($pattern, $section, $matches))
+		{
+			$include_file	= $matches[1];
+			//Exisitiert die Datei?
+			
+			if(file_exists($include_file))
+			{
+				//Inhalt laden
+				$file_content	= file_get_contents($include_file);
+				
+				if(preg_match($pattern, $file_content, $matches))
+				{
+					$this->replaceIncludes($file_content);
+				}
+				
+
+				//Jetzt den Platzhalter ersetzen
+				$search		= '{include="'.$include_file.'"}';
+				$replace	= $file_content;
+				
+				$section	= str_replace($search, $replace, $section);
+			}
+			else
+			{
+				$this->notify->addMessage("Include Template (&quot;".$include_file."&quot;) wurde nicht gefunden!", "information");
+				$section	= str_replace('{include="'.$include_file.'"}', "INCLUDE_ERROR", $section);
+			}
+			
+		}
+		return $section;
 	}
 	
 	

@@ -26,6 +26,7 @@ if(isset($_POST['login_x']))
 }
 
 $user	= $auth->getUser();
+$acl	= new wsc\acl\Acl();
 
 
 $forward_link	= $_SERVER['QUERY_STRING'];
@@ -71,8 +72,13 @@ if(isset($_SESSION['loggedIn']) === true)
         <div style="float:right; width:91%; border-bottom:1px solid #111; box-shadow: 0px 1px #333">
         	<div class="header_text" style="float:left; font-size:36px; color:#3CF; letter-spacing:3px;">Windows Service Center</div>
             <div id="header_notification_bar" style="float:right; line-height:24px;">
-            	<a href="#"><img src="template/win8_style/grafics/usercontrolcentre/header_notification.png" /></a>
-                <a href="#"><img src="template/win8_style/grafics/usercontrolcentre/header_message.png" /></a>
+            	<a href="#" title="Benachrichtigung"><img src="template/win8_style/grafics/usercontrolcentre/header_notification.png" /></a>
+                <a href="#" title="Nachrichten"><img src="template/win8_style/grafics/usercontrolcentre/header_message.png" /></a>
+                <?php if($acl->hasPermission($user, "backend", "view"))
+                {?>
+                <a href="?site=backend" title="Backend"><img src="template/win8_style/grafics/usercontrolcentre/backend_settings.png" /></a>
+                <?php 
+                }?>
             </div>
         	<div id="header_user_info"><?php echo "Benutzer: " . $user->data['firstname'] . "<br />";?></div>
         	<div class="clearing"></div>
@@ -160,6 +166,9 @@ if(isset($_POST['login_x']) && isset($login_notification))
                         break;
                     case 'acl_test':
                       	include('test/acl_test.php');
+                        break;
+                    case 'backend':
+                       	include('backend/index.php');
                         break;
                     default:
                         include('404.php');

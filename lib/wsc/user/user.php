@@ -9,7 +9,7 @@ use wsc\acl\Acl;
  * @author Michi
  *        
  */
-class User 
+class User
 {
 	private $userid		= NULL;
 	private $db			= NULL;
@@ -211,6 +211,7 @@ class User
 				}
 			}
 		}
+		
 		$this->permissions	= $permissions;		
 	}
 }

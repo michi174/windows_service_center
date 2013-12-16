@@ -1,0 +1,49 @@
+<div id="darkbackground"></div>
+<header class="box_header">
+    <div class="header_wrapper" style="width:1200px; margin:auto; font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;">
+        <div class="header_pic" style="float:left; padding-top:10px;"><img src="template/win8_style/grafics/other/win8_logo_small.png" /></div>
+        
+        <div style="float:right; width:91%; border-bottom:1px solid #111; box-shadow: 0px 1px #333">
+        	<div class="header_text" style="float:left; font-size:36px; color:#3CF; letter-spacing:3px;">Windows Service Center</div>
+            <div id="header_notification_bar" style="float:right; line-height:24px;">
+            	<a href="#" title="Benachrichtigung"><img src="template/win8_style/grafics/usercontrolcentre/header_notification.png" /></a>
+                <a href="#" title="Nachrichten"><img src="template/win8_style/grafics/usercontrolcentre/header_message.png" /></a>
+                {if=" '{BACKEND_VIEW}' == true "}
+                	<a href="?site=admin" title="Backend"><img src="template/win8_style/grafics/usercontrolcentre/backend_settings.png" /></a>
+				{/if}
+            </div>
+        	<div id="header_user_info">Benutzer: {FIRSTNAME}</div>
+        	<div class="clearing"></div>
+        </div>
+        <div class="clearing"></div>
+        
+        <div class="header_subtitle" style="margin-left:117px; margin-top:-50px; letter-spacing:2px;">The Ultimate Servicecenter</div>
+	</div>
+</header>
+<nav>
+    <div class="menurow_top">
+        <div class="menurow_top_items">
+            <ul>
+                {foreach PLUGINS key=key value=PLUGIN}
+                <li class="{PLUGIN:style_name}"><a href="?site={PLUGIN:plugin_name}&action={PLUGIN:default_action}&id={PLUGIN:id}">{PLUGIN:display_name}</a></li>
+                {/foreach}
+                <li class="search">
+                    <form method="post" id="search" action="#">
+                        <input type="text" placeholder="Suchbegriff eingeben..." style="width:230px; height:20px;" />
+                        <input type="image" src="grafiken/search.png" style="width:16px; height:16px;" />
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="menu_extension" id="infoDIV">
+    <div class="menu_extension_items">
+        <a href="?site=addcat">Kategorie hinzuf&uuml;gen</a>&nbsp;&middot;&nbsp;
+        <a href="?site=addtext">Tipp erstellen</a>&nbsp;&middot;&nbsp;
+        <a href="?site=tpl_test">Template Test</a>&nbsp;&middot;&nbsp;
+        <a href="?site=acl_test&action=view">ACL Admin</a>&nbsp;&middot;&nbsp;
+        <a href="javascript:void()" id="">JavaScript</a>&nbsp;&middot;&nbsp;
+        <a href="?check_plugins">Plug-In's einlesen</a>
+    </div>
+</div>

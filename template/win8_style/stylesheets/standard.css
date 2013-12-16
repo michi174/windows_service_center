@@ -88,7 +88,7 @@ a:hover						{ text-decoration: underline; color : #555; }
 }
 
 
-#testbox
+#live_tile_slider
 {
 	position:fixed;
 	height:100%;
@@ -565,8 +565,8 @@ li.search
 { 	
 	width:1200px;
 	margin:auto;
-	margin-top:172px;
-	margin-bottom:40px;
+	margin-top:180px;
+	margin-bottom:35px;
 	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	color: #000;
 	text-decoration: none;

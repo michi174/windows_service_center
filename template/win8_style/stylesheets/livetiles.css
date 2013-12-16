@@ -2,21 +2,21 @@
 {
 	width: 230px;
 	border: 1px solid #71aff0;
-	color: #FFFFFF;
 	font-size: 12px;
 	font-family: Verdana;
 	text-align: left;
-	margin:auto;
+	margin: auto;
 	margin-top: 8px;
 	padding-top: 5px;
 	padding-left: 5px;
 	padding-bottom: 5px;
 	background-color: #05ade8;
+	color: #FFFFFF;
 }		
 .box_infopanel_login a {color:#FFF; text-decoration:none; font-size:11px; display:block; background-color:#9C3; width:98%; line-height:23px; margin-bottom:1px; text-align:center}
 .box_infopanel_login a:hover {opacity:0.85}
 .box_infopanel_login legend {color:#FFF; font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; letter-spacing:1px; border:1px solid #BFED64; background-color:#9C3; line-height:20px; width:70%;}
-.box_infopanel_login label {font-size:11px; vertical-align:text-top; cursor:pointer;}
+.box_infopanel_login label {color:#FFF;font-size:11px; vertical-align:text-top; cursor:pointer;}
 .box_infopanel_login fieldset{ padding:6px; border:1px solid #BFED64; margin-left:-3px;}
 
 .box_infopanel_controlcentre
@@ -60,6 +60,7 @@
 	padding-top:5px;
 	padding-bottom:5px;
 	padding-left:3px;
+	text-transform:uppercase;
 	float:left;
 }
 .livetile_2x1_username:hover

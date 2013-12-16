@@ -2,8 +2,7 @@
 $acl	= new wsc\acl\Acl;
 $db		= wsc\database\Database::getInstance();
 use wsc\user\User;
-
-if($acl->hasPermission($user, $_GET[DEFAULT_LINK], $_GET[DEFAULT_ACTION]))
+if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config->get("default_action")]))
 {
 	if(isset($_POST['addres']))
 	{
@@ -52,7 +51,7 @@ if($acl->hasPermission($user, $_GET[DEFAULT_LINK], $_GET[DEFAULT_ACTION]))
 	
 	//$perm	= $acl->checkResourcelink();
 	
-	if(isset($_GET[DEFAULT_ACTION]) && $_GET[DEFAULT_ACTION] == "view")
+	if(isset($_GET[$config->get("default_action")]) && $_GET[$config->get("default_action")] == "view")
 	{
 	?>
 	<div style="float:left; width:70%;">
@@ -70,6 +69,7 @@ if($acl->hasPermission($user, $_GET[DEFAULT_LINK], $_GET[DEFAULT_ACTION]))
 	<br /><br />
 	<h4>Alle Benutzerrechte:</h4>
 	<?php 
+		
 	foreach($user->permissions as $userpermission)
 	{
 		$plinkid	= $db->getDataByID("acl_link_privileges", $userpermission['id']);

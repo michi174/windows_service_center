@@ -1,0 +1,65 @@
+<div id="live_tile_slider"></div>
+<div id="box_content_tiles" >
+<input type="hidden" id="cc_fixed" value="" />
+    {if=" '{LOGGED_IN}' != true"}
+        <div class="box_infopanel_login">
+            <form action="{SELF_LINK}" method="post" name="login" id="search">
+                <fieldset>
+                    <legend>Benutzeranmeldung</legend>
+                    <table width="98%" align="left" cellspacing="0">
+                        <tr>
+                            <td rowspan="2" width="10%">
+                                <img src="grafiken/login.png" height="45" alt="login" title="Anmelden, um erweitere Funktionen zu nutzen." style="border-radius:2px;" />
+                            </td>
+                            <td align="right" width="90%">
+                                <input name="username" type="text" placeholder="Benutzername oder E-Mail"style="width:154px; height:20px;" tabindex="1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <input name="password" type="password" placeholder="Passwort eingeben..." style="width:129px; height:20px;" tabindex="2" />
+                                <input type="image" src="grafiken/login_form.png" name="login" style="width:20px; height:18px; margin-left:0px; border:1px solid #bbb;" tabindex="4" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td align="left" style="padding-left:9px;">	
+                                <input id="permanent_login" type="checkbox" name="save_login" tabindex="3" />
+                                <label for="permanent_login">Angemeldet bleiben</label>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </form>
+            <br />
+            <a href="#">Benutzername/Passwort vergessen</a>
+            <a href="#">Neues Benutzerkonto anlegen</a>     
+        </div>
+        <div class="clearing"></div>
+	{else}
+        <div class="box_infopanel_controlcentre">
+            <div class="livetile_1x1_userpic"><img src="grafiken/na.jpg" alt="Foto" height="60px" width="45px" /></div>
+            <a href="#">
+                <div class="livetile_2x1_username">
+                    {FIRSTNAME} {LASTNAME}	
+                </div>
+            </a>
+            <div class="clearing"></div>
+            <div class="infopanel_controlcentre_tiles">
+                <a href="#" class="infopanel_controlcentre_messages"></a>
+                <a href="#" class="infopanel_controlcentre_notes"></a>
+                <a href="#" class="infopanel_controlcentre_controls"></a>
+                <a href="{SELF_LINK}&logout" class="infopanel_controlcentre_logout"></a>
+                <div class="clearing"></div>
+            </div>
+        </div>		
+	{/if}
+    <div class="livetile_2x1_calendar">
+        <span style="font-size:15px; font-weight:bold;">
+            {DATE:A}, {DATE:d}. {DATE:B} {DATE:Y},
+            <span id="zeit"></span>
+        </span>
+        <br /><br />Keine Eintr&auml;ge f&uuml;r die n&auml;chsten 7 Tage.<br /><br /><br /><br />
+        <a href="#"><span style="font-size:15px; font-weight:bold;">Kalender</span></a> (Woche {DATE:V})
+    </div>
+</div>

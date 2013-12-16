@@ -1,32 +1,32 @@
-<h1>Tipps!</h1>
-Manchmal muss es nunmal schneller gehn!
-<div class="step_line"></div>
-<div class="new_articles_box">
-    <div class="td_headline" onclick="toogleView('new_articles')" style="cursor:pointer;">Die neuesten Tipps...</div>
-    <div class="new_articles" id="new_articles">
-        <div class="new_article_pics"><img src="" height="120" width="213" /></div>
-        <div class="new_article_pics"><img src="" height="120" width="213" /></div>	
-        <div class="new_article_pics"><img src="" height="120" width="213" /></div>
-        <div class="new_article_pics"><img src="" height="120" width="213" /></div>
-        <div class="clearing"></div>
-    </div>
-</div><br />
-{datarow CATEGORY}
-<div class="tips_topic">
-    <div class="td_headline" onclick="toogleView('tips_topic_container_{CATEGORY.ID}')" style="cursor:pointer;">{CATEGORY.NAME}</div>
-    <div class="tips_topic_container" id="tips_topic_container_{CATEGORY.ID}" style="display:{CATEGORY.DISPLAY};">
-        {subrow BOARDS}
-        <div class="categories">
-        <div class="categorie_pics"><img src="files/uploaded_files/{BOARDS.AVATAR_FILENAME}{BOARDS.AVATAR_FILEEXTENSION}" alt="BOARD AVATAR" /></div>
-        <div class="categorie_text">
-        <span class="categorie_hl"><a href="?site=tips&action=topics&id={BOARDS.ID}">{BOARDS.NAME}</a></span>
-                <br>{BOARDS.DESCRIPTION}</div>
-           
-            <div class="clearing"></div>
-            <div class="categorie_status">{BOARDS.SUM_TOPICS}&nbsp;Tipps in diesem Bereich</div>
-        </div>
-        {/subrow}
-        <br />
-    </div>
-</div><br />
-{/datarow}
+	<h1>Tipps!</h1>
+	Manchmal muss es nunmal schneller gehn!
+	<div class="step_line"></div>
+	<div class="new_articles_box">
+	    <div class="td_headline" onclick="toogleView('new_articles')" style="cursor:pointer;">Die neuesten Tipps...</div>
+	    <div class="new_articles" id="new_articles">
+	        <div class="new_article_pics"><img src="" height="120" width="213" /></div>
+	        <div class="new_article_pics"><img src="" height="120" width="213" /></div>	
+	        <div class="new_article_pics"><img src="" height="120" width="213" /></div>
+	        <div class="new_article_pics"><img src="" height="120" width="213" /></div>
+	        <div class="clearing"></div>
+	    </div>
+	</div><br />
+	{datarow CATEGORY}
+	<div class="tips_topic">
+	    <div class="td_headline" onclick="toogleView('tips_topic_container_{CATEGORY.ID}')" style="cursor:pointer;">{CATEGORY.NAME}</div>
+	    <div class="tips_topic_container" id="tips_topic_container_{CATEGORY.ID}" style="display:{CATEGORY.DISPLAY};">
+	        {subrow BOARDS}
+	        <div class="categories">
+	        <div class="categorie_pics"><img src="files/uploaded_files/{BOARDS.AVATAR_FILENAME}{BOARDS.AVATAR_FILEEXTENSION}" alt="BOARD AVATAR" /></div>
+	        <div class="categorie_text">
+	        <span class="categorie_hl"><a href="?site=tips&action=topics&id={BOARDS.ID}">{BOARDS.NAME}</a></span>
+	                <br>{BOARDS.DESCRIPTION}</div>
+	           
+	            <div class="clearing"></div>
+	            <div class="categorie_status">{BOARDS.SUM_TOPICS}&nbsp;Tipps in diesem Bereich</div>
+	        </div>
+	        {/subrow}
+	        <br />
+	    </div>
+	</div><br />
+	{/datarow}

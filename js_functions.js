@@ -2,7 +2,7 @@ $(document).ready(function(){
     //jQuery Code	
 
 	//---
-	$('#testbox').hover(function()
+	$('#live_tile_slider').hover(function()
 	{
 		$('#box_content_tiles').show('slide',{direction:'right'});
 	})

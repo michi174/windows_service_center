@@ -5,7 +5,7 @@ $acl	= new wsc\acl\Acl();
 
 if($acl->hasPermission($user, "backend", "view"))
 {
-	$tpl->setTemplateDir("template/win8_style/templates/backend");
+	$tpl->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
 	$tpl->addTemplate("index.html");
 	
 	$tpl->display();

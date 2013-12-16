@@ -1,8 +1,7 @@
 <?php
-require_once DOCUMENT_ROOT . 'config/bootstrap.php';
+
 
 $notify	= new wsc\systemnotification\SystemNotification();
-$db		= new wsc\database\Database();
 $output	= new wsc\template\Template($db);
 $bbcode	= new wsc\bbcode\BBCode();
 
@@ -10,6 +9,7 @@ $bbcode	= new wsc\bbcode\BBCode();
 
 if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 {
+	
 	$parent_id	= $_REQUEST['id'];
 	$output->setTemplateDir("template/" . $config->template_dir . "/templates");
 	
@@ -145,11 +145,13 @@ if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))
 			$output->assign("AUTHOR", $row_detail->username);
 		break;
 	}
+	
 	$output->display();
 }
 else
 {
-	$notify->addMessage("Die angeforterte Aktion konnte nicht ausgef&uuml;hrt werden.");
+	die("else");
+	//$notify->addMessage("Die angeforterte Aktion konnte nicht ausgef&uuml;hrt werden.");
 }
-$notify->printMessage();
+//$notify->printMessage();
 ?>

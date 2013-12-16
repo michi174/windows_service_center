@@ -1,19 +1,32 @@
 <?php
+use wsc\database\Database;
+use wsc\auth\Auth;
+use wsc\functions\tools\Tools;
+use wsc\template\Template;
+use wsc\pluginmanager\PluginManager;
 
 session_start();
+date_default_timezone_set('Europe/Vienna');
+setlocale (LC_ALL, 'deu');
 
-require_once 'lib/autoloader.func.php';
-require_once 'admin/config.php';
+require_once '../framework/config.php';
+require_once 'autoloader.php';
 
-$db		= new wsc\database\Database;
-$plug	= new wsc\pluginmanager\PluginManager;
+$config->set("project_dir", "windows_service_center");
+$config->set("abs_project_path", $config->get("doc_root")."/".$config->get("project_dir"));
+$config->readIniFile($config->get("abs_project_path").'/admin/config.ini');
+$config->set("forward_link", $_SERVER['QUERY_STRING']);
 
-
-$auth	= new wsc\auth\Auth($db);
+$db			= Database::getInstance();
+$auth		= new Auth($db);
+$plugins	= PluginManager::getPlugins(false);
 
 if(isset($_GET['logout']))
 {
 	$auth->logout();
+	header('Location:?'.str_replace('&logout', "", $config->get("forward_link")));
+
+
 }
 if(isset($_POST['login_x']))
 {
@@ -22,247 +35,113 @@ if(isset($_POST['login_x']))
 	$cookie		= (isset($_POST['save_login'])) ? true : false;
 
 	$auth->login($username, $password, $cookie);
-
 }
 
 $user	= $auth->getUser();
 $acl	= new wsc\acl\Acl();
 
+$date	= array();
+$date["d"]	= strftime("%d", time()); 	//Tag als Zahl
+$date["m"]	= strftime("%m", time()); 	//Monat als Zahl
+$date["Y"]	= strftime("%Y", time()); 	//Jahr als 4-stellige Zahl
+$date["H"]	= strftime("%H", time()); 	//Stunden (24 h)
+$date["M"]	= strftime("%M", time()); 	//Minuten
+$date["S"]	= strftime("%S", time()); 	//Sekunden
+$date["A"]	= strftime("%A", time()); 	//Tag als Text
+$date["B"]	= strftime("%B", time()); 	//Monat als Text
+$date["V"]	= date("W", time()); 		//Kalenderwoche
+$date["u"]	= strftime("%u", time()); 	//Kalendertag
 
-$forward_link	= $_SERVER['QUERY_STRING'];
-$referer_site	= (isset($_REQUEST[DEFAULT_LINK])) ? $_REQUEST[DEFAULT_LINK] : NULL;
-
-if(isset($_GET['check_plugins']))
-{
-	$plug->checkPlugins();
-}
 
 $page_error	= NULL;
-$plugins	= wsc\pluginmanager\PluginManager::getPlugins(false);
+//Templateeinstellungen
 
 
-if(isset($_SESSION['loggedIn']) === true)
-{
-	//$userdata	= wsc\login\Login::getUserData($_SESSION['userid']);
-	//$permission = wsc\login\Login::getUserPermission($_SESSION['userid']);
-}
+$head		= new Template();
+$header		= new Template();
+$footer		= new Template();
+$livetiles	= new Template();
+$content	= new Template();
+
+$head->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
+$head->addTemplate("head.html");
+
+$header->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
+$header->addTemplate("header.html");
+$header->assign("LOGGED_IN", $auth->isLoggedIn());
+$header->assign("FIRSTNAME", $user->data['firstname']);
+$header->assign("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
+$header->assign("PLUGINS", $plugins);
+
+
+
+$livetiles->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
+$livetiles->addTemplate("livetiles.html");
+$livetiles->assign("LOGGED_IN", $auth->isLoggedIn());
+$livetiles->assign("FIRSTNAME", $user->data['firstname']);
+$livetiles->assign("LASTNAME", $user->data['lastname']);
+$livetiles->assign("SELF_LINK", "?".$config->get("forward_link"));
+$livetiles->assign("DATE", $date);
+
+$footer->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
+$footer->addTemplate("footer.html");
+
+$head->display();
+$header->display();
+
+//Hier muss der FrontController eingesetzt werden!
+
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="template/win8_style/stylesheets/standard.css" type="text/css" />
-    <link rel="stylesheet" href="template/win8_style/stylesheets/notifications.css" type="text/css" />
-    <link rel="stylesheet" href="template/win8_style/stylesheets/editor.css" type="text/css" />
-    <link rel="stylesheet" href="template/win8_style/stylesheets/livetiles.css" type="text/css" />
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type="text/javascript" src="js_functions.js"></script>
-    
-    <title>Windows Service Center - The Ultimate Servicecenter</title>
-</head>
-<body>
-<div id="darkbackground"></div>
-<header class="box_header">
-    <div class="header_wrapper" style="width:1200px; margin:auto; font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;">
-        <div class="header_pic" style="float:left; padding-top:10px;"><img src="template/win8_style/grafics/other/win8_logo_small.png" /></div>
-        
-        <div style="float:right; width:91%; border-bottom:1px solid #111; box-shadow: 0px 1px #333">
-        	<div class="header_text" style="float:left; font-size:36px; color:#3CF; letter-spacing:3px;">Windows Service Center</div>
-            <div id="header_notification_bar" style="float:right; line-height:24px;">
-            	<a href="#" title="Benachrichtigung"><img src="template/win8_style/grafics/usercontrolcentre/header_notification.png" /></a>
-                <a href="#" title="Nachrichten"><img src="template/win8_style/grafics/usercontrolcentre/header_message.png" /></a>
-                <?php if($acl->hasPermission($user, "backend", "view"))
-                {?>
-                <a href="?site=backend" title="Backend"><img src="template/win8_style/grafics/usercontrolcentre/backend_settings.png" /></a>
-                <?php 
-                }?>
-            </div>
-        	<div id="header_user_info"><?php echo "Benutzer: " . $user->data['firstname'] . "<br />";?></div>
-        	<div class="clearing"></div>
-        </div>
-        <div class="clearing"></div>
-        
-        <div class="header_subtitle" style="margin-left:117px; margin-top:-50px; letter-spacing:2px;">The Ultimate Servicecenter</div>
-	</div>
-</header>
-<nav>
-    <div class="menurow_top">
-        <div class="menurow_top_items">
-            <ul>
-                <?php wsc\pluginmanager\PluginManager::getPlugins(true);?>
-                <li class="search">
-                    <form method="post" id="search" action="#">
-                        <input type="text" placeholder="Suchbegriff eingeben..." style="width:230px; height:20px;" />
-                        <input type="image" src="grafiken/search.png" style="width:16px; height:16px;" />
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="menu_extension" id="infoDIV">
-    <div class="menu_extension_items">
-        <a href="?site=addcat">Kategorie hinzuf&uuml;gen</a>&nbsp;&middot;&nbsp;
-        <a href="?site=addtext">Tipp erstellen</a>&nbsp;&middot;&nbsp;
-        <a href="?site=tpl_test">Template Test</a>&nbsp;&middot;&nbsp;
-        <a href="?site=acl_test&action=view">ACL Admin</a>&nbsp;&middot;&nbsp;
-        <a href="javascript:void()" id="">JavaScript</a>&nbsp;&middot;&nbsp;
-        <a href="?check_plugins">Plug-In's einlesen</a>
-    </div>
-</div>
-<div id="testbox"></div>
 <div class="box_content">
-<input type="hidden" id="cc_fixed" value=""/>
+	<div class="box_content_text">
+		<?php 
+			if(isset($_REQUEST[$config->get("default_link")]) && !empty($_REQUEST[$config->get("default_link")]))
+	        {
+	            if(Tools::array_search_recursive($_REQUEST[$config->get("default_link")], $plugins) !== false)
+	            {
+	                $file	= PLUGIN_DIR . $_REQUEST[$config->get("default_link")] . "/index.php";
+	                if(file_exists($file))
+	                {
+	                    include($file);
+	                }
+	                else
+	                {
+	                    include('404.php');
+	                }				
+	            }
+	            else
+	            {
+	                switch($_REQUEST[$config->get("default_link")])
+	                {
+	                    case 'addcat':
+	                        include('addcategorie.php');
+	                        break;
+	                    case 'addtext':
+	                        include('addtext.php');
+	                        break;
+	                    case 'tpl_test':
+	                        include('test/tpl_test.php');
+	                        break;
+	                    case 'acl_test':
+	                      	include('test/acl_test.php');
+	                        break;
+	                    case 'admin':
+	                       	include('backend/index.php');
+	                        break;
+	                    default:
+	                        include('404.php');
+	                        break;
+	                }
+	            }
+	        }
+	        else
+	        {
+	            include('home.php');
+	        }
+        ?>
+	</div>
+</div>
 <?php
-if(isset($_POST['login_x']) && isset($login_notification))
-{
- //HTML Ausgabe...
+$livetiles->display();
+$footer->display();
 ?>
-<div class="imp_error" id="imp_error">
-	<div style="padding:5px; background-color:#AAA">
-        <div style="float:left;">Systemmitteilung</div>
-        <div style="float:right; text-decoration:none;"><a href="javascript:void()" onclick="showSystemNotification('imp_error')">x</a></div>
-        <div class="clearing"></div> 
-    </div>
-    
-	<?php //$login_notification->printMessage(); ?>
-</div>
-  
-<?php 	
-}
-?>
-<div id="box_content_text">
-
-<?php           
-        if(isset($_REQUEST[DEFAULT_LINK]) && !empty($_REQUEST[DEFAULT_LINK]))
-        {
-            if(in_array($_REQUEST[DEFAULT_LINK], $plugins))
-            {
-                $file	= PLUGIN_DIR . $_REQUEST[DEFAULT_LINK] . "/index.php";
-                if(file_exists($file))
-                {
-                    include($file);
-                }
-                else
-                {
-                    include('404.php');
-                }				
-            }
-            else
-            {
-                switch($_REQUEST[DEFAULT_LINK])
-                {
-                    case 'addcat':
-                        include('addcategorie.php');
-                        break;
-                    case 'addtext':
-                        include('addtext.php');
-                        break;
-                    case 'tpl_test':
-                        include('test/tpl_test.php');
-                        break;
-                    case 'acl_test':
-                      	include('test/acl_test.php');
-                        break;
-                    case 'backend':
-                       	include('backend/index.php');
-                        break;
-                    default:
-                        include('404.php');
-                        break;
-                }
-            }
-        }
-        else
-        {
-            include('home.php');
-        }
-        ?>
-    </div>
-    <div id="box_content_tiles" >
-    	<?php
-        	if(!isset($_SESSION['loggedIn']))
-        	{
-        ?>   	
-        <div class="box_infopanel_login">
-            <form action="<?php echo "?" . $forward_link; ?>" method="post" name="login" id="search">
-            <fieldset>
-            <legend>Benutzeranmeldung</legend>
-                <table width="98%" align="left" cellspacing="0">
-                    <tr>
-                        <td rowspan="2" width="10%">
-                        	<img src="grafiken/login.png" height="45" alt="login" title="Anmelden, um erweitere Funktionen zu nutzen." style="border-radius:2px;" />
-                        </td>
-                        <td align="right" width="90%">
-                            <input name="username" type="text" placeholder="Benutzername oder E-Mail"style="width:154px; height:18px;" tabindex="1" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right">
-                        <input name="password" type="password" placeholder="Passwort eingeben..." style="width:129px; height:18px;" tabindex="2" />
-                        <input type="image" src="grafiken/login_form.png" name="login" style="width:20px; height:20px; margin-left:0px; border:1px solid #bbb;" tabindex="4" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td align="left" style="padding-left:9px;">	
-                            <input id="permanent_login" type="checkbox" name="save_login" tabindex="3" />
-                            <label for="permanent_login">Angemeldet bleiben</label>
-                        </td>
-                    </tr>
-                </table>
-                </fieldset>
-            </form>
-            <br />
-            <a href="#">Benutzername/Passwort vergessen</a>
-            <a href="#">Neues Benutzerkonto anlegen</a>     
-        </div>
-        <div class="clearing"></div>
-        <?php 
-        ;
-        }
-        else
-        {
-        ?>
-        <div class="box_infopanel_controlcentre">
-            <div class="livetile_1x1_userpic"><img src="grafiken/na.jpg" alt="Foto" height="60px" width="45px" /></div>
-            <a href="#">
-                <div class="livetile_2x1_username">
-                    <?php
-                        echo strtoupper("".$user->data['firstname']."<br />".$user->data['lastname']."");
-                    ?>		
-                </div>
-            </a>
-            <div class="clearing"></div>
-            <div class="infopanel_controlcentre_tiles">
-            <a href="#" class="infopanel_controlcentre_messages"></a>
-            <a href="#" class="infopanel_controlcentre_notes"></a>
-            <a href="#" class="infopanel_controlcentre_controls"></a>
-            <a href="<?php echo "?" . $forward_link ."&logout" ?>" class="infopanel_controlcentre_logout"></a>
-            <div class="clearing"></div>
-            </div>
-            
-        </div>		
-        <?php
-        }
-        ?>
-        <div class="livetile_2x1_calendar">
-            <?php 
-                echo "	<span style=\"font-size:15px; font-weight:bold;\">".strftime("%A, %d. %B %Y", time()).", <span id=\"zeit\">Zeit wird ermittelt...</span></span>
-						<br /><br />Keine Eintr&auml;ge f&uuml;r die n&auml;chsten 7 Tage.<br /><br /><br /><br />
-                		<a href=\"#\"><span style=\"font-size:15px; font-weight:bold;\">Kalender</span></a> (Woche ".date("W").")";
-            ?>
-        </div>
-    </div>
-    <div class="clearing"></div>
-</div>
-<footer class="box_footer">
-	<div class="footer_content">
-    	<a href="#">Impressum</a> | &copy; 2013 Michael Strasser. Alle Rechte vorbehalten.
-    </div>
-</footer>
-</body>
-</html>

@@ -4,6 +4,9 @@ use wsc\auth\Auth;
 use wsc\functions\tools\Tools;
 use wsc\template\Template;
 use wsc\pluginmanager\PluginManager;
+use wsc\http\Request\Request;
+use wsc\frontcontroller\Frontcontroller;
+use wsc\acl\Acl;
 
 session_start();
 date_default_timezone_set('Europe/Vienna');
@@ -12,21 +15,19 @@ setlocale (LC_ALL, 'deu');
 require_once '../framework/config.php';
 require_once 'autoloader.php';
 
-$config->set("project_dir", "windows_service_center");
 $config->set("abs_project_path", $config->get("doc_root")."/".$config->get("project_dir"));
 $config->readIniFile($config->get("abs_project_path").'/admin/config.ini');
 $config->set("forward_link", $_SERVER['QUERY_STRING']);
 
 $db			= Database::getInstance();
-$auth		= new Auth($db);
 $plugins	= PluginManager::getPlugins(false);
+$auth		= new Auth($db);
+$request	= new Request();
 
 if(isset($_GET['logout']))
 {
 	$auth->logout();
 	header('Location:?'.str_replace('&logout', "", $config->get("forward_link")));
-
-
 }
 if(isset($_POST['login_x']))
 {
@@ -37,8 +38,10 @@ if(isset($_POST['login_x']))
 	$auth->login($username, $password, $cookie);
 }
 
-$user	= $auth->getUser();
-$acl	= new wsc\acl\Acl();
+$user		= $auth->getUser();
+$acl		= new Acl();
+$controller	= new Frontcontroller;
+$controller->init($request);
 
 $date	= array();
 $date["d"]	= strftime("%d", time()); 	//Tag als Zahl
@@ -123,7 +126,7 @@ $header->display();
 	                        include('test/tpl_test.php');
 	                        break;
 	                    case 'acl_test':
-	                      	include('test/acl_test.php');
+	                      //	include('test/acl_test.php');
 	                        break;
 	                    case 'admin':
 	                       	include('backend/index.php');

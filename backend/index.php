@@ -12,7 +12,7 @@ if($acl->hasPermission($user, "backend", "view"))
 }
 else
 {
-	$error	= new wsc\systemnotification\SystemNotification("error");
+	$error	= new SystemNotification("error");
 	$error->addMessage("<h4>Zugriff verweigert!</h4><br />Sie haben keine Berechtigung, um diese Seite anzuzeigen.");
 	$error->printMessage();
 	

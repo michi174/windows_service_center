@@ -3,7 +3,7 @@ use wsc\autoload\Autoload;
 
 function my_autoload($className)
 {
-	$path = wsc\config\Config::getInstance()->get("project_classes")."/".str_replace("\\", "/", $className).".php";
+	$path = wsc\config\Config::getInstance()->get("class_dir")."/".str_replace("\\", "/", $className).".php";
 	if(file_exists($path))
 	{
 		require_once($path);

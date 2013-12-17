@@ -15,6 +15,7 @@ setlocale (LC_ALL, 'deu');
 require_once '../framework/config.php';
 require_once 'autoloader.php';
 
+$config->set("project_dir", "windows_service_center");
 $config->set("abs_project_path", $config->get("doc_root")."/".$config->get("project_dir"));
 $config->readIniFile($config->get("abs_project_path").'/admin/config.ini');
 $config->set("forward_link", $_SERVER['QUERY_STRING']);
@@ -40,8 +41,11 @@ if(isset($_POST['login_x']))
 
 $user		= $auth->getUser();
 $acl		= new Acl();
-$controller	= new Frontcontroller;
-$controller->init($request);
+$controller	= new Frontcontroller($request);
+$controller->run();
+
+//Ab hier sollte bereits der FrontController übernehmen. Bis das funktioniert und um nicht immer eine weiße Seite zu sehen,
+//wird hier ein View erzeugt.
 
 $date	= array();
 $date["d"]	= strftime("%d", time()); 	//Tag als Zahl

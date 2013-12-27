@@ -1,7 +1,6 @@
 <?php
-$acl	= new wsc\acl\Acl;
-$db		= wsc\database\Database::getInstance();
 use wsc\user\User;
+
 if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config->get("default_action")]))
 {
 	if(isset($_POST['addres']))
@@ -60,7 +59,7 @@ if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config
 	<p class="introduction">Diese Seite dient dazu, die ACL (= Access Control List) Klasse zu testen. Es werden kleinere Formulare eingebaut um nicht immer direkt in der Datenbank arbeiten zu m&uuml;ssen.</p>
 	<h4>Berechtigungstests:</h4>
 	<?php 
-	if($acl->hasPermission(new User(1), "acl_test", "administrate") === true)
+	if($acl->hasPermission(new User($app, 1), "acl_test", "administrate") === true)
 	{
 		echo "Berechtigt!";
 	}
@@ -131,7 +130,7 @@ if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config
 	?>
 	</div>
 	<div style="float:right;"><br />
-	<form action="<?php echo "?" . $forward_link; ?>" method="post">
+	<form action="<?php echo "?" . $config->get("forward_link"); ?>" method="post">
 	<h4>Neue Resource erfassen:</h4>
 		<input type="text" placeholder="Resourcenname" style="width:300px; margin-bottom:5px;" name="resname" required><br>
 		<input type="text" placeholder="Displayname" style="width:300px; margin-bottom:5px;" name="resdname" required><br>
@@ -139,7 +138,7 @@ if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config
 		<input type="hidden" name="<?php DEFAULT_ACTION ?>" value="add">
 		<input type="submit" name="addres" value="Speichern"><br><br>
 	</form>
-	<form action="<?php echo "?" . $forward_link; ?>" method="post">
+	<form action="<?php echo "?" . $config->get("forward_link"); ?>" method="post">
 	<h4>Neues Recht erfassen:</h4>
 		<input type="text" placeholder="Rechtename" style="width:300px; margin-bottom:5px;" name="priname" required><br>
 		<input type="text" placeholder="Displayname" style="width:300px; margin-bottom:5px;" name="pridname" required><br>
@@ -147,7 +146,7 @@ if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config
 		<input type="hidden" name="<?php DEFAULT_ACTION ?>" value="add">
 		<input type="submit" name="addpri" value="Speichern"><br><br>
 	</form>
-	<form action="<?php echo "?" . $forward_link; ?>" method="post">
+	<form action="<?php echo "?" . $config->get("forward_link"); ?>" method="post">
 	<h4>Neue Verkn&uuml;pfung erstellen:</h4>
 		<select name="linkres" style="width:300px;" required>
 		<option value="-1" selected="selected" disabled="disabled">Resource ausw&auml;hlen</option>

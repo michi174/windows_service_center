@@ -1,8 +1,6 @@
 <?php
-
-
 $notify	= new wsc\systemnotification\SystemNotification();
-$output	= new wsc\template\Template($db);
+$output	= new wsc\template\Template();
 $bbcode	= new wsc\bbcode\BBCode();
 
 

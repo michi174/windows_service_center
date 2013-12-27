@@ -1,11 +1,12 @@
 <?php
 use wsc\systemnotification\SystemNotification;
-$tpl	= new wsc\template\Template();
-$acl	= new wsc\acl\Acl();
+
+$tpl	= new wsc\template\Template;
+
 
 if($acl->hasPermission($user, "backend", "view"))
 {
-	$tpl->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
+	$tpl->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/backend/");
 	$tpl->addTemplate("index.html");
 	
 	$tpl->display();

@@ -2,20 +2,19 @@
 
 namespace controller\index;
 
-use controller\controller_interface;
-
+use wsc\controller\controller_abstract;
 /**
  *
  * @author Michi
  *        
  */
-class index implements controller_interface 
+class index extends controller_abstract
 {
 	
 
 	public function default_action() 
 	{
-		die("Asshole baby ;P ");
+		echo ("Standardcontroller geladen -> Asshole baby ;P <br />");
 	}
 }
 

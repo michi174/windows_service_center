@@ -1,8 +1,8 @@
 <?php 
 namespace controller\tips;
-use controller\controller_interface;
 
-class Tips implements controller_interface
+use wsc\controller\controller_abstract;
+class Tips extends controller_abstract
 {
 	public function new_action()
 	{

@@ -20,7 +20,8 @@ $config->set("abs_project_path", $config->get("doc_root")."/".$config->get("proj
 $config->readIniFile($config->get("abs_project_path").'/admin/config.ini');
 $config->set("forward_link", $_SERVER['QUERY_STRING']);
 
-$app		= new Application();
+//Anwendung starten
+$app		= Application::getInstance();
 
 //Module registrieren
 $app->register("Database", Database::getInstance());
@@ -32,6 +33,7 @@ try
 	$db			= $app->load("Database");
 	$auth		= $app->load("Auth");
 	$acl		= $app->load("Acl");
+	$controller	= $app->load("FrontController");
 }
 catch (Exception $e)
 {
@@ -41,8 +43,11 @@ catch (Exception $e)
 	Backtrace: <br />".nl2br($e->getTraceAsString()));
 }
 
-$app->load("FrontController")->addSubController("main", array("acl_test", "controller"));
-$app->run();
+$blacklist	= array("tpl_test");
+
+$controller->addSubController("head", $blacklist);
+$controller->addSubController("header", $blacklist);
+$controller->addSubController("footer", $blacklist);
 
 $plugins	= PluginManager::getPlugins(false);
 
@@ -61,8 +66,6 @@ if(isset($_POST['login_x']))
 }
 
 $user		= $auth->getUser();
-
-
 
 //Ab hier sollte bereits der FrontController übernehmen. Bis das funktioniert und um nicht immer eine weiße Seite zu sehen,
 //wird hier ein View erzeugt.
@@ -118,6 +121,7 @@ $livetiles->display();
 <div class="box_content">
 	<div id="box_content_text">
 		<?php 
+			$app->run();
 			if(isset($_REQUEST[$config->get("default_link")]) && !empty($_REQUEST[$config->get("default_link")]))
 	        {
 	            if(Tools::array_search_recursive($_REQUEST[$config->get("default_link")], $plugins) !== false)
@@ -134,6 +138,7 @@ $livetiles->display();
 	            }
 	            else
 	            {
+	            	echo "<br /><br /><p>Hier beginnt die Statische Ausgabe, die nicht &uuml;ber den FrontController lauft.</p>";
 	                switch($_REQUEST[$config->get("default_link")])
 	                {
 	                    case 'addcat':
@@ -143,7 +148,7 @@ $livetiles->display();
 	                        include('addtext.php');
 	                        break;
 	                    case 'tpl_test':
-	                        include('test/tpl_test.php');
+	                        //include('test/tpl_test.php');
 	                        break;
 	                    case 'acl_test':
 	                      	include('test/acl_test.php');

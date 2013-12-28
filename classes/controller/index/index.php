@@ -14,7 +14,7 @@ class index extends controller_abstract
 
 	public function default_action() 
 	{
-		echo ("Standardcontroller geladen -> Asshole baby ;P <br />");
+		echo ("Standardcontroller geladen -> Here i am... baby ;-) <br />");
 	}
 }
 

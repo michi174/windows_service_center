@@ -25,13 +25,7 @@ class tpl_test extends controller_abstract {
 		//$this->model_cms_topics		= new Model_cms_topics;
 	}
 	
-	
-	/**
-	 * (non-PHPdoc)
-	 *
-	 * @see \wsc\controller\controller_abstract::default_action()
-	 *
-	 */
+
 	public function view_action()
 	{
 		$view	= new view_template();
@@ -113,6 +107,14 @@ class tpl_test extends controller_abstract {
 		
 		$view->display();
 	}
+
+
+	/**
+	 * (non-PHPdoc)
+	 *
+	 * @see \wsc\controller\controller_abstract::default_action()
+	 *
+	 */
 	public function default_action()
 	{
 		echo "<br />Die Action ist nicht verfuegbar. Standardaction wird geladen...<br />";

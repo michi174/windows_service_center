@@ -1,5 +1,14 @@
 <?php
 use wsc\user\User;
+use wsc\application\Application;
+
+$application	= Application::getInstance();
+$acl	= $application->load("acl");
+$auth	= $application->load("auth");
+$user	= $auth->getUser();
+$config	= $application->load("config");
+$db		= $application->load("Database");
+
 
 if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config->get("default_action")]))
 {
@@ -59,7 +68,7 @@ if($acl->hasPermission($user, $_GET[$config->get("default_link")], $_GET[$config
 	<p class="introduction">Diese Seite dient dazu, die ACL (= Access Control List) Klasse zu testen. Es werden kleinere Formulare eingebaut um nicht immer direkt in der Datenbank arbeiten zu m&uuml;ssen.</p>
 	<h4>Berechtigungstests:</h4>
 	<?php 
-	if($acl->hasPermission(new User($app, 1), "acl_test", "administrate") === true)
+	if($acl->hasPermission(new User($application, 1), "acl_test", "administrate") === true)
 	{
 		echo "Berechtigt!";
 	}

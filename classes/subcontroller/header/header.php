@@ -3,6 +3,9 @@
 namespace subcontroller\header;
 
 use wsc\controller\Subcontroller_abstract;
+use wsc\view\View_template;
+use wsc\application\Application;
+use wsc\pluginmanager\PluginManager;
 
 /**
  *
@@ -11,10 +14,33 @@ use wsc\controller\Subcontroller_abstract;
  */
 class header extends Subcontroller_abstract 
 {
+	private $application;
+	
+	public function __construct()
+	{
+		$this->application = Application::getInstance();
+	}
+	private function build()
+	{
+		$auth		= $this->application->load("Auth");
+		$plugins	= PluginManager::getPlugins(false);
+		
+		$user		= $auth->getUser();
+		$acl		= $this->application->load("Acl");
+		
+		$view		= new View_template($this->getSubControllerName($this));
+		
+		
+		$view->assignVar("LOGGED_IN", $auth->isLoggedIn());
+		$view->assignVar("FIRSTNAME", $user->data['firstname']);
+		$view->assignVar("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
+		$view->assignVar("PLUGINS", $plugins);
+		
+		$view->display();
+	}
 	public function runBeforeMain()
 	{
-		//View des headers erzeugen.
-		echo "ich bin der Header und beinhalte das Menue.<br />";
+		$this->build();
 	}
 }
 

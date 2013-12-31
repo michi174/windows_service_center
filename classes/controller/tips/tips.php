@@ -14,7 +14,7 @@ class Tips extends controller_abstract
 	}
 	public function default_action()
 	{
-		//Standardausführung, wenn die Action nicht gefunden wurde.
+		echo "Standardaction geladen";//Standardausführung, wenn die Action nicht gefunden wurde.
 	}
 }
 

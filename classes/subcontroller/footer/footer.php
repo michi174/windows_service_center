@@ -3,6 +3,7 @@
 namespace subcontroller\footer;
 
 use wsc\controller\Subcontroller_abstract;
+use wsc\view\View_template;
 
 /**
  *
@@ -14,7 +15,8 @@ class footer extends Subcontroller_abstract
 	public function runAfterMain()
 	{
 		//View des Footers erzeugen.
-		echo "Ich bin der Footer und ich beinhalte den schliessenden body und html Tag.";
+		$view	= new View_template($this->getSubControllerName($this));
+		$view->display();
 	}
 }
 

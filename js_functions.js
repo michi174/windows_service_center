@@ -1,18 +1,19 @@
 $(document).ready(function(){
     //jQuery Code	
 
-	//---
+	//Wenn der Slider berührt wird, dass wird angezeigt.
 	$('#live_tile_slider').hover(function()
 	{
 		$('#box_content_tiles').show('slide',{direction:'right'});
 	})
 	
+	//Beim berühren des Tiles Containers wird CC Fixes auf falsch gesetzt
 	$('#box_content_tiles').mouseover(function()
 	{
 		$('#cc_fixed').val('false');
 	})
-		//---
 	
+	//Beim Berühren von box_content_text wird der Tiles Container ausgeblendet, außer cc_fixed ist wahr.
 	$('#box_content_text').mouseover(function()
 	{
 		if($('#cc_fixed').val() != 'true')
@@ -21,9 +22,9 @@ $(document).ready(function(){
 		}
 	})
 	
+	//Beim Klick auf den Benutzernamen wird der Tiles Container ein- bzw. ausgeblendet.
 	$('#header_user_info').click(function()
 	{
-		
 		$('#box_content_tiles').toggle('slide',{direction:'right'});
 		$('#cc_fixed').val('true');
 	})

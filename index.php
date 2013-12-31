@@ -1,8 +1,6 @@
 <?php
 use wsc\database\Database;
 use wsc\auth\Auth;
-use wsc\functions\tools\Tools;
-use wsc\template\Template;
 use wsc\pluginmanager\PluginManager;
 use wsc\acl\Acl;
 use wsc\application\Application;
@@ -43,10 +41,13 @@ catch (Exception $e)
 	Backtrace: <br />".nl2br($e->getTraceAsString()));
 }
 
-$blacklist	= array("tpl_test");
+$blacklist	= array("");
 
 $controller->addSubController("head", $blacklist);
 $controller->addSubController("header", $blacklist);
+$controller->addSubController("livetiles" ,$blacklist);
+$controller->addSubController("content_start");
+$controller->addSubController("content_end");
 $controller->addSubController("footer", $blacklist);
 
 $plugins	= PluginManager::getPlugins(false);
@@ -54,7 +55,7 @@ $plugins	= PluginManager::getPlugins(false);
 if(isset($_GET['logout']))
 {
 	$auth->logout();
-	header('Location:?'.str_replace('&logout', "", $config->get("forward_link")));  //ACHTUNG: Nicht einsetzen. Muss über Repsonse Klasse gelöst werden!
+	$app->load("Response")->redirect("?".str_replace('&logout', "", $config->get("forward_link")));
 }
 if(isset($_POST['login_x']))
 {
@@ -66,109 +67,21 @@ if(isset($_POST['login_x']))
 }
 
 $user		= $auth->getUser();
-
-//Ab hier sollte bereits der FrontController übernehmen. Bis das funktioniert und um nicht immer eine weiße Seite zu sehen,
-//wird hier ein View erzeugt.
-$date	= array();
-$date["d"]	= strftime("%d", time()); 	//Tag als Zahl
-$date["m"]	= strftime("%m", time()); 	//Monat als Zahl
-$date["Y"]	= strftime("%Y", time()); 	//Jahr als 4-stellige Zahl
-$date["H"]	= strftime("%H", time()); 	//Stunden (24 h)
-$date["M"]	= strftime("%M", time()); 	//Minuten
-$date["S"]	= strftime("%S", time()); 	//Sekunden
-$date["A"]	= strftime("%A", time()); 	//Tag als Text
-$date["B"]	= strftime("%B", time()); 	//Monat als Text
-$date["V"]	= date("W", time()); 		//Kalenderwoche
-$date["u"]	= strftime("%u", time()); 	//Kalendertag
-
 $page_error	= NULL;
 
-//Templateeinstellungen
-$head		= new Template();
-$header		= new Template();
-$footer		= new Template();
-$livetiles	= new Template();
-$content	= new Template();
-
-$head->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
-$head->addTemplate("head.html");
-
-$header->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
-$header->addTemplate("header.html");
-$header->assign("LOGGED_IN", $auth->isLoggedIn());
-$header->assign("FIRSTNAME", $user->data['firstname']);
-$header->assign("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
-$header->assign("PLUGINS", $plugins);
-
-$livetiles->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
-$livetiles->addTemplate("livetiles.html");
-$livetiles->assign("LOGGED_IN", $auth->isLoggedIn());
-$livetiles->assign("FIRSTNAME", $user->data['firstname']);
-$livetiles->assign("LASTNAME", $user->data['lastname']);
-$livetiles->assign("SELF_LINK", "?".$config->get("forward_link"));
-$livetiles->assign("DATE", $date);
-
-$footer->setTemplateDir($config->get("abs_project_path")."/template/win8_style/templates/");
-$footer->addTemplate("footer.html");
-
-
-//Provisorische Ausgabe. Sollte über die Views in den Controllern erfolgen.
-$head->display();
-$header->display();
-$livetiles->display();
-
-?>
-<div class="box_content">
-	<div id="box_content_text">
-		<?php 
-			$app->run();
-			if(isset($_REQUEST[$config->get("default_link")]) && !empty($_REQUEST[$config->get("default_link")]))
-	        {
-	            if(Tools::array_search_recursive($_REQUEST[$config->get("default_link")], $plugins) !== false)
-	            {
-	                $file	= PLUGIN_DIR . $_REQUEST[$config->get("default_link")] . "/index.php";
-	                if(file_exists($file))
-	                {
-	                    include($file);
-	                }
-	                else
-	                {
-	                    include('404.php');
-	                }				
-	            }
-	            else
-	            {
-	            	echo "<br /><br /><p>Hier beginnt die Statische Ausgabe, die nicht &uuml;ber den FrontController lauft.</p>";
-	                switch($_REQUEST[$config->get("default_link")])
-	                {
-	                    case 'addcat':
-	                        include('addcategorie.php');
-	                        break;
-	                    case 'addtext':
-	                        include('addtext.php');
-	                        break;
-	                    case 'tpl_test':
-	                        //include('test/tpl_test.php');
-	                        break;
-	                    case 'acl_test':
-	                      	include('test/acl_test.php');
-	                        break;
-	                    case 'admin':
-	                       	include('backend/index.php');
-	                        break;
-	                    default:
-	                        include('404.php');
-	                        break;
-	                }
-	            }
-	        }
-	        else
-	        {
-	            include('home.php');
-	        }
-        ?>
-	</div>
-</div>
-<?php
-$footer->display();
-?>
+//Application ausführen.
+$app->run();
+//Provisorische Ausgabe zum schnellen Testen ohne Controller.
+	
+if(isset($_REQUEST[$config->get("default_link")]) && !empty($_REQUEST[$config->get("default_link")]))
+{
+	switch($_REQUEST[$config->get("default_link")])
+	{
+		case 'addcat':
+			include('addcategorie.php');
+			break;
+		case 'addtext':
+			include('addtext.php');
+			break;
+	}
+}

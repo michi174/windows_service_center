@@ -109,7 +109,7 @@ if(isset($_SESSION['loggedIn']) === true)
 	<option value="0">Kategorie ausw&auml;hlen</option>
 <?php 
 		$sql_tt_cat	= "SELECT * FROM areas";
-		$res_tt_cat	= mysql_query($sql_tt_cat) or die("SQL-Fehler in Datei: " . __FILE__ . "<br /><br />" . mysql_error());
+		$res_tt_cat	= mysql_query($sql_tt_cat); //or die("SQL-Fehler in Datei: " . __FILE__ . "<br /><br />" . mysql_error());
 		$num_tt_cat	= mysql_num_rows($res_tt_cat);
 			
 		if($num_tt_cat > 0)

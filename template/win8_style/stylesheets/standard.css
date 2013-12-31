@@ -35,7 +35,7 @@ q:before, q:after {
 }
 
 
-body						{ background-color:#F8F8F8;}
+body						{ background-color:#F8F8F8; margin-top:180px;}
 font,th,td,p 				{ font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;}
 hr 							{ border-bottom:1px #121212; box-shadow:0px 1px #2A2A2A;}
 
@@ -110,9 +110,6 @@ a:hover						{ text-decoration: underline; color : #555; }
 	background-color:#555;
 	border:#666 solid 1px;
 	box-shadow:-1px -1px 1px #444, -1px 1px 1px #444;
-	background-image:url(../grafics/navigation/show_cc.png);
-	background-position:center;
-	background-repeat:no-repeat;
 	display:block;
 	opacity:0;
 }
@@ -573,11 +570,9 @@ li.search
 	color: #000;
 	text-decoration: none;
 }
-/*Text/Inhalt - links*/
 #box_content_text 	
 { 	
 	width:100%;
-	min-height:730px;
 	padding:5px;
 	padding-left:0px;
 	font-size: 15px;

@@ -1,9 +1,17 @@
 <div id="live_tile_slider"></div>
 <div id="box_content_tiles" >
 <input type="hidden" id="cc_fixed" value="" />
+	
+   	{if=" {SHOW_LOGIN_ERROR} == true "}
+   	<div id="login_error" class="output error closeable" style="max-width:215px; margin:auto">
+   		{foreach ERRORS key=key value=error}
+   			{error}<br>
+   		{/foreach}
+   	</div>
+   	{/if}
     {if=" '{LOGGED_IN}' != true"}
         <div class="box_infopanel_login">
-            <form action="{SELF_LINK}" method="post" name="login" id="search">
+            <form action="{NEXT}" method="post" name="login" id="search">
                 <fieldset>
                     <legend>Benutzeranmeldung</legend>
                     <table width="98%" align="left" cellspacing="0">
@@ -38,18 +46,16 @@
         <div class="clearing"></div>
 	{else}
         <div class="box_infopanel_controlcentre">
-            <div class="livetile_1x1_userpic"><img src="grafiken/na.jpg" alt="Foto" height="60px" width="45px" /></div>
-            <a href="#">
-                <div class="livetile_2x1_username">
-                    {FIRSTNAME} {LASTNAME}	
-                </div>
+            <img id="livetile_1x1_userpic" src="grafiken/na.jpg" alt="Foto" height="60px" width="45px" />
+            <a href="#" id="livetile_2x1_username">
+            	{FIRSTNAME} {LASTNAME}	
             </a>
             <div class="clearing"></div>
             <div class="infopanel_controlcentre_tiles">
                 <a href="#" class="infopanel_controlcentre_messages"></a>
                 <a href="#" class="infopanel_controlcentre_notes"></a>
                 <a href="#" class="infopanel_controlcentre_controls"></a>
-                <a href="{SELF_LINK}&logout" class="infopanel_controlcentre_logout"></a>
+                <a href="{NEXT}&logout" class="infopanel_controlcentre_logout"></a>
                 <div class="clearing"></div>
             </div>
         </div>		
@@ -57,7 +63,7 @@
     <div class="livetile_2x1_calendar">
         <span style="font-size:15px; font-weight:bold;">
             {DATE:A}, {DATE:d}. {DATE:B} {DATE:Y},
-            <span id="zeit"></span>
+            <span id="zeit">{DATE:H}:{DATE:M}:{DATE:S}</span>
         </span>
         <br /><br />Keine Eintr&auml;ge f&uuml;r die n&auml;chsten 7 Tage.<br /><br /><br /><br />
         <a href="#"><span style="font-size:15px; font-weight:bold;">Kalender</span></a> (Woche {DATE:V})

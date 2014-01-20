@@ -2,25 +2,22 @@
 
 namespace controller\acl_test;
 use wsc\controller\controller_abstract;
-use wsc\view\View_html;
+use wsc\application\Application;
+use wsc\view\View_php;
 
 class acl_test extends controller_abstract
 {
 	public function view_action()
 	{
-		$view	= new View_html();	
+		$this->view	= new View_php();
+		
+		$application	= Application::getInstance();
+		$acl			= $this->application->load("acl");
+		
+		$this->view->assign("application", $application);
+		$this->view->assign("acl", $acl);
 
-		ob_start();
-		
-		include 'test/acl_test.php';
-		
-		$content	= ob_get_clean();
-		
-		$view->add($content);
-		$view->display();
-		
-		ob_end_clean();
-		
+		return $this->view;		
 	}
 	
 	public function default_action() 
@@ -28,5 +25,4 @@ class acl_test extends controller_abstract
 		
 	}
 }
-
 ?>

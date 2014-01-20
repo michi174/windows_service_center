@@ -1,4 +1,5 @@
 <div id="darkbackground"></div>
+<div style="height:180px;"></div>
 <header class="box_header">
     <div class="header_wrapper" style="width:1200px; margin:auto; font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;">
         <div class="header_pic" style="float:left; padding-top:10px;"><img src="template/win8_style/grafics/other/win8_logo_small.png" /></div>
@@ -30,7 +31,7 @@
                 <li class="search">
                     <form method="post" id="search" action="#">
                         <input type="text" placeholder="Suchbegriff eingeben..." style="width:230px; height:20px;" />
-                        <input type="image" src="grafiken/search.png" style="width:16px; height:16px;" />
+                       <input type="image" src="grafiken/search.png" style="width:16px; height:16px;" />&nbsp;
                     </form>
                 </li>
             </ul>
@@ -41,9 +42,9 @@
     <div class="menu_extension_items">
         <a href="?site=addcat">Kategorie hinzuf&uuml;gen</a>&nbsp;&middot;&nbsp;
         <a href="?site=addtext">Tipp erstellen</a>&nbsp;&middot;&nbsp;
-        <a href="?site=tpl_test&action=view">Template Test</a>&nbsp;&middot;&nbsp;
+        <a href="javascript:void()" id="console-toggler">DEV Console</a>&nbsp;&middot;&nbsp;
         <a href="?site=acl_test&action=view">ACL Admin</a>&nbsp;&middot;&nbsp;
-        <a href="javascript:void()" id="">JavaScript</a>&nbsp;&middot;&nbsp;
-        <a href="?check_plugins">Plug-In's einlesen</a>
+        <a href="javascript:msgBox('Das ist eine Nachricht', 'Alert', true)" id="">JavaScript</a>&nbsp;&middot;&nbsp;
+        <a href="?site=fw_tests">Framework Tests</a>
     </div>
 </div>

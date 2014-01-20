@@ -15,8 +15,9 @@ class footer extends Subcontroller_abstract
 	public function runAfterMain()
 	{
 		//View des Footers erzeugen.
-		$view	= new View_template($this->getSubControllerName($this));
-		$view->display();
+		$view	= new View_template(true);
+		
+		return $view;
 	}
 }
 

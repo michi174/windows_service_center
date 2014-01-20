@@ -1,7 +1,7 @@
 .box_infopanel_login
 {
 	width: 230px;
-	border: 1px solid #71aff0;
+	border: 1px solid #64C7FF;
 	font-size: 12px;
 	font-family: Verdana;
 	text-align: left;
@@ -22,7 +22,7 @@
 .box_infopanel_controlcentre
 {
 	width:235px;
-	border:1px solid #71aff0;
+	border:1px solid #64C7FF;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-family:Verdana;
@@ -33,7 +33,7 @@
 	padding-top:5px;
 	background-color:#05ade8;
 }
-.livetile_1x1_userpic 	
+#livetile_1x1_userpic 	
 {
 	width:45px;
 	height:60px;
@@ -46,7 +46,7 @@
 	margin-left:5px;
 	float:left;
 }				
-.livetile_2x1_username 	
+#livetile_2x1_username 	
 {
 	width:170px;
 	height:50px;
@@ -54,7 +54,6 @@
 	font-size: 18px;
 	text-align:left;
 	font-family:Verdana; color:#FFF;
-	background-color:#me;
 	margin-bottom:15px;
 	margin-left:5px;
 	padding-top:5px;
@@ -63,12 +62,14 @@
 	text-transform:uppercase;
 	float:left;
 }
-.livetile_2x1_username:hover
+#livetile_2x1_username:hover
 {
 	background-color:#52c8f2;
 }
-.livetile_2x1_username a	{color:#FFF; text-decoration:none;}
-
+a#livetile_2x1_username
+{
+	text-decoration:none;
+}
 
 .infopanel_controlcentre_tiles
 {

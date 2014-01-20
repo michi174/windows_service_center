@@ -1,0 +1,7 @@
+#container li {
+background-image: url("navigate.png");
+    background-repeat: no-repeat;   
+    list-style: none outside none;
+}	
+.sprite-close_hover{background-position: 0px 0px; width: 10px; height: 10px; }
+.sprite-close{background-position: 0px -10px; width: 10px; height: 10px; }

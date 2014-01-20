@@ -22,13 +22,17 @@ class header extends Subcontroller_abstract
 	}
 	private function build()
 	{
+
+	}
+	public function runBeforeMain()
+	{
 		$auth		= $this->application->load("Auth");
 		$plugins	= PluginManager::getPlugins(false);
 		
 		$user		= $auth->getUser();
 		$acl		= $this->application->load("Acl");
 		
-		$view		= new View_template($this->getSubControllerName($this));
+		$view		= new View_template(true);
 		
 		
 		$view->assignVar("LOGGED_IN", $auth->isLoggedIn());
@@ -36,11 +40,8 @@ class header extends Subcontroller_abstract
 		$view->assignVar("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
 		$view->assignVar("PLUGINS", $plugins);
 		
-		$view->display();
-	}
-	public function runBeforeMain()
-	{
-		$this->build();
+		
+		return $view;
 	}
 }
 

@@ -5,7 +5,9 @@ namespace controller\tpl_test;
 use wsc\controller\controller_abstract;
 use wsc\view\view_template;
 use wsc\database\Database;
-use wsc\application\Application;
+use wsc\functions\tools\Tools;
+use wsc\template\NewTemplate;
+use wsc\view\View_php;
 
 /**
  *
@@ -23,6 +25,21 @@ class tpl_test extends controller_abstract {
 		//$this->model_userdata			= new Model_userdata;
 		//$this->model_login_protocol	= new Model_login_protocol;
 		//$this->model_cms_topics		= new Model_cms_topics;
+	}
+	
+	public function newtemplate_action()
+	{
+		$view	= new View_php();
+		$tpl	= new NewTemplate();
+		
+		$tpl->setTemplateDir("test/");
+		$tpl->setTemplate("tplnew.html");
+		$output	= $tpl->render();
+		//var_dump($tpl->getErrors());
+		
+		$view->add($output);
+		
+		
 	}
 	
 
@@ -104,8 +121,8 @@ class tpl_test extends controller_abstract {
 		$view->assignFunction("users.nachname", 'strtoupper("{var}")');
 		$view->assignFunction("users.reg_datum", 'date("d.m.Y \u\m H:i",{var})');
 		$view->assignFunction("logins.zeit", 'date("d.m.Y \u\m H:i", {var})');
-		
-		$view->display();
+
+		return $view;
 	}
 
 
@@ -117,10 +134,7 @@ class tpl_test extends controller_abstract {
 	 */
 	public function default_action()
 	{
-		echo "<br />Die Action ist nicht verfuegbar. Standardaction wird geladen...<br />";
-		$app 		= Application::getInstance();
-		$response	= $app->load("response");
-		$response->redirect("index.php");
+		Tools::internalRedirect("error", "default");
 	}
 }
 

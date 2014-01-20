@@ -4,6 +4,7 @@ use wsc\auth\Auth;
 use wsc\pluginmanager\PluginManager;
 use wsc\acl\Acl;
 use wsc\application\Application;
+use wsc\debug\Debugger;
 
 session_start();
 date_default_timezone_set('Europe/Vienna');
@@ -22,9 +23,11 @@ $config->set("forward_link", $_SERVER['QUERY_STRING']);
 $app		= Application::getInstance();
 
 //Module registrieren
+$app->register("Debugger", new Debugger);
 $app->register("Database", Database::getInstance());
 $app->register("Acl", new Acl($app));
 $app->register("Auth", new Auth($app));
+
 
 try 
 {
@@ -38,17 +41,16 @@ catch (Exception $e)
 	die("Es ist ein Fehler aufgetreten in: <br />
 	<strong>". $e->getFile()." Zeile: ".$e->getLine()."</strong><br /><br />
 	Meldung: <br />".$e->getMessage()."<br /><br />
-	Backtrace: <br />".nl2br($e->getTraceAsString()));
+	Backtrace: <br />".nl2br($e->getTraceAsString(), true));
 }
 
-$blacklist	= array("");
-
-$controller->addSubController("head", $blacklist);
-$controller->addSubController("header", $blacklist);
-$controller->addSubController("livetiles" ,$blacklist);
+$controller->addSubController("head");
+$controller->addSubController("header");
+$controller->addSubController("livetiles");
 $controller->addSubController("content_start");
 $controller->addSubController("content_end");
-$controller->addSubController("footer", $blacklist);
+$controller->addSubController("footer");
+$controller->addSubController("console");
 
 $plugins	= PluginManager::getPlugins(false);
 
@@ -71,17 +73,4 @@ $page_error	= NULL;
 
 //Application ausführen.
 $app->run();
-//Provisorische Ausgabe zum schnellen Testen ohne Controller.
 	
-if(isset($_REQUEST[$config->get("default_link")]) && !empty($_REQUEST[$config->get("default_link")]))
-{
-	switch($_REQUEST[$config->get("default_link")])
-	{
-		case 'addcat':
-			include('addcategorie.php');
-			break;
-		case 'addtext':
-			include('addtext.php');
-			break;
-	}
-}

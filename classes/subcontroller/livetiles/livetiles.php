@@ -21,6 +21,11 @@ class Livetiles extends Subcontroller_abstract
 	}
 	private function build()
 	{
+
+	}
+	
+	public function runBeforeMain()
+	{
 		$auth	= $this->application->load("Auth");
 		$user	= $auth->getUser();
 		$config	= $this->application->load("Config");
@@ -38,20 +43,26 @@ class Livetiles extends Subcontroller_abstract
 		$date["V"]	= date("W", time()); 		//Kalenderwoche
 		$date["u"]	= strftime("%u", time()); 	//Kalendertag
 		
-		$view	= new View_template($this->getSubControllerName($this));
+		$next	= $this->application->load("request")->get("next") == null 
+					? "?".$config->get("forward_link") 
+					: "?".$this->application->load("request")->get("next");
+		$show_error	= ($auth->getErrors() !== false) ? 1 : 0;
 		
+		$view	= new View_template(true);
+		
+		$view->assignVar("ERRORS", $auth->getErrors());
 		$view->assignVar("LOGGED_IN", $auth->isLoggedIn());
+		$view->assignVar("SHOW_LOGIN_ERROR", $show_error);
+		
 		$view->assignVar("FIRSTNAME", $user->data['firstname']);
 		$view->assignVar("LASTNAME", $user->data['lastname']);
-		$view->assignVar("SELF_LINK", "?".$config->get("forward_link"));
+		
+
+		
+		$view->assignVar("NEXT", $next);
 		$view->assignVar("DATE", $date);
 		
-		$view->display();
-	}
-	
-	public function runBeforeMain()
-	{
-		$this->build();
+		return $view;
 	}
 	
 }

@@ -16,7 +16,7 @@ class admin extends controller_abstract
 	public function view_action()
 	{
 		$view	= new View_template();
-		$view->display();
+		return $view;
 	}
 	
 	/**

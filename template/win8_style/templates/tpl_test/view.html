@@ -58,9 +58,16 @@
 <!-- ------------------------------------------------------------------------------------------------------- -->
 <h4>Kombination Array, Foreach und If:</h4>
 <p class="section">
+{if=" '1' == '1' "}
     {foreach userary key=datakey value=userdata}
-    {userdata:firstname} {userdata:lastname}{if="'{userdata:firstname}' == 'Dominik'"} - der muss sterben *gg*{/if}<br />
+    	{userdata:firstname} {userdata:lastname}
+    	{if="'{userdata:firstname}' == 'Dominik'"} 
+    		- der muss sterben *gg*
+    	{/if}<br />
     {/foreach}
+{else}
+	keine daten
+{/if}
 </p>
 <!-- ------------------------------------------------------------------------------------------------------- -->
 <h4>SQL Test:</h4>

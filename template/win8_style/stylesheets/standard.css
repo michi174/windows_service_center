@@ -2,7 +2,7 @@
 /* CSS Document */
 /* Allgemei Einstellung über Schriftart, Farbe und Hyperlinks */
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+h1, h2, h3, h4, h5, h6, p, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -35,15 +35,15 @@ q:before, q:after {
 }
 
 
-body						{ background-color:#F8F8F8; margin-top:180px;}
+body						{ background-color:#F8F8F8;}
 font,th,td,p 				{ font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;}
 hr 							{ border-bottom:1px #121212; box-shadow:0px 1px #2A2A2A;}
 
-h1, h2, h3, h4, h5, h6		{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444;}
+h1, h2, h3, h4, h5, h6		{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444; margin-bottom:5px;}
 h1							{font-size:36px; text-shadow:#BBB 0px 1px}
 h2							{font-size:24px;}
 h3							{font-size:18px;}
-h4							{font-size:16px; font-weight:600}
+h4							{font-size:16px; font-weight:700}
 
 p.section					{margin-top:3px; margin-bottom:15px; }
 p.introduction				{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444; font-size:18px; margin-bottom:25px;}
@@ -51,18 +51,134 @@ p.introduction				{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,H
 
 a:link,a:active,a:visited 	{ color : #555; text-decoration:none;}
 a:hover						{ text-decoration: underline; color : #555; }
-
+.clearing					{clear:both;}
 .login_notification			{font-family:Verdana; color:#FFF; font-size:10px;}
 .headline					{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:24px; color:#000; text-align:left; margin-bottom:15px; letter-spacing:3px;}
 .subline					{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:15px; color:#000; text-align:left; margin-top:-15px;margin-bottom:15px; letter-spacing:3px;}
 .categorie_hl				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:19px; margin-bottom:-8px; display:block; }
 .post_headline				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:28px; color:#454545; text-align:left; margin-bottom:15px; letter-spacing:1px;}
 .post_header				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:11px; font-weight:bold;}
+.code						{font-family: 'Courier New' !important; }
+.small						{padding:0px 2px 0px 2px !important;}
+.as-box-small				{padding:4px 2px 4px 2px !important; min-width:100px; display:inline-block}
+.center-text				{text-align:center !important}
+.small-font-size			{font-size:13px !important;}
+.standard-font-size			{font-size:15px !important;}
+.error						{border:1px solid #b41b43 !important;}
+.success					{border:1px solid #bfed64 !important;}
+.new-paragraph				{margin-top:30px !important;}
 .body_line					{height: 0px; border: solid #F8F8F8 0px; border-top-width: 2px; margin-top:4px;}
 .step_line					{border-bottom:1px solid #DDDDDD; box-shadow:0px 1px #FFFFFF; margin:15px 0;}
 
+.output	
+{
+	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+	color: hsla(0,0%,40%,1);
+	font-size: 14px;
+	margin: 10px 0 10px 0;
+	padding: 6px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	background-color: #FFF;
+	max-height: 400px;
+	overflow:auto;
+}
+.window
+{
+	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+	font-size: 14px;
+	padding: 0px 8px 8px 8px;
+	border: 1px solid #dF882e;
+	border-radius: 0px;
+	background-color: #FFF;
+	box-shadow:0px 0px 10px 1px #dc572e;
+	max-height: 90%;
+	overflow: auto;
+	display: block;
+	z-index: 10000;
+}
 
-/*Titel Container*/
+.window-title
+{
+	text-align:left;
+	font-size:22px;
+	cursor:pointer;
+	font-weight:500;
+	line-height:40px;
+	margin-bottom:10px;
+}
+
+a.output:hover
+{
+	background-color:#F6F6F6;	
+	text-decoration:none;
+}
+
+.closeable
+{
+}
+
+#console
+{
+	position:fixed;
+	top:180px;
+	left:50%;
+	width:750px;
+	max-height:700px;
+	margin-left:-375px;
+	display:none;	
+}
+#console-content
+{
+	min-height:200px;
+	max-height:500px;
+	width:100%;
+	margin:auto;
+	overflow:auto;
+	text-align:left;
+	cursor:auto;
+	background-color:#FFF;
+	font-weight:normal;
+	border:1px solid #DDD;
+}
+	
+#close-cross
+{
+	width:10px;
+	height:10px;
+	position:absolute;
+	left:100px;
+	top:200px;
+	background-image:url(../grafics/navigation/close.png);
+	background-position:bottom;
+	background-repeat:no-repeat;
+	cursor:pointer;
+	z-index:250;
+	display:none;
+}
+#close-cross:hover
+{
+	background-position:top;	
+}
+
+#top-arrow
+{
+	position:fixed;
+	bottom:50px;
+	right:15%;
+	display:none;
+	width:48px;
+	height:48px;
+	background-image:url(../grafics/navigation/navigate.png);
+	background-position:bottom;
+	z-index:21;
+}
+#top-arrow:hover
+{
+	background-position:top;
+	cursor:pointer;
+}
+
 .box_header 
 { 	
 	position:fixed;
@@ -107,9 +223,6 @@ a:hover						{ text-decoration: underline; color : #555; }
 	height:100%;
 	right:0;
 	width:10px;
-	background-color:#555;
-	border:#666 solid 1px;
-	box-shadow:-1px -1px 1px #444, -1px 1px 1px #444;
 	display:block;
 	opacity:0;
 }
@@ -132,15 +245,18 @@ a:hover						{ text-decoration: underline; color : #555; }
 {
 	background-color:#FFF;
 }
-.clearing					{clear:both;}
+
 
 input, textarea, select, radio, email, date
 {
 	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	font-size:11px;
 	text-indent :2px;
+	border:1px solid #bbb;
 }
-input[type="password"],[type="text"],[type="file"]	{height:17px;}
+input[type="password"],[type="text"],[type="file"]	{height:25px;}
+select {height:25px;}
+
 #search input 										
 {
 	border-radius:2px;
@@ -337,10 +453,8 @@ a.pagescroll_link_active
 {
 	margin:auto;
 	margin-top:20px;
-	font-size:15px;
 	color:#454545;
 	background-color:#F9F9F9;
-	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	letter-spacing:0.5px;
 }
 .post_bar
@@ -479,7 +593,6 @@ li.kommentare
 	margin-bottom:0px;
 	display:block;
 	overflow:hidden;
-	padding-start:0px;
 	clear:both;
 	
 }
@@ -565,21 +678,16 @@ li.search
 { 	
 	width:1200px;
 	margin:auto;
-	margin-top:170px;
-	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	color: #000;
 	text-decoration: none;
 }
 #box_content_text 	
 { 	
 	width:100%;
-	padding:5px;
-	padding-left:0px;
-	font-size: 15px;
-	letter-spacing:0.5px;
+	font:15px 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 	color: #000;
-	margin-bottom:30px;
-	float:left;
+	letter-spacing:0.5px;
+	margin-bottom:40px;
 	
 }
 #box_content_text ul 
@@ -785,9 +893,8 @@ li.search
 	font-size: 11px;
 	text-align:left; 
 	font-family:Verdana;
-	background-color:#333333;
+	background-color:#333;
 	box-shadow:0px -2px 3px 0px #333;
-	padding-top:5px;
 	z-index:30;
 }
 .footer_content
@@ -795,5 +902,5 @@ li.search
 	width:1190px;
 	vertical-align:bottom;
 	margin:auto;
-	padding:10px;
+	line-height:30px;
 }

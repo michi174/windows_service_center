@@ -3,7 +3,9 @@
 namespace subcontroller\head;
 
 use wsc\controller\Subcontroller_abstract;
-use wsc\view\View_template;
+use wsc\view\Html;
+use wsc\view\renderer\Tpl;
+
 
 /**
  *
@@ -12,14 +14,10 @@ use wsc\view\View_template;
  */
 class head extends Subcontroller_abstract 
 {
-	private function buildHead()
-	{
-		
-	}
 	public function runBeforeMain()
 	{
-		$view	= new View_template(true);
-		return $view;
+		$view	= $this->createView(new Html());
+		$view->setRenderer(new Tpl());
 	}
 }
 

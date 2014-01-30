@@ -186,23 +186,24 @@ a.output:hover
 	height:120px;
 	width:100%;
 	color: #FFFFFF;
-	background-color:#1F1F1F;
+	background-image:url(../grafics/other/backgroung1.jpg);
+	background-position:top;
 	z-index:10;
 }
 
-#header_user_info
+#header-user-info
 {
 	text-align:center;
 	float:right;
 	line-height:20px;
 	padding:10px;
 }
-#header_user_info:hover
+#header-user-info:hover
 {
 	background-color:hsla(0,0%,100%,0.1);
 	cursor:pointer;
 }
-#header_notification_bar a
+#header-notification-bar a
 {
 	height:20px;
 	width:20px;
@@ -211,7 +212,7 @@ a.output:hover
 	padding:10px;
 	float:left;
 }
-#header_notification_bar a:hover
+#header-notification-bar a:hover
 {
 	background-color:hsla(0,0%,100%,0.1);
 }
@@ -253,21 +254,28 @@ input, textarea, select, radio, email, date
 	font-size:11px;
 	text-indent :2px;
 	border:1px solid #bbb;
+	height:25px;
+	text-indent:3px;
+	margin:1px;
+	background-color:#FFF;
+	vertical-align:middle;
 }
-input[type="password"],[type="text"],[type="file"]	{height:25px;}
-select {height:25px;}
 
-#search input 										
+.search input 										
 {
 	border-radius:2px;
 }
-#search input[type="text"],[type="password"]
+.search input[type="text"],[type="password"]
 {	
-	vertical-align:middle;
 	background:#ddd; 
 	border:1px solid #bbb;
 }
-#search input[type="image"]
+.search input[type="checkbox"]
+{
+	
+}
+
+.search input[type="image"]
 {
 	vertical-align:middle;
 	margin-left:-24px; 
@@ -576,7 +584,8 @@ li.kommentare
 	width:100%;
 	margin:auto;
 	position:fixed;
-	background:#1F1F1F;
+	background-image:url(../grafics/other/backgroung1.jpg);
+	background-position:bottom;
 	top:120px;
 	z-index:10;
 }
@@ -609,7 +618,7 @@ li.kommentare
 	text-align:center;
 	letter-spacing:1.5px;
 	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
-	font-weight:600;
+	font-weight:700;
 	letter-spacing:1px;
 	text-transform:uppercase;
 	float:left;
@@ -893,8 +902,9 @@ li.search
 	font-size: 11px;
 	text-align:left; 
 	font-family:Verdana;
-	background-color:#333;
-	box-shadow:0px -2px 3px 0px #333;
+	background-image:url(../grafics/other/backgroung1.jpg);
+	background-size:contain;
+	box-shadow:0px -1px 8px 0px #222;
 	z-index:30;
 }
 .footer_content

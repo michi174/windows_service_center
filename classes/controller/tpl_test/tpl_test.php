@@ -3,11 +3,9 @@
 namespace controller\tpl_test;
 
 use wsc\controller\controller_abstract;
-use wsc\view\view_template;
 use wsc\database\Database;
 use wsc\functions\tools\Tools;
-use wsc\template\NewTemplate;
-use wsc\view\View_php;
+use wsc\view\renderer\Tpl;
 
 /**
  *
@@ -27,25 +25,11 @@ class tpl_test extends controller_abstract {
 		//$this->model_cms_topics		= new Model_cms_topics;
 	}
 	
-	public function newtemplate_action()
-	{
-		$view	= new View_php();
-		$tpl	= new NewTemplate();
-		
-		$tpl->setTemplateDir("test/");
-		$tpl->setTemplate("tplnew.html");
-		$output	= $tpl->render();
-		//var_dump($tpl->getErrors());
-		
-		$view->add($output);
-		
-		
-	}
-	
 
 	public function view_action()
 	{
-		$view	= new view_template();
+		$view	= $this->createView();
+		$view->setRenderer(new Tpl());
 
 		$db	= Database::getInstance();
 		
@@ -72,57 +56,56 @@ class tpl_test extends controller_abstract {
 		}
 		
 		//Test Vars
-		$view->assignVar("datum", strftime("%A, %d. %B %Y", $zeit));
-		$view->assignVar("zeit", date("H:i:s", $zeit));
-		$view->assignVar("zeitzone", date("T (e)", $zeit));
-		$view->assignVar("zeitunterschied", "GMT ".date("P", $zeit));
-		$view->assignVar("kw", date("W", $zeit));
-		$view->assignVar("kt", date("w", $zeit));
-		$view->assignVar("browser", $_SERVER["HTTP_USER_AGENT"]);
-		$view->assignVar("vorname", "Michael");
-		$view->assignVar("nachname", "Strasser");
-		$view->assignVar("alter", "22");
-		$view->assignVar("geschlecht", "m&auml;nnlich");
+		$view->renderer->assignVar("datum", strftime("%A, %d. %B %Y", $zeit));
+		$view->renderer->assignVar("zeit", date("H:i:s", $zeit));
+		$view->renderer->assignVar("zeitzone", date("T (e)", $zeit));
+		$view->renderer->assignVar("zeitunterschied", "GMT ".date("P", $zeit));
+		$view->renderer->assignVar("kw", date("W", $zeit));
+		$view->renderer->assignVar("kt", date("w", $zeit));
+		$view->renderer->assignVar("browser", $_SERVER["HTTP_USER_AGENT"]);
+		$view->renderer->assignVar("vorname", "Michael");
+		$view->renderer->assignVar("nachname", "Strasser");
+		$view->renderer->assignVar("alter", "22");
+		$view->renderer->assignVar("geschlecht", "m&auml;nnlich");
 		
 		//Test ArrayKey
-		$view->assignVar("testarray", 		array(	"vn" => "Michael",
+		$view->renderer->assignVar("testarray", 		array(	"vn" => "Michael",
 				"nn" => "Strasser"
 		));
 		
 		//Test Foreach
-		$view->assignVar("testname", 		array(	"Michael" 	=> "Strasser",
+		$view->renderer->assignVar("testname", 		array(	"Michael" 	=> "Strasser",
 				"Dominik" 	=> "Gintenreiter",
 				"Mathias" 	=> "Zauner",
 				"Martin" 	=> "Wimplinger"
 		));
-		$view->assignVar("testnamen_sub", 	array(	"Ramona" 	=> "Strasser",
+		$view->renderer->assignVar("testnamen_sub", 	array(	"Ramona" 	=> "Strasser",
 				"Michael" 	=> "Gintenreiter",
 				"Martina" 	=> "Zauner",
 				"Stefanie" 	=> "Wimplinger"
 		));
 		
 		//Testarray für Kombination aus Array und Foreach
-		$view->assignVar("userary", $data);
+		$view->renderer->assignVar("userary", $data);
 
 		
 		//Test Datarow
-		$view->assignDatarow("users", $sql_users, array("vorname" => "firstname","nachname" => "lastname", "geschlecht" => "sexuality", "reg_datum" => "registration", "id" => "id"));
-		$view->assignDatarow("logins", $sql_logins, array("zeit" => "time", "ip" => "ip", "benutzer" => "username"));
-		$view->assignDatarow("plugins", $sql_areas, array("name" => "display_name", "id" => "id"));
-		$view->assignDatarow("sql_test", $sql_distinct, array("ID" => "test"));
+		$view->renderer->assignDatarow("users", $sql_users, array("vorname" => "firstname","nachname" => "lastname", "geschlecht" => "sexuality", "reg_datum" => "registration", "id" => "id"));
+		$view->renderer->assignDatarow("logins", $sql_logins, array("zeit" => "time", "ip" => "ip", "benutzer" => "username"));
+		$view->renderer->assignDatarow("plugins", $sql_areas, array("name" => "display_name", "id" => "id"));
+		$view->renderer->assignDatarow("sql_test", $sql_distinct, array("ID" => "test"));
 		
 		//Test Subrow
-		$view->assignSubrow("login", "users", $sql_sub_login, array("zeit" => "time"));
-		$view->assignSubrow("topics", "users", $sql_sub_topics, array("titel" => "title"));
-		$view->assignSubrow("areatopics", "plugins", $sql_sub_area_topics, array("titel" => "title"));
+		$view->renderer->assignSubrow("login", "users", $sql_sub_login, array("zeit" => "time"));
+		$view->renderer->assignSubrow("topics", "users", $sql_sub_topics, array("titel" => "title"));
+		$view->renderer->assignSubrow("areatopics", "plugins", $sql_sub_area_topics, array("titel" => "title"));
 		
 		//Test Functions
-		$view->assignFunction("login.zeit", 'date("d.m.Y \u\m H:i", {var})');
-		$view->assignFunction("users.nachname", 'strtoupper("{var}")');
-		$view->assignFunction("users.reg_datum", 'date("d.m.Y \u\m H:i",{var})');
-		$view->assignFunction("logins.zeit", 'date("d.m.Y \u\m H:i", {var})');
+		$view->renderer->assignFunction("login.zeit", 'date("d.m.Y \u\m H:i", {var})');
+		$view->renderer->assignFunction("users.nachname", 'strtoupper("{var}")');
+		$view->renderer->assignFunction("users.reg_datum", 'date("d.m.Y \u\m H:i",{var})');
+		$view->renderer->assignFunction("logins.zeit", 'date("d.m.Y \u\m H:i", {var})');
 
-		return $view;
 	}
 
 

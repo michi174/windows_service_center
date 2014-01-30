@@ -3,9 +3,10 @@
 namespace subcontroller\header;
 
 use wsc\controller\Subcontroller_abstract;
-use wsc\view\View_template;
 use wsc\application\Application;
 use wsc\pluginmanager\PluginManager;
+use wsc\view\Html;
+use wsc\view\renderer\Tpl;
 
 /**
  *
@@ -32,16 +33,13 @@ class header extends Subcontroller_abstract
 		$user		= $auth->getUser();
 		$acl		= $this->application->load("Acl");
 		
-		$view		= new View_template(true);
+		$view	= $this->createView(new Html);
+		$view->setRenderer(new Tpl());
 		
-		
-		$view->assignVar("LOGGED_IN", $auth->isLoggedIn());
-		$view->assignVar("FIRSTNAME", $user->data['firstname']);
-		$view->assignVar("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
-		$view->assignVar("PLUGINS", $plugins);
-		
-		
-		return $view;
+		$view->renderer->assignVar("LOGGED_IN", $auth->isLoggedIn());
+		$view->renderer->assignVar("FIRSTNAME", $user->data['firstname']);
+		$view->renderer->assignVar("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
+		$view->renderer->assignVar("PLUGINS", $plugins);		
 	}
 }
 

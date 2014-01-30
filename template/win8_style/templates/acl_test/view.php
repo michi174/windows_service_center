@@ -1,11 +1,12 @@
 <?php
 use wsc\user\User;
 
-$acl	= $this->application->load("acl");
+
 $auth	= $this->application->load("auth");
 $user	= $auth->getUser();
 $config	= $this->application->load("config");
 $db		= $this->application->load("Database");
+
 
 if(isset($_POST['addres']))
 {
@@ -49,10 +50,10 @@ if(isset($_POST['addlink']))
 		$error->printMessage();
 	}
 }
-$ressources	= $acl->getAllResources();
-$privileges	= $acl->getAllPrivileges();
+$ressources	= $this->acl->getAllResources();
+$privileges	= $this->acl->getAllPrivileges();
 
-//$perm	= $acl->checkResourcelink();
+//$perm	= $this->acl->checkResourcelink();
 
 ?>
 <div style="float:left; width:70%;">
@@ -61,7 +62,7 @@ $privileges	= $acl->getAllPrivileges();
 <p class="introduction">Diese Seite dient dazu, die ACL (= Access Control List) Klasse zu testen. Es werden kleinere Formulare eingebaut um nicht immer direkt in der Datenbank arbeiten zu m&uuml;ssen.</p>
 <h4>Berechtigungstests:</h4>
 <?php 
-if($acl->hasPermission(new User($this->application, 1), "acl_test", "administrate") === true)
+if($this->acl->hasPermission(new User($this->application, 1), "acl_test", "administrate") === true)
 {
 	echo "Berechtigt.";
 }

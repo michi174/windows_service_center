@@ -1,7 +1,7 @@
 <?php
 use wsc\autoload\Autoload;
 
-function my_autoload($className)
+function autoload($className)
 {
 	$path = wsc\config\Config::getInstance()->get("class_dir")."/".str_replace("\\", "/", $className).".php";
 	if(file_exists($path))
@@ -16,5 +16,5 @@ function my_autoload($className)
 	}
 }
 
-Autoload::register("my_autoload");
+Autoload::register("autoload");
 ?>

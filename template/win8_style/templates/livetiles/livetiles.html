@@ -11,27 +11,27 @@
    	{/if}
     {if=" '{LOGGED_IN}' != true"}
         <div class="box_infopanel_login">
-            <form action="{NEXT}" method="post" name="login" id="search">
+            <form action="{NEXT}" method="post" name="login" class="search">
                 <fieldset>
                     <legend>Benutzeranmeldung</legend>
-                    <table width="98%" align="left" cellspacing="0">
+                    <table style="width:98%; text-align:left;">
                         <tr>
-                            <td rowspan="2" width="10%">
+                            <td rowspan="2" style="width:10%">
                                 <img src="grafiken/login.png" height="45" alt="login" title="Anmelden, um erweitere Funktionen zu nutzen." style="border-radius:2px;" />
                             </td>
-                            <td align="right" width="90%">
-                                <input name="username" type="text" placeholder="Benutzername oder E-Mail"style="width:154px; height:20px;" tabindex="1" />
+                            <td style="width:90%; text-align:right">
+                                <input name="username" type="text" placeholder="Benutzername oder E-Mail" style="width:154px; height:20px;" tabindex="1" />
                             </td>
                         </tr>
                         <tr>
-                            <td align="right">
+                            <td style="text-align:right">
                                 <input name="password" type="password" placeholder="Passwort eingeben..." style="width:129px; height:20px;" tabindex="2" />
-                                <input type="image" src="grafiken/login_form.png" name="login" style="width:20px; height:18px; margin-left:0px; border:1px solid #bbb;" tabindex="4" />
+                                <input type="image" src="grafiken/login_form.png" alt="login" name="login" style="width:20px; height:18px; margin-left:0px; border:1px solid #bbb;" tabindex="4" />
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
-                            <td align="left" style="padding-left:9px;">	
+                            <td style="padding-left:9px; text-align:left">	
                                 <input id="permanent_login" type="checkbox" name="save_login" tabindex="3" />
                                 <label for="permanent_login">Angemeldet bleiben</label>
                             </td>

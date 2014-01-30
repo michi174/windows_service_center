@@ -1,9 +1,9 @@
 <?php
 use wsc\systemnotification\SystemNotification;
 
-$error	= new SystemNotification("error");
+$error	= new SystemNotification("warning");
 
-$error->addMessage("Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie Ihre durchgef&uuml;hrte Aktion zu wiederholen.");
+$error->addMessage("404 - Die von ihnen angeforderte Seite wurde nicht gefunden.");
 $error->addButton("javascript:history.back()", "&laquo; Zur&uuml;ck");
 $error->printMessage();
 ?>

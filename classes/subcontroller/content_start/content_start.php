@@ -3,8 +3,8 @@
 namespace subcontroller\content_start;
 
 use wsc\controller\Subcontroller_abstract;
-use wsc\view\View_template;
-use wsc\application\Application;
+use wsc\view\Html;
+use wsc\view\renderer\Tpl;
 
 /**
  *
@@ -15,8 +15,8 @@ class content_start extends Subcontroller_abstract
 {
 	public function runBeforeMain()
 	{
-		$view	= new View_template(true);		
-		return $view;
+		$view	= $this->createView(new Html());
+		$view->setRenderer(new Tpl());
 	}
 }
 

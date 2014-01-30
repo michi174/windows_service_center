@@ -3,11 +3,10 @@
 namespace controller\fw_tests;
 
 use wsc\controller\controller_abstract;
-use wsc\view\View_php;
-use wsc\form\element\Element;
 use wsc\form\element\Password;
 use wsc\form\element\Submit;
 use wsc\form\element\Text;
+use wsc\application\Application;
 
 /**
  *
@@ -18,20 +17,17 @@ class fw_tests extends controller_abstract {
 	
 	public function validator_action()
 	{
-		$view	= new View_php();	
-		
-		return $view;
+		$view	= $this->createView();		
 	}
 	
 	public function default_action() 
 	{
-		$view	= new View_php();
-		return $view;
+		$view	= $this->createView();
 	}
 	
 	public function form_action()
 	{
-		$this->view	= new View_php();
+		$view = $this->createView();
 		
 		$vorname	= new Text("vorname");
 		$vorname->setAttribute("placeholder", "Vorname");
@@ -47,14 +43,13 @@ class fw_tests extends controller_abstract {
 		$senden		= new Submit("speichern");
 		$senden->setAttribute("value", "Formular abschicken...");
 		
-		$this->view->assign(array(
+		$view->assign(array(
 			'nachname'	=> $nachname,
 			'vorname'	=> $vorname,
 			'senden'	=> $senden,
 			'pw'		=> $password
 		));
 		
-		return $this->view;
 	}
 }
 

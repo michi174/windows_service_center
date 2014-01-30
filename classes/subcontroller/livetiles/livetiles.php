@@ -3,8 +3,9 @@
 namespace subcontroller\livetiles;
 
 use wsc\controller\Subcontroller_abstract;
-use wsc\view\View_template;
 use wsc\application\Application;
+use wsc\view\Html;
+use wsc\view\renderer\Tpl;
 
 /**
  *
@@ -45,22 +46,23 @@ class Livetiles extends Subcontroller_abstract
 		
 		$next	= $this->application->load("request")->get("next") == null 
 					? "?".$config->get("forward_link") 
-					: "?".$this->application->load("request")->get("next");
+					: "?".str_replace("&logout", "", $this->application->load("request")->get("next"));
 		$show_error	= ($auth->getErrors() !== false) ? 1 : 0;
 		
-		$view	= new View_template(true);
+		$view	= $this->createView(new Html());
+		$view->setRenderer(new Tpl());
 		
-		$view->assignVar("ERRORS", $auth->getErrors());
-		$view->assignVar("LOGGED_IN", $auth->isLoggedIn());
-		$view->assignVar("SHOW_LOGIN_ERROR", $show_error);
+		$view->renderer->assignVar("ERRORS", $auth->getErrors());
+		$view->renderer->assignVar("LOGGED_IN", $auth->isLoggedIn());
+		$view->renderer->assignVar("SHOW_LOGIN_ERROR", $show_error);
 		
-		$view->assignVar("FIRSTNAME", $user->data['firstname']);
-		$view->assignVar("LASTNAME", $user->data['lastname']);
+		$view->renderer->assignVar("FIRSTNAME", $user->data['firstname']);
+		$view->renderer->assignVar("LASTNAME", $user->data['lastname']);
 		
 
 		
-		$view->assignVar("NEXT", $next);
-		$view->assignVar("DATE", $date);
+		$view->renderer->assignVar("NEXT", $next);
+		$view->renderer->assignVar("DATE", $date);
 		
 		return $view;
 	}

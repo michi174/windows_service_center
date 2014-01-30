@@ -105,7 +105,7 @@ $(document).ready(function(){
 	})
 	
 	//Beim Klick auf den Benutzernamen wird der Tiles Container ein- bzw. ausgeblendet.
-	$('#header_user_info').click(function()
+	$('#header-user-info').click(function()
 	{
 		$('#box_content_tiles').toggle('slide',{direction:'right'});
 		$('#cc_fixed').val('true');

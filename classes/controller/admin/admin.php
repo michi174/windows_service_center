@@ -3,8 +3,8 @@
 namespace controller\admin;
 
 use wsc\controller\controller_abstract;
-use wsc\view\View_template;
 use wsc\functions\tools\Tools;
+use wsc\view\renderer\Tpl;
 
 /**
  *
@@ -15,8 +15,8 @@ class admin extends controller_abstract
 {
 	public function view_action()
 	{
-		$view	= new View_template();
-		return $view;
+		$view	= $this->createView();
+		$view->setRenderer(new Tpl());
 	}
 	
 	/**

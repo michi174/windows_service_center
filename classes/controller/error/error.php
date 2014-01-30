@@ -3,9 +3,8 @@
 namespace controller\error;
 
 use wsc\controller\controller_abstract;
-use wsc\view\View_php;
 use wsc\systemnotification\SystemNotification;
-use wsc\view\View_template;
+use wsc\view\renderer\Tpl;
 use wsc\application\Application;
 
 /**
@@ -17,14 +16,15 @@ class Error extends controller_abstract
 {
 	public function nopermission_action()
 	{
-		$view		= new View_template();
+		$view		= $this->createView();
+		$view->setRenderer(new Tpl());
+		
 		$error		= new SystemNotification();
 		
 		$error->addMessage("Keine Berechtigung um diese Seite anzuzeigen.");
 		$content	= $error->printMessage(true);
 		
 		$view->add($content);
-		return $view;	
 	}
 	
 	/**
@@ -35,8 +35,12 @@ class Error extends controller_abstract
 	 */
 	public function default_action() 
 	{
-		$view	= new View_php();
-		return $view;
+		$view	= $this->createView();
+		
+		if(!empty($_SERVER['HTTP_REFERER']))
+		{
+			Application::getInstance()->load("debugger")->log("Es gibt einen kaputten Link: ". $_SERVER['HTTP_REFERER']);
+		}
 	}
 }
 

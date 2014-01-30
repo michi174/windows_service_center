@@ -85,8 +85,8 @@ function getOutput($valid, $value, $messages = NULL)
 	</p>
 	<p>
 		Wird mit der Einstellung &quot;alle Datentypen&quot; getestet.<br />
-		<pre><div class="output code">$validator = new NotEmpty();
-$validator->isValid("Text");</div></pre>
+		<pre class="output code">$validator = new NotEmpty();
+$validator->isValid("Text");</pre>
 	</p>
 	<?php 
 		$validator	= new NotEmpty();
@@ -95,10 +95,10 @@ $validator->isValid("Text");</div></pre>
 	<div class="step_line"></div>
 	<p>
 		Wird mit der Einstellung &quot;nur Integer und Float&quot; getestet.<br />
-		<pre><div class="output code">$validator = new NotEmpty (array(NotEmpty::INT,NotEmpty::FLOAT));
+		<pre class="output code">$validator = new NotEmpty (array(NotEmpty::INT,NotEmpty::FLOAT));
 		
 $validator->isValid("Text");
-$validator->isValid(23.15);</div></pre>
+$validator->isValid(23.15);</pre>
 	</p>
 	<?php 
 		$validator	= new NotEmpty(array(NotEmpty::INT, NotEmpty::FLOAT));

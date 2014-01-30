@@ -14,9 +14,8 @@ require_once '../framework/config.php';
 require_once 'autoloader.php';
 
 //Anwendung konfigurieren
-$config->set("project_dir", "windows_service_center");
+$config->readIniFile($config->get("doc_root").'/windows_service_center/admin/config.ini');
 $config->set("abs_project_path", $config->get("doc_root")."/".$config->get("project_dir"));
-$config->readIniFile($config->get("abs_project_path").'/admin/config.ini');
 $config->set("forward_link", $_SERVER['QUERY_STRING']);
 
 //Anwendung starten
@@ -27,7 +26,6 @@ $app->register("Debugger", new Debugger);
 $app->register("Database", Database::getInstance());
 $app->register("Acl", new Acl($app));
 $app->register("Auth", new Auth($app));
-
 
 try 
 {
@@ -44,20 +42,23 @@ catch (Exception $e)
 	Backtrace: <br />".nl2br($e->getTraceAsString(), true));
 }
 
-$controller->addSubController("head");
-$controller->addSubController("header");
-$controller->addSubController("livetiles");
-$controller->addSubController("content_start");
-$controller->addSubController("content_end");
-$controller->addSubController("footer");
-$controller->addSubController("console");
+$blacklist	= array("");
+
+$controller->addSubController("head",$blacklist);
+$controller->addSubController("header",$blacklist);
+$controller->addSubController("livetiles",$blacklist);
+$controller->addSubController("content_start",$blacklist);
+$controller->addSubController("content_end",$blacklist);
+$controller->addSubController("console",$blacklist);
+$controller->addSubController("footer",$blacklist);
+
 
 $plugins	= PluginManager::getPlugins(false);
 
 if(isset($_GET['logout']))
 {
 	$auth->logout();
-	$app->load("Response")->redirect("?".str_replace('&logout', "", $config->get("forward_link")));
+	$app->load("Response")->redirect($_SERVER['HTTP_REFERER']);
 }
 if(isset($_POST['login_x']))
 {

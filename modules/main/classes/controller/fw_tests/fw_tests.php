@@ -6,6 +6,8 @@ use wsc\controller\controller_abstract;
 use wsc\form\element\Password;
 use wsc\form\element\Submit;
 use wsc\form\element\Text;
+use wsc\modul\ModulManager;
+use gallery\gallery;
 
 /**
  *
@@ -38,10 +40,6 @@ class fw_tests extends controller_abstract {
 		$password->setLabel("Passwort");
 		$password->setAttribute("placeholder", $password->getLabel());
 		
-		$password_rpd	= new Password("pwd_wdh");
-		$password_rpd->setLabel("Wiederholung");
-		$password_rpd->setAttribute("placeholder", $password_rpd->getLabel());
-		
 		
 		$senden		= new Submit("speichern");
 		$senden->setAttribute("value", "Formular abschicken...");
@@ -50,10 +48,18 @@ class fw_tests extends controller_abstract {
 			'nachname'	=> $nachname,
 			'vorname'	=> $vorname,
 			'senden'	=> $senden,
-			'password'	=> $password,
-		    'password_rpd'    => $password_rpd
+			'pw'		=> $password
 		));
 		
+	}
+	public function modul_action()
+	{
+	    $view  = $this->createView();
+	    
+	    $mgr   = new ModulManager();
+	    $mgr->register("gallery");
+	    $mgr->get();
+	    
 	}
 }
 

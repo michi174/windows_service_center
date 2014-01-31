@@ -1,0 +1,12 @@
+<div class="system_notification closeable" id="system-notification">
+	<ul class="system_notification_{type}">
+		<li class="notification_picture"><img src="template/win8_style/grafics/system_notifications/system_notification_{type}.png" alt="{type}" /></li>
+		<li class="notification_message">{foreach messages key=message value=_NULL}{message}<br>{/foreach}</li>
+	</ul>
+</div>
+<div class="system_notification_buttons">
+{foreach buttons key=button value=link} 
+	<a href="{link}" class="system_notification_button_left">{button}</a>
+{/foreach}
+</div>
+<div class=clearing></div>

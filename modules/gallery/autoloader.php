@@ -15,7 +15,7 @@ class autoloader
 	 * 
 	 * @param string $class		Name der aufzurufenden Klasse
 	 */
-	public function autoload($class)
+	public static function autoload($class)
 	{
 		$path = Config::getInstance()->get("project_dir")."/".Config::getInstance()->get("module_dir")."/".str_replace("\\", "/", $class).".php";
 		
@@ -36,7 +36,15 @@ class autoloader
 	 */
 	public static function register()
 	{
-		spl_autoload_register(array('gallery\autoloader', "autoload"));
+	    try {
+	        spl_autoload_register(array('gallery\autoloader', "autoload"));
+	    }
+		catch (\Exception $e)
+		{
+		    echo $e->getMessage()."<br><br>";
+		    echo nl2br($e->getTraceAsString());
+		    die();
+		}
 	}
 }
 

@@ -1,0 +1,9 @@
+<div id="console" class="window closeable">
+	<div id="console-title" class="window-title">Developer Console</div>
+    <div id="console-content" class="code" contenteditable="true">
+		{foreach LOG_MSGS key=key value=MESSAGE}
+			{MESSAGE}<br>
+		{/foreach}
+	</div>
+</div>
+<input type="hidden" value="{NUM_LOG_ENTRIES}" id="num-log-entries">

@@ -8,8 +8,16 @@
 </p>
 
 <h4>Verschiedene Elemente ohne Form:</h4>
-<?= $this->FormText($this->vorname) ?>
-<?= $this->FormText($this->nachname) ?><br>
-<?= $this->FormPassword($this->password)?>
-<?= $this->FormPassword($this->password_rpd)?><br><br>
-<?= $this->FormSubmit($this->senden) ?><br>
+<br>
+<fieldset id="login" style="border:1px solid #ccc; width:300px; padding:10px;">
+	<legend style="margin-left:5px">Registrierung (Test)</legend>
+    <?= $this->form()->openTag($this->register) ?>
+		<?= $this->formText($this->register->get("vorname")) ?>
+        <?= $this->formText($this->register->get("nachname")) ?><br>
+        <?= $this->formPassword($this->register->get("pwd"))?>
+        <?= $this->formPassword($this->register->get("pwd_wdh")) ?><br><br>
+        <?= $this->formElement($this->register->get("gender")) ?>
+        <?= $this->register->get("gender")->getLabel(true) ?><br><br>
+        <?= $this->formSubmit($this->register->get("speichern")) ?><br>
+	<?= $this->form()->closeTag() ?>
+</fieldset>

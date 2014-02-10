@@ -260,12 +260,15 @@ input, textarea, select, radio, email, date
 	background-color:#FFF;
 	vertical-align:middle;
 }
-
+input[type="submit"]
+{
+	background-color:#DDD !important;
+}
 .search input 										
 {
 	border-radius:2px;
 }
-.search input[type="text"],[type="password"]
+.search input[type="text"], .search input[type="password"]
 {	
 	background:#ddd; 
 	border:1px solid #bbb;

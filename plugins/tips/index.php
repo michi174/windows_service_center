@@ -2,7 +2,7 @@
 $notify	= new wsc\systemnotification\SystemNotification();
 $output	= new wsc\template\Template();
 $bbcode	= new wsc\bbcode\BBCode();
-
+$db="";
 
 
 if(!empty($_REQUEST['id']) && !empty($_REQUEST['action']))

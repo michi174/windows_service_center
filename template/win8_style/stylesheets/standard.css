@@ -35,7 +35,7 @@ q:before, q:after {
 }
 
 
-body						{ background-color:#F8F8F8;}
+body						{ background-color:#F5F5F5}
 font,th,td,p 				{ font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;}
 hr 							{ border-bottom:1px #121212; box-shadow:0px 1px #2A2A2A;}
 
@@ -68,7 +68,16 @@ a:hover						{ text-decoration: underline; color : #555; }
 .success					{border:1px solid #bfed64 !important;}
 .new-paragraph				{margin-top:30px !important;}
 .body_line					{height: 0px; border: solid #F8F8F8 0px; border-top-width: 2px; margin-top:4px;}
-.step_line					{border-bottom:1px solid #DDDDDD; box-shadow:0px 1px #FFFFFF; margin:15px 0;}
+.step_line					{border-bottom:1px solid #BBB; box-shadow:0px 1px #FFFFFF; margin:15px 0;}
+.section-body				{border:#ccc solid 1px;background-color:#fff; padding:10px; display:inline-block; width:100%; min-width:300px;}
+.section-title				{font-size:16px; font-weight:700; background-color:#eee; padding:5px 10px 5px 10px; display:block; width:100%; min-width:310px;}
+.s-t-top					{border-radius:0.2em 0.2em 0 0; border-left:1px; border-right:1px; border-top:1px; border-color:#ccc; border-style:solid}
+.s-t-bottom					{border-radius:0 0 0.2em 0.2em; border-left:1px; border-right:1px; border-bottom:1px; border-color:#ccc; border-style:solid; margin-bottom:10px;}
+.s-b-bottom					{margin-bottom:10px;}
+.left						{float:left}
+.right						{float:right}
+.left-dist					{float:left; margin-right:30px;}
+.right-dist					{float:left; margin-left: 10px;}
 
 .output	
 {
@@ -186,7 +195,7 @@ a.output:hover
 	height:120px;
 	width:100%;
 	color: #FFFFFF;
-	background-image:url(../grafics/other/backgroung1.jpg);
+	background-image:url(../grafics/other/backgroung2.jpg);
 	background-position:top;
 	z-index:10;
 }
@@ -587,7 +596,7 @@ li.kommentare
 	width:100%;
 	margin:auto;
 	position:fixed;
-	background-image:url(../grafics/other/backgroung1.jpg);
+	background-image:url(../grafics/other/backgroung2.jpg);
 	background-position:bottom;
 	top:120px;
 	z-index:10;
@@ -905,9 +914,9 @@ li.search
 	font-size: 11px;
 	text-align:left; 
 	font-family:Verdana;
-	background-image:url(../grafics/other/backgroung1.jpg);
+	background-image:url(../grafics/other/backgroung2.jpg);
 	background-size:contain;
-	box-shadow:0px -1px 8px 0px #222;
+	box-shadow:0px -1px 5px 0px #000;
 	z-index:30;
 }
 .footer_content

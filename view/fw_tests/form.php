@@ -6,9 +6,9 @@
     die mehrere <span class="code small output">Forms</span> enhalten k&ouml;nnen.
     Die Ausgabe der Elemente erfolgt &uuml;ber <span class="code small output">ViewHelper</span>. Siehe mehr dazu im Kapitel ViewHelper
 </p>
-
+<?= $this->notification ?><br>
+<? if($this->valid !== true):?>
 <h4>Verschiedene Elemente ohne Form:</h4>
-<br>
 <fieldset id="login" style="border:1px solid #ccc; width:300px; padding:10px;">
 	<legend style="margin-left:5px">Registrierung (Test)</legend>
     <?= $this->form()->openTag($this->register) ?>
@@ -21,3 +21,19 @@
         <?= $this->formSubmit($this->register->get("speichern")) ?><br>
 	<?= $this->form()->closeTag() ?>
 </fieldset>
+<? else:?>
+<h4>Folgende Eingaben wurden &uuml;bermittelt:</h4><br>
+<table>
+  <tr>
+    <td style="width:150px">Vorname:</td>
+    <td><?= $this->register->getData("vorname")?></td>
+  </tr>
+  <tr>
+    <td>Nachname:</td>
+    <td><?= $this->register->getData("nachname")?></td>
+  </tr>
+  <tr>
+    <td colspan="2"><br>Das Passwort wird aus Sicherheitsgr&uuml;nden nicht angezeigt.</td>
+  </tr>
+</table>
+<? endif;?>

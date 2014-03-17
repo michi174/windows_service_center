@@ -81,6 +81,8 @@ $(document).ready(function(){
 		{
 			if($('#top-arrow').not(':visible'))
 			{
+				var pos	= $('#box_content_text').position();
+				
 				$('#top-arrow').show(0);
 			}
 		}

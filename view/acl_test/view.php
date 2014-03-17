@@ -165,15 +165,16 @@ $privileges	= $this->acl->getAllPrivileges();
         </div>
     </div>
 </div>
+<div style="width:29%; float:right;>
 <form action="<?= "?" . $config->get("forward_link"); ?>" method="post">
-    <div id="resource-form-wrapper" style="float:right;" >
+    <div id="resource-form-wrapper">
         <div class="section-title s-t-top" id="resource-form-title">
             <h4>Neue Resource erfassen</h4>
         </div>
         <div class="section-body" id="resource-form-body">
-            <input type="text" placeholder="Resourcenname" style="width:300px; margin-bottom:5px;" name="resname" required><br>
-            <input type="text" placeholder="Displayname" style="width:300px; margin-bottom:5px;" name="resdname" required><br>
-            <textarea placeholder="Beschreibung..." style="width:300px;height:100px" name="resdesc" required></textarea><br>
+            <input type="text" placeholder="Resourcenname" style="width:95%; margin-bottom:5px;" name="resname" required><br>
+            <input type="text" placeholder="Displayname" style="width:95%; margin-bottom:5px;" name="resdname" required><br>
+            <textarea placeholder="Beschreibung..." style="width:95%;height:100px" name="resdesc" required></textarea><br>
         </div>
         <div class="section-title s-t-bottom">
         	<input type="submit" name="addres" value="Speichern">
@@ -181,14 +182,14 @@ $privileges	= $this->acl->getAllPrivileges();
     </div>
 </form>
 <form action="<?= "?" . $config->get("forward_link"); ?>" method="post">
-	<div style="float:right;" class="section-wrapper">
-        <div class="section-title s-t-top">
+	<div class="section-wrapper">
+    	<div class="section-title s-t-top">
             <h4>Neues Recht erfassen</h4>
         </div>
         <div class="section-body">
-            <input type="text" placeholder="Rechtename" style="width:300px; margin-bottom:5px;" name="priname" required><br>
-            <input type="text" placeholder="Displayname" style="width:300px; margin-bottom:5px;" name="pridname" required><br>
-            <textarea placeholder="Beschreibung..." style="width:300px;height:100px" name="pridesc" required></textarea><br>
+            <input type="text" placeholder="Rechtename" style="width:95%; margin-bottom:5px;" name="priname" required><br>
+            <input type="text" placeholder="Displayname" style="width:95%; margin-bottom:5px;" name="pridname" required><br>
+            <textarea placeholder="Beschreibung..." style="width:95%;height:100px" name="pridesc" required></textarea><br>
         </div>
         <div class="section-title s-t-bottom">
             <input type="submit" name="addpri" value="Speichern">
@@ -197,12 +198,12 @@ $privileges	= $this->acl->getAllPrivileges();
 </form>
 <br>
 <form action="<?="?" . $config->get("forward_link"); ?>" method="post">
-	<div style="float:right;" class="section-wrapper">
+	<div class="section-wrapper">
     	<div class="section-title s-t-top">
             <h4>Neue Verkn&uuml;pfung erstellen</h4>
         </div>
         <div class="section-body">
-            <select name="linkres" style="width:300px;" required>
+            <select name="linkres" style="width:95%;" required>
             <option value="-1" selected="selected" disabled="disabled">Resource ausw&auml;hlen</option>
                 <?php 
                     foreach ($ressources as $resource)
@@ -211,7 +212,7 @@ $privileges	= $this->acl->getAllPrivileges();
                     }
                 ?>
             </select><br>
-            <select name="linkpri" style="width:300px;" required>
+            <select name="linkpri" style="width:95%;" required>
             <option value="-1" selected="selected" disabled="disabled">Recht ausw&auml;hlen</option>
                 <?php 
                     foreach ($privileges as $privilege)

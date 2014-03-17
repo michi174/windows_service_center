@@ -6,8 +6,7 @@ h1, h2, h3, h4, h5, h6, p, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
+b, u, i, center, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
@@ -44,6 +43,7 @@ h1							{font-size:36px; text-shadow:#BBB 0px 1px}
 h2							{font-size:24px;}
 h3							{font-size:18px;}
 h4							{font-size:16px; font-weight:700}
+dd							{margin-left:10px;}
 
 p.section					{margin-top:3px; margin-bottom:15px; }
 p.introduction				{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444; font-size:18px; margin-bottom:25px;}
@@ -69,15 +69,20 @@ a:hover						{ text-decoration: underline; color : #555; }
 .new-paragraph				{margin-top:30px !important;}
 .body_line					{height: 0px; border: solid #F8F8F8 0px; border-top-width: 2px; margin-top:4px;}
 .step_line					{border-bottom:1px solid #BBB; box-shadow:0px 1px #FFFFFF; margin:15px 0;}
-.section-body				{border:#ccc solid 1px;background-color:#fff; padding:10px; display:inline-block; width:100%; min-width:300px;}
-.section-title				{font-size:16px; font-weight:700; background-color:#eee; padding:5px 10px 5px 10px; display:block; width:100%; min-width:310px;}
+.section-body				{border:#ccc solid 1px;background-color:#fff; padding:10px; display:inline-block; width:90%; min-width:250px;}
+.section-title				{font-size:16px; font-weight:700; background-color:#f3f3f3; 
+							padding:5px 10px 5px 10px; display:table-cell; width:90%; min-width:250px; vertical-align:middle;}
+							
 .s-t-top					{border-radius:0.2em 0.2em 0 0; border-left:1px; border-right:1px; border-top:1px; border-color:#ccc; border-style:solid}
 .s-t-bottom					{border-radius:0 0 0.2em 0.2em; border-left:1px; border-right:1px; border-bottom:1px; border-color:#ccc; border-style:solid; margin-bottom:10px;}
 .s-b-bottom					{margin-bottom:10px;}
+.s-b-upper					{border-bottom:0px;}
+.s-b-lower					{border-top:0px;}
 .left						{float:left}
 .right						{float:right}
 .left-dist					{float:left; margin-right:30px;}
 .right-dist					{float:left; margin-left: 10px;}
+.input-error				{border:2px solid #b41b43 !important}
 
 .output	
 {
@@ -173,8 +178,10 @@ a.output:hover
 #top-arrow
 {
 	position:fixed;
-	bottom:50px;
-	right:15%;
+	background-color:hsla(0,0%,60%,0.5);
+	border-radius:48px;
+	bottom:35px;
+	left:50%;
 	display:none;
 	width:48px;
 	height:48px;
@@ -186,6 +193,44 @@ a.output:hover
 {
 	background-position:top;
 	cursor:pointer;
+}
+.register
+{
+	width:500px; 
+	padding:10px;
+}
+
+.register input
+{
+	width:98%;
+	font-size:15px;
+	text-indent:10px;
+	letter-spacing:1px;
+	border-radius:5px;
+	border:0px;
+	border-bottom:1px solid #ccc;
+	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+}
+input[type="checkbox"]
+{
+	width:15px;
+	height:15px;
+}
+
+.register input:focus
+{
+	outline:0px;
+}
+.register input[type="submit"]:active
+{
+	background-color: #9c3;
+	border:1px solid #bfed64;
+}
+.register input[type="submit"]
+{
+	border:1px solid #9c3;
+	background-color: #bfed64;
+	font-weight:bold;
 }
 
 .box_header 
@@ -266,12 +311,11 @@ input, textarea, select, radio, email, date
 	height:25px;
 	text-indent:3px;
 	margin:1px;
-	background-color:#FFF;
 	vertical-align:middle;
 }
 input[type="submit"]
 {
-	background-color:#DDD !important;
+	background-color:#DDD;
 }
 .search input 										
 {
@@ -281,10 +325,6 @@ input[type="submit"]
 {	
 	background:#ddd; 
 	border:1px solid #bbb;
-}
-.search input[type="checkbox"]
-{
-	
 }
 
 .search input[type="image"]
@@ -630,7 +670,7 @@ li.kommentare
 	text-align:center;
 	letter-spacing:1.5px;
 	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
-	font-weight:700;
+	font-weight:700 !important;
 	letter-spacing:1px;
 	text-transform:uppercase;
 	float:left;
@@ -697,7 +737,8 @@ li.search
 /*Seiteninhalt*/
 .box_content 	
 { 	
-	width:1200px;
+	width:100%;
+	max-width:1200px;
 	margin:auto;
 	color: #000;
 	text-decoration: none;
@@ -709,6 +750,7 @@ li.search
 	color: #000;
 	letter-spacing:0.5px;
 	margin-bottom:40px;
+	overflow:auto;
 	
 }
 #box_content_text ul 
@@ -724,9 +766,9 @@ li.search
 	right:0px;
 	height:100%;
 	color: #000;
-	background-color:hsla(0,0%,50%,0.5);
+	background-color:hsla(0,0%,50%,0.4);
 	padding-top:20px;
-	box-shadow:-1px 0px 1px #555, inset #CCC 1px 0 1px;
+	/*box-shadow:-1px 0px 0px #555, inset #CCC 1px 0 1px;*/
 	display:none;
 	z-index:20;
 	

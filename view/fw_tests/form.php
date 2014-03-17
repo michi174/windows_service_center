@@ -8,32 +8,54 @@
 </p>
 <?= $this->notification ?><br>
 <? if($this->valid !== true):?>
-<h4>Verschiedene Elemente ohne Form:</h4>
-<fieldset id="login" style="border:1px solid #ccc; width:300px; padding:10px;">
-	<legend style="margin-left:5px">Registrierung (Test)</legend>
-    <?= $this->form()->openTag($this->register) ?>
-		<?= $this->formText($this->register->get("vorname")) ?>
-        <?= $this->formText($this->register->get("nachname")) ?><br>
-        <?= $this->formPassword($this->register->get("pwd"))?>
-        <?= $this->formPassword($this->register->get("pwd_wdh")) ?><br><br>
-        <?= $this->formElement($this->register->get("gender")) ?>
-        <?= $this->register->get("gender")->getLabel(true) ?><br><br>
-        <?= $this->formSubmit($this->register->get("speichern")) ?><br>
-	<?= $this->form()->closeTag() ?>
-</fieldset>
+<h4>Verschiedene Tests der Form-Klasse:</h4><br>
+<div id="register" style="display:inline-block">
+<?= $this->form()->openTag($this->register); ?>
+<div id="register-header" class="section-title s-t-top register">
+    <img alt="register" src="template/win8_style/grafics/header/register.png" style="vertical-align:middle; margin-right:5px;">
+    Registrierung (Testformular)
+</div>
+<div id="register-pflicht" class="section-body register">
+	<h4 style="margin-left:5px;">Pflichtfelder</h4>
+	<?= $this->formRow($this->register->get("vorname")) ?><br>
+    <?= $this->formRow($this->register->get("nachname")) ?><br>
+    <?= $this->formRow($this->register->get("email")) ?><br>
+    <?= $this->formRow($this->register->get("pwd")) ?><br>
+    <?= $this->formRow($this->register->get("pwd_wdh")) ?><br>
+</div><br>
+<div id="register-opt" class="section-body s-b-lower register">
+    <h4>Optionale Angaben</h4>
+    <?= $this->formRow($this->register->get("street")) ?><br>
+    <?= $this->formRow($this->register->get("plz")) ?><br>
+    <?= $this->formRow($this->register->get("city")) ?><br>
+</div><br>
+<div id="register-save" class="section-title s-t-bottom register">
+    <?= $this->formElement($this->register->get("agb")) ?>
+    <?= $this->formLabel($this->register->get("agb")) ?><br><br>
+    <?= $this->formReset($this->register->get("reset")) ?>
+    <?= $this->formSubmit($this->register->get("speichern")) ?><br>
+</div>
+<?= $this->form()->closeTag() ?>
+</div>
 <? else:?>
-<h4>Folgende Eingaben wurden &uuml;bermittelt:</h4><br>
-<table>
-  <tr>
-    <td style="width:150px">Vorname:</td>
-    <td><?= $this->register->getData("vorname")?></td>
-  </tr>
-  <tr>
-    <td>Nachname:</td>
-    <td><?= $this->register->getData("nachname")?></td>
-  </tr>
-  <tr>
-    <td colspan="2"><br>Das Passwort wird aus Sicherheitsgr&uuml;nden nicht angezeigt.</td>
-  </tr>
-</table>
+<div class="section-wrapper">
+    <div class="section-title s-t-top">
+        <h4>Folgende Eingaben wurden erfolgreich &uuml;bermittelt</h4>
+    </div>
+    <div class="section-body">
+        <table>
+          <tr>
+            <td style="width:150px">Vorname:</td>
+            <td><?= $this->register->getData("vorname")?></td>
+          </tr>
+          <tr>
+            <td>Nachname:</td>
+            <td><?= $this->register->getData("nachname")?></td>
+          </tr>
+          <tr>
+            <td colspan="2"><br>Das Passwort wird aus Sicherheitsgr&uuml;nden nicht angezeigt.</td>
+          </tr>
+        </table>
+    </div>
+</div>
 <? endif;?>

@@ -7,7 +7,7 @@
     Die Ausgabe der Elemente erfolgt &uuml;ber <span class="code small output">ViewHelper</span>. Siehe mehr dazu im Kapitel ViewHelper
 </p>
 <?= $this->notification ?><br>
-<? if($this->valid !== true):?>
+<?php if($this->valid !== true): ?>
 <h4>Verschiedene Tests der Form-Klasse:</h4><br>
 <div id="register" style="display:inline-block">
 <?= $this->form()->openTag($this->register); ?>
@@ -28,16 +28,19 @@
     <?= $this->formRow($this->register->get("street")) ?><br>
     <?= $this->formRow($this->register->get("plz")) ?><br>
     <?= $this->formRow($this->register->get("city")) ?><br>
+    <?= $this->formSelect($this->register->get("land"))?><br><br>
+    <?= $this->formRadio($this->register->get("sex"))->get("m")?>&nbsp;
+    <?= $this->formRadio($this->register->get("sex"))->get("f")?>
 </div><br>
 <div id="register-save" class="section-title s-t-bottom register">
-    <?= $this->formElement($this->register->get("agb")) ?>
+    <?= $this->formCheckbox($this->register->get("agb")) ?>
     <?= $this->formLabel($this->register->get("agb")) ?><br><br>
     <?= $this->formReset($this->register->get("reset")) ?>
     <?= $this->formSubmit($this->register->get("speichern")) ?><br>
 </div>
 <?= $this->form()->closeTag() ?>
 </div>
-<? else:?>
+<?php else:?>
 <div class="section-wrapper">
     <div class="section-title s-t-top">
         <h4>Folgende Eingaben wurden erfolgreich &uuml;bermittelt</h4>
@@ -58,4 +61,4 @@
         </table>
     </div>
 </div>
-<? endif;?>
+<?php endif;?>

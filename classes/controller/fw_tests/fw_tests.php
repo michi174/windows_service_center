@@ -7,10 +7,12 @@ use wsc\form\element\Password;
 use wsc\form\element\Submit;
 use wsc\form\element\Text;
 use wsc\form\Form;
-use wsc\form\element\Element;
 use wsc\systemnotification\SystemNotification;
 use wsc\validator\StringLength;
 use wsc\form\element\Reset;
+use wsc\form\element\Select;
+use wsc\form\element\Checkbox;
+use wsc\form\element\Radio;
 
 /**
  *
@@ -40,7 +42,8 @@ class fw_tests extends controller_abstract
 		$vorname  = (new Text("vorname"))
                     ->setAttribute("placeholder", "Vorname")
                     ->setRequired()
-                    ->setDisplayName("Vorname");
+                    ->setDisplayName("Vorname")
+		            ->setAutoValue(true);
 		
 		$nachname = (new Text("nachname"))
             		->setAttribute("placeholder", "Nachname")
@@ -56,8 +59,7 @@ class fw_tests extends controller_abstract
 		                        'max' => 20)))
                         ->setMessage(StringLength::IS_TOO_SHORT, "Das Passwort muss mindestens {min} Zeichen lang sein."));
 		
-		$agb    = (new Element("agb"))
-                    ->setAttribute("type", "checkbox")
+		$agb    = (new Checkbox("agb")) 
                     ->setLabel("Ich habe die <a href=\"#\">AGB</a> gelesen, verstanden und akzeptiere diese");
 		
 		$password_rpd = (new Password("pwd_wdh"))
@@ -86,6 +88,19 @@ class fw_tests extends controller_abstract
 		$reset    = (new Reset("reset"))
 		->setAttribute("value", "Zur&uuml;cksetzen");
 		
+		$land     = (new Select("land"))
+		->addOption("at", "Austria")
+		->addOption("de", "Deutschland")
+		->addOption("ch", "Schweiz")
+		->addOption("cz", "Tschechien")
+		->addOption("es", "Spanien")
+		->addOption("it", "Italien")
+		->setDefaultOption("at");
+		
+		$sex      = (new Radio("sex"))
+		->addRadio("m", "m", "m&auml;nnlich")
+		->addRadio("f", "f", "weiblich");
+		
         $register   ->add($vorname)
                     ->add($nachname)
                     ->add($password)
@@ -96,7 +111,9 @@ class fw_tests extends controller_abstract
                     ->add($street)
                     ->add($city)
                     ->add($email)
-                    ->add($reset);
+                    ->add($reset)
+                    ->add($land)
+                    ->add($sex);
 		
 		if(isset($_POST['speichern']))
 		{

@@ -38,7 +38,7 @@ class header extends Subcontroller_abstract
 		
 		$view->renderer->assignVar("LOGGED_IN", $auth->isLoggedIn());
 		$view->renderer->assignVar("FIRSTNAME", $user->data['firstname']);
-		$view->renderer->assignVar("BACKEND_VIEW", $acl->hasPermission($user, "backend", "view"));
+		$view->renderer->assignVar("BACKEND_VIEW", $acl->hasPermission($user, "admin", "view"));
 		$view->renderer->assignVar("PLUGINS", $plugins);		
 	}
 }

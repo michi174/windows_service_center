@@ -52,6 +52,65 @@ if(isset($_POST['addlink']))
 }
 $ressources	= $this->acl->getAllResources();
 $privileges	= $this->acl->getAllPrivileges();
+$references = array();
+
+$sql_ref_types  = "SELECT * FROM acl_reference_types";
+$res_ref_types  = $db->query($sql_ref_types) or die($db->error);
+while(($row_ref_types = $res_ref_types->fetch_assoc())==true)
+{
+    $ref_types[$row_ref_types['referenceTable']]    = $row_ref_types['type'];
+}
+
+$sql_permissions    = "SELECT * FROM acl_link_privileges";
+$res_permissions    = $db->query($sql_permissions) or die($db->error);
+while(($row_permissions = $res_permissions->fetch_assoc())==true)
+{
+    $permissions[]  = $row_permissions['id'];
+}
+
+if(isset($_REQUEST['reference_type']))
+{
+    if(empty($_REQUEST['reference']) || empty($_REQUEST['permission']))
+    {
+        $sql_reference  = "SELECT * FROM " . $_REQUEST['reference_type'];
+        $res_reference  = $db->query($sql_reference) or die($db->error);
+        
+        while(($row_reference = $res_reference->fetch_assoc()) == true)
+        {
+            if(isset($row_reference['username']))
+            {
+                $name   = $row_reference['username'];
+            }
+            else 
+            {
+                $name   = $row_reference['name'];
+            }
+            
+            $references[$row_reference['id']]  = $name;
+        }
+    }
+}
+
+if(isset($_REQUEST['assignpermission']))
+{
+    $sql_ch_permission  = "SELECT * FROM acl_permissions 
+                            WHERE aclReferenceType  = '".$db->getDataByField("acl_reference_types", "referenceTable", $_REQUEST['reference_type'])['id']."' 
+                            AND aclReference        = '".$_REQUEST['reference']."' 
+                            AND aclLinkPrivilegesId = '".$_REQUEST['permission']."'";
+    $res_ch_permission  = $db->query($sql_ch_permission);
+    $num_ch_permission  = $res_ch_permission->num_rows;
+    
+    if($num_ch_permission == 0)
+    {
+        $db->query("INSERT INTO acl_permissions(aclReferenceType,aclReference,aclLinkPrivilegesId) 
+                    VALUES('".$db->getDataByField("acl_reference_types", "referenceTable", $_REQUEST['reference_type'])['id']."','".$_REQUEST['reference']."','".$_REQUEST['permission']."')") or die($db->error);
+    }
+    else {
+        $error	= new wsc\systemnotification\SystemNotification("error");
+        $error->addMessage("Berechtigung ist bereits vorhanden!<br>Der Datensatz wurde nicht gespeichert.");
+        $error->printMessage();
+    }
+}
 
 //$perm	= $this->acl->checkResourcelink();
 
@@ -79,7 +138,6 @@ $privileges	= $this->acl->getAllPrivileges();
             ?>
         </div>
     </div>
-
     <div>
         <div class="section-title s-t-top">
             <h4>Alle Benutzerrechte:</h4>
@@ -99,22 +157,22 @@ $privileges	= $this->acl->getAllPrivileges();
     </div>
     <div class="left">
         <div class="section-title s-t-top">
-            <h4>Rollen:</h4>
+            <h4>Benutzerrollen:</h4>
         </div>
         <div class="section-body s-b-bottom">
             <?php 
             foreach($user->roles as $userrole)
             {
                 $urole	= $db->getDataByID("acl_roles", $userrole);
-                echo "R-ID: ".$urole['id']." - " . $urole['name'] . "<br />";
+                echo "Ro-ID: ".$urole['id']." - " . $urole['name'] . "<br />";
             }
             ?>
         </div>
     </div>
     
-    <div class="right">
+    <div class="left" style="">
         <div class="section-title s-t-top">
-            <h4>Gruppen:</h4>
+            <h4>Benutzergruppen:</h4>
         </div>
         <div class="section-body s-b-bottom">
             <?php 
@@ -165,67 +223,117 @@ $privileges	= $this->acl->getAllPrivileges();
         </div>
     </div>
 </div>
-<div style="width:29%; float:right;>
-<form action="<?= "?" . $config->get("forward_link"); ?>" method="post">
-    <div id="resource-form-wrapper">
-        <div class="section-title s-t-top" id="resource-form-title">
-            <h4>Neue Resource erfassen</h4>
+<div style="width:29%; float:right;">
+    <form action="<?= "?" . $config->get("forward_link"); ?>" method="post">
+        <div id="resource-form-wrapper">
+            <div class="section-title s-t-top" id="resource-form-title">
+                <h4>Neue Resource erfassen</h4>
+            </div>
+            <div class="section-body" id="resource-form-body">
+                <input type="text" placeholder="Resourcenname" style="width:95%; margin-bottom:5px;" name="resname" required><br>
+                <input type="text" placeholder="Displayname" style="width:95%; margin-bottom:5px;" name="resdname" required><br>
+                <textarea placeholder="Beschreibung..." style="width:95%;height:100px" name="resdesc" required></textarea><br>
+            </div>
+            <div class="section-title s-t-bottom">
+            	<input type="submit" name="addres" value="Speichern">
+            </div>
         </div>
-        <div class="section-body" id="resource-form-body">
-            <input type="text" placeholder="Resourcenname" style="width:95%; margin-bottom:5px;" name="resname" required><br>
-            <input type="text" placeholder="Displayname" style="width:95%; margin-bottom:5px;" name="resdname" required><br>
-            <textarea placeholder="Beschreibung..." style="width:95%;height:100px" name="resdesc" required></textarea><br>
+    </form>
+    <br>
+    <form action="<?= "?" . $config->get("forward_link"); ?>" method="post">
+    	<div class="section-wrapper">
+        	<div class="section-title s-t-top">
+                <h4>Neues Recht erfassen</h4>
+            </div>
+            <div class="section-body">
+                <input type="text" placeholder="Rechtename" style="width:95%; margin-bottom:5px;" name="priname" required><br>
+                <input type="text" placeholder="Displayname" style="width:95%; margin-bottom:5px;" name="pridname" required><br>
+                <textarea placeholder="Beschreibung..." style="width:95%;height:100px" name="pridesc" required></textarea><br>
+            </div>
+            <div class="section-title s-t-bottom">
+                <input type="submit" name="addpri" value="Speichern">
+            </div>
+    	</div>
+    </form>
+    <br>
+    <form action="<?="?" . $config->get("forward_link"); ?>" method="post">
+    	<div class="section-wrapper">
+        	<div class="section-title s-t-top">
+                <h4>Neue Verkn&uuml;pfung erstellen</h4>
+            </div>
+            <div class="section-body">
+                <select name="linkres" style="width:95%;" required>
+                <option value="-1" selected="selected" disabled="disabled">Resource ausw&auml;hlen</option>
+                    <?php 
+                        foreach ($ressources as $resource)
+                        {
+                            echo "<option value=".$resource['id'].">".$resource['name']."</option>";
+                        }
+                    ?>
+                </select><br>
+                <select name="linkpri" style="width:95%;" required>
+                <option value="-1" selected="selected" disabled="disabled">Recht ausw&auml;hlen</option>
+                    <?php 
+                        foreach ($privileges as $privilege)
+                        {
+                            echo "<option value=".$privilege['id'].">".$privilege['name']."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="section-title s-t-bottom">
+                <input type="submit" name="addlink" value="Speichern">
+            </div>
         </div>
-        <div class="section-title s-t-bottom">
-        	<input type="submit" name="addres" value="Speichern">
+    </form>
+    <br>
+    <form action="<?="?" . $config->get("forward_link"); ?>" method="post" name="assign">
+    	<div class="section-wrapper">
+        	<div class="section-title s-t-top">
+                <h4>Rechte vergeben:</h4>
+            </div>
+            <div class="section-body">
+            <select name="reference_type" style="width:95%;" onChange="document.assign.submit()" required>
+                <option value="-1" selected="selected" disabled="disabled">Referenztyp ausw&auml;hlen</option>
+                    <?php 
+                        foreach ($ref_types as $ref_table => $ref_type)
+                        {
+                            $select = null;
+                            if(isset($_REQUEST['reference_type']) && $_REQUEST['reference_type'] == $ref_table)
+                            {
+                                $select = "selected=\"selected\"";
+                            }
+                            
+                            echo "<option value=\"".$ref_table."\" ".$select.">".$ref_type."</option>";
+                        }
+                    ?>
+                </select><br>
+                <select name="reference" style="width:95%;" required>
+                <option value="-1" disabled="disabled">Referenz ausw&auml;hlen</option>
+                    <?php 
+                        foreach ($references as $reference => $reference_name)
+                        {
+                            echo "<option value=\"".$reference."\">".$reference_name."</option>";
+                        }
+                    ?>
+                </select><br>
+                <select name="permission" style="width:95%;" required>
+                <option value="-1" selected="selected" disabled="disabled">Recht ausw&auml;hlen</option>
+                    <?php 
+                        foreach ($permissions as $permission)
+                        {
+                            $plinkid	= $db->getDataByID("acl_link_privileges", $permission);
+                            $aresource	= $db->getDataByID("acl_resources", $plinkid['aclResourcesId']);
+                            $aprivilege	= $db->getDataByID("acl_privileges", $plinkid['aclPrivilegesId']);
+                            echo "<option value=".$permission.">".$aresource['name']." -> ".$aprivilege['name']." (".$aresource['disp_name']."&nbsp;".$aprivilege['description'].")</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="section-title s-t-bottom">
+                <input type="submit" name="assignpermission" value="Speichern">
+            </div>
         </div>
-    </div>
-</form>
-<form action="<?= "?" . $config->get("forward_link"); ?>" method="post">
-	<div class="section-wrapper">
-    	<div class="section-title s-t-top">
-            <h4>Neues Recht erfassen</h4>
-        </div>
-        <div class="section-body">
-            <input type="text" placeholder="Rechtename" style="width:95%; margin-bottom:5px;" name="priname" required><br>
-            <input type="text" placeholder="Displayname" style="width:95%; margin-bottom:5px;" name="pridname" required><br>
-            <textarea placeholder="Beschreibung..." style="width:95%;height:100px" name="pridesc" required></textarea><br>
-        </div>
-        <div class="section-title s-t-bottom">
-            <input type="submit" name="addpri" value="Speichern">
-        </div>
-	</div>
-</form>
-<br>
-<form action="<?="?" . $config->get("forward_link"); ?>" method="post">
-	<div class="section-wrapper">
-    	<div class="section-title s-t-top">
-            <h4>Neue Verkn&uuml;pfung erstellen</h4>
-        </div>
-        <div class="section-body">
-            <select name="linkres" style="width:95%;" required>
-            <option value="-1" selected="selected" disabled="disabled">Resource ausw&auml;hlen</option>
-                <?php 
-                    foreach ($ressources as $resource)
-                    {
-                        echo "<option value=".$resource['id'].">".$resource['name']."</option>";
-                    }
-                ?>
-            </select><br>
-            <select name="linkpri" style="width:95%;" required>
-            <option value="-1" selected="selected" disabled="disabled">Recht ausw&auml;hlen</option>
-                <?php 
-                    foreach ($privileges as $privilege)
-                    {
-                        echo "<option value=".$privilege['id'].">".$privilege['name']."</option>";
-                    }
-                ?>
-            </select>
-        </div>
-        <div class="section-title s-t-bottom">
-            <input type="submit" name="addlink" value="Speichern">
-        </div>
-    </div>
-</form>
+    </form>
 </div>
 <div class="clearing"></div>

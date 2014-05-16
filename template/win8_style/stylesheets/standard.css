@@ -84,6 +84,23 @@ a:hover						{ text-decoration: underline; color : #555; }
 .right-dist					{float:left; margin-left: 10px;}
 .input-error				{border:2px solid #b41b43 !important}
 
+
+input, textarea, select, radio, email, date
+{
+	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+	font-size:11px;
+	text-indent :2px;
+	border:1px solid #bbb;
+	height:25px;
+	text-indent:3px;
+	margin:1px;
+	vertical-align:middle;
+}
+input[type="submit"]
+{
+	background-color:#DDD;
+}
+
 .output	
 {
 	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
@@ -200,7 +217,7 @@ a.output:hover
 	padding:10px;
 }
 
-.register input
+.register input, select
 {
 	width:98%;
 	font-size:15px;
@@ -211,7 +228,13 @@ a.output:hover
 	border-bottom:1px solid #ccc;
 	font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
 }
+
 input[type="checkbox"]
+{
+	width:15px;
+	height:15px;
+}
+input[type="radio"]
 {
 	width:15px;
 	height:15px;
@@ -301,22 +324,6 @@ input[type="checkbox"]
 	background-color:#FFF;
 }
 
-
-input, textarea, select, radio, email, date
-{
-	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
-	font-size:11px;
-	text-indent :2px;
-	border:1px solid #bbb;
-	height:25px;
-	text-indent:3px;
-	margin:1px;
-	vertical-align:middle;
-}
-input[type="submit"]
-{
-	background-color:#DDD;
-}
 .search input 										
 {
 	border-radius:2px;

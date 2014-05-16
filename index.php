@@ -52,6 +52,13 @@ $controller->addSubController("content_end",$blacklist);
 $controller->addSubController("console",$blacklist);
 $controller->addSubController("footer",$blacklist);
 
+/*
+ * Plugins einlesen.
+ * 
+$plg        = new PluginManager;
+$plg->checkPlugins();
+*/
+
 
 $plugins    = PluginManager::getPlugins(false);
 

@@ -19,6 +19,7 @@
 	<h4 style="margin-left:5px;">Pflichtfelder</h4>
 	<?= $this->formRow($this->register->get("vorname")) ?><br>
     <?= $this->formRow($this->register->get("nachname")) ?><br>
+    <?= $this->formRow($this->register->get("username")) ?><br>
     <?= $this->formRow($this->register->get("email")) ?><br>
     <?= $this->formRow($this->register->get("pwd")) ?><br>
     <?= $this->formRow($this->register->get("pwd_wdh")) ?><br>
